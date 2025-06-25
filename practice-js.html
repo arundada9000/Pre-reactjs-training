@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>HTML Practice - Learn by Doing</title>
+    <title>JavaScript Practice - Learn by Doing</title>
     <style>
         ::-webkit-scrollbar {
             display: none;
@@ -79,7 +79,7 @@
             top: 96px;
             left: -100%;
             width: 85%;
-            max-width: 300px;
+            max-width: 500px;
             height: calc(100% - 96px);
             background: #fff;
             box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
@@ -116,6 +116,12 @@
             overflow-y: auto;
         }
 
+        .editor-group {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
         .copy-btn {
             position: absolute;
             top: 8px;
@@ -134,7 +140,6 @@
             border-radius: 10px;
             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
             margin-bottom: 2rem;
-            transition: box-shadow 0.3s ease;
         }
 
         .lesson-section h2 {
@@ -143,30 +148,18 @@
             margin-bottom: 0.5rem;
         }
 
-        .lesson-section h3 {
-            margin-top: 1.5rem;
-        }
-
-        .lesson-section p,
-        .lesson-section li {
-            line-height: 1.6;
-        }
-
         textarea {
             width: 100%;
-            height: 280px;
+            height: 220px;
             font-family: monospace;
             font-size: 1rem;
             padding: 0.75rem;
-            border: 1px solid #ccc;
             border-radius: 6px;
-            resize: vertical;
-            overflow: auto;
-
             background: #282c34;
             color: #f8f8f2;
             border: none;
             box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.2);
+            resize: vertical;
         }
 
         button#runBtn {
@@ -178,15 +171,6 @@
             border-radius: 6px;
             cursor: pointer;
             font-size: 1rem;
-        }
-
-        button#runBtn:hover {
-            background-color: #45a049;
-        }
-
-        button#runBtn:active {
-            transform: scale(0.98);
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) inset;
         }
 
         button#toggleTheme {
@@ -203,7 +187,6 @@
             border: 1px solid #ccc;
             background: white;
             border-radius: 6px;
-            overflow: auto;
         }
 
         @media (min-width: 768px) {
@@ -211,17 +194,11 @@
                 display: none;
             }
 
-            .container {
-                flex-direction: row;
-            }
-
             .drawer {
                 position: relative;
                 left: 0 !important;
                 top: 0;
                 width: 40%;
-                height: auto;
-                max-width: none;
                 box-shadow: none;
                 padding: 2rem;
             }
@@ -229,15 +206,15 @@
             .editor {
                 width: 60%;
             }
+
+            .editor-group {
+                flex-direction: row;
+            }
         }
 
         @media (max-width: 767px) {
             .hamburger {
                 display: block;
-            }
-
-            .container {
-                flex-direction: column;
             }
 
             .editor {
@@ -253,106 +230,163 @@
                 box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
             }
         }
-    </style>
 
+        .code-group textarea {
+            margin-bottom: 1rem;
+        }
+
+        .code-label {
+            font-weight: bold;
+            margin: 0.5rem 0 0.25rem;
+            display: block;
+        }
+    </style>
 </head>
 
 <body>
-
     <header>
         <button class="hamburger" id="hamburgerBtn">&#9776;</button>
-        <h1>Practice HTML</h1>
-        <p>Understand HTML by writing and running real code. No setup required.</p>
+        <h1>Practice JavaScript</h1>
+        <p>Write JS along with HTML and CSS. See results instantly!</p>
         <button id="toggleTheme">Theme</button>
-
     </header>
 
     <div class="container">
-
-
         <!-- Sliding Drawer -->
         <aside class="drawer" id="drawer">
-
             <section class="lesson" id="lessonSection">
-
                 <div class="lesson-section">
-                    <h2>&lt;html&gt;, &lt;head&gt;, &lt;body&gt;</h2>
-                    <p>
-                        These are the foundational building blocks of any HTML document. Understanding their role is
-                        essential for building valid web pages.
-                    </p>
-
-                    <ul>
-                        <li><strong>&lt;html&gt;</strong>: The root element that wraps all content on the page.</li>
-                        <li><strong>&lt;head&gt;</strong>: Contains metadata, links to stylesheets, scripts, and other
-                            non-visible elements like the page title.</li>
-                        <li><strong>&lt;body&gt;</strong>: Holds all the content you want users to see, like text,
-                            images, and interactive elements.</li>
-                    </ul>
-
-                    <p><strong>Example:</strong></p>
-                    <pre><code>&lt;!DOCTYPE html&gt;
-&lt;html&gt;
-  &lt;head&gt;
-    &lt;meta charset="UTF-8"&gt;
-    &lt;title&gt;My First Page&lt;/title&gt;
-    &lt;style&gt;
-      body {
-        font-family: sans-serif;
-        background-color: #f0f0f0;
-      }
-    &lt;/style&gt;
-  &lt;/head&gt;
-  &lt;body&gt;
-    &lt;h1&gt;Welcome!&lt;/h1&gt;
-    &lt;p&gt;This is the body of the HTML document.&lt;/p&gt;
-  &lt;/body&gt;
-&lt;/html&gt;</code><button class="copy-btn">Copy</button></pre>
-
-                    <p><strong>React Tip:</strong> In React projects, you usually don't write the full HTML skeleton.
-                        Tools like <code>create-react-app</code> handle that. You typically write components that go
-                        inside the <code>&lt;body&gt;</code>.</p>
-
-                    <pre><code>// public/index.html
-&lt;html lang="en"&gt;
-  &lt;head&gt;
-    &lt;title&gt;React App&lt;/title&gt;
-  &lt;/head&gt;
-  &lt;body&gt;
-    &lt;div id="root"&gt;&lt;/div&gt;
-  &lt;/body&gt;
-&lt;/html&gt;</code><button class="copy-btn">Copy</button></pre>
+                    <h2>JS + HTML + CSS Basics</h2>
+                    <p>You can manipulate HTML using JavaScript, style elements with CSS, and test all three in one
+                        place.</p>
+                    <pre><code>&lt;h1 id="title"&gt;Hello&lt;/h1&gt;
+&lt;script&gt;
+  document.getElementById("title").innerText = "Updated!";
+&lt;/script&gt;</code><button class="copy-btn">Copy</button></pre>
                 </div>
-
-                <!-- Additional sections can follow in the same format for divs, spans, forms, inputs, etc. -->
             </section>
         </aside>
 
-        <!-- Code Editor and Runner -->
+        <!-- Code Editor -->
         <section class="editor">
             <h2>Try it Yourself</h2>
 
-            <textarea id="htmlCode" placeholder="Write your HTML here...">
-                <!DOCTYPE html>
-<html>
-  <head>
-    <title>My HTML Test</title>
-  </head>
-  <body>
-    <h1>Hello World!</h1>
-    <p>This is my first HTML output.</p>
-  </body>
-</html>
-            </textarea>
+            <div class="code-group">
+                <label class="code-label" for="htmlCode">HTML</label>
+                <textarea id="htmlCode"
+                    placeholder="Write your HTML here...">&lt;h1 id="demo"&gt;Hello&lt;/h1&gt;</textarea>
+
+                <label class="code-label" for="cssCode">CSS</label>
+                <textarea id="cssCode" placeholder="Write your CSS here...">h1 { color: green; }</textarea>
+
+                <label class="code-label" for="jsCode">JavaScript</label>
+                <textarea id="jsCode"
+                    placeholder="Write your JS here...">document.getElementById("demo").innerText = "Hi from JS!";</textarea>
+            </div>
+
             <button id="runBtn">Run</button>
+
             <h2>Live Preview</h2>
             <iframe id="preview" sandbox="allow-scripts"></iframe>
+            <h2>Console Output</h2>
+            <div id="consoleOutput"
+                style="background:#111;color:#0f0;padding:1rem;border-radius:6px;font-family:monospace;font-size:0.9rem;height:150px;overflow:auto;">
+            </div>
+
         </section>
     </div>
 
     <script>
-        document.getElementById('toggleTheme').addEventListener('click', () => {
-            document.body.classList.toggle('dark');
+        const htmlInput = document.getElementById('htmlCode');
+        const cssInput = document.getElementById('cssCode');
+        const jsInput = document.getElementById('jsCode');
+        const preview = document.getElementById('preview');
+
+        function runCode() {
+            const html = htmlInput.value;
+            const css = `<style>${cssInput.value}</style>`;
+            const js = jsInput.value;
+
+            const combinedCode = `
+    ${html}
+    ${css}
+    <script>
+      (function(){
+        // Forward logs to parent console
+        const send = (type, ...data) => parent.postMessage({ type, data }, '*');
+
+        console.log = (...args) => send('log', ...args);
+        console.error = (...args) => send('error', ...args);
+        console.warn = (...args) => send('warn', ...args);
+        console.clear = () => send('clear');
+
+        // Override alert and prompt
+        window.alert = (msg) => send('alert', msg);
+        window.prompt = (msg, def) => {
+          send('prompt', msg);
+          return def || '';
+        };
+
+        try {
+          ${js}
+        } catch (e) {
+          console.error(e.message);
+        }
+      })();
+    <\/script>
+  `;
+
+            preview.srcdoc = combinedCode;
+
+            // Clear console display
+            document.getElementById('consoleOutput').innerHTML = '';
+        }
+
+        window.addEventListener('message', (event) => {
+            const { type, data } = event.data;
+            const output = document.getElementById('consoleOutput');
+
+            if (!output || !type) return;
+
+            const colors = {
+                log: '#0f0',
+                error: '#f55',
+                warn: '#ff0',
+                alert: '#09f',
+                prompt: '#fc0',
+                clear: null
+            };
+
+            if (type === 'clear') {
+                output.innerHTML = '';
+                return;
+            }
+
+            const msg = document.createElement('div');
+            msg.style.color = colors[type] || '#ccc';
+
+            if (type === 'alert') {
+                msg.textContent = `[alert] "${data.join(' ')}"`;
+            } else if (type === 'prompt') {
+                msg.textContent = `[prompt] "${data.join(' ')}" (prompt suppressed)`;
+            } else {
+                msg.textContent = `[${type}] ${data.join(' ')}`;
+            }
+
+            output.appendChild(msg);
+            output.scrollTop = output.scrollHeight;
+        });
+
+
+        document.getElementById('runBtn').addEventListener('click', runCode);
+
+        [htmlInput, cssInput, jsInput].forEach(el => {
+            el.addEventListener('keydown', e => {
+                if (e.ctrlKey && e.key === 's') {
+                    e.preventDefault();
+                    runCode();
+                }
+            });
         });
 
         document.querySelectorAll('.copy-btn').forEach(button => {
@@ -364,21 +398,11 @@
             });
         });
 
-        const runCode = () => {
-            const code = document.getElementById('htmlCode').value;
-            document.getElementById('preview').srcdoc = code;
-        }
-
-        document.getElementById('runBtn').addEventListener('click', runCode);
-
-        document.getElementById('htmlCode').addEventListener('keydown', (e) => {
-            if (e.ctrlKey && e.key === 's') {
-                e.preventDefault();
-                runCode();
-            }
+        document.getElementById('toggleTheme').addEventListener('click', () => {
+            document.body.classList.toggle('dark');
         });
 
-        // Drawer toggle for mobile
+        // Drawer toggle
         const drawer = document.getElementById('drawer');
         const hamburgerBtn = document.getElementById('hamburgerBtn');
 
@@ -387,6 +411,9 @@
             document.body.style.overflow = drawer.classList.contains('open') ? 'hidden' : 'auto';
             hamburgerBtn.innerHTML = drawer.classList.contains('open') ? '&times;' : '&#9776;';
         });
+
+        // Initial run
+        runCode();
     </script>
 </body>
 

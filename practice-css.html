@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>HTML Practice - Learn by Doing</title>
+    <title>CSS Practice - Learn by Doing</title>
     <style>
         ::-webkit-scrollbar {
             display: none;
@@ -116,6 +116,12 @@
             overflow-y: auto;
         }
 
+        .editor-group {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
         .copy-btn {
             position: absolute;
             top: 8px;
@@ -134,7 +140,6 @@
             border-radius: 10px;
             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
             margin-bottom: 2rem;
-            transition: box-shadow 0.3s ease;
         }
 
         .lesson-section h2 {
@@ -143,30 +148,18 @@
             margin-bottom: 0.5rem;
         }
 
-        .lesson-section h3 {
-            margin-top: 1.5rem;
-        }
-
-        .lesson-section p,
-        .lesson-section li {
-            line-height: 1.6;
-        }
-
         textarea {
             width: 100%;
-            height: 280px;
+            height: 220px;
             font-family: monospace;
             font-size: 1rem;
             padding: 0.75rem;
-            border: 1px solid #ccc;
             border-radius: 6px;
-            resize: vertical;
-            overflow: auto;
-
             background: #282c34;
             color: #f8f8f2;
             border: none;
             box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.2);
+            resize: vertical;
         }
 
         button#runBtn {
@@ -178,15 +171,6 @@
             border-radius: 6px;
             cursor: pointer;
             font-size: 1rem;
-        }
-
-        button#runBtn:hover {
-            background-color: #45a049;
-        }
-
-        button#runBtn:active {
-            transform: scale(0.98);
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) inset;
         }
 
         button#toggleTheme {
@@ -203,7 +187,6 @@
             border: 1px solid #ccc;
             background: white;
             border-radius: 6px;
-            overflow: auto;
         }
 
         @media (min-width: 768px) {
@@ -211,17 +194,11 @@
                 display: none;
             }
 
-            .container {
-                flex-direction: row;
-            }
-
             .drawer {
                 position: relative;
                 left: 0 !important;
                 top: 0;
                 width: 40%;
-                height: auto;
-                max-width: none;
                 box-shadow: none;
                 padding: 2rem;
             }
@@ -229,15 +206,15 @@
             .editor {
                 width: 60%;
             }
+
+            .editor-group {
+                flex-direction: row;
+            }
         }
 
         @media (max-width: 767px) {
             .hamburger {
                 display: block;
-            }
-
-            .container {
-                flex-direction: column;
             }
 
             .editor {
@@ -254,77 +231,42 @@
             }
         }
     </style>
-
 </head>
 
 <body>
-
     <header>
         <button class="hamburger" id="hamburgerBtn">&#9776;</button>
-        <h1>Practice HTML</h1>
-        <p>Understand HTML by writing and running real code. No setup required.</p>
+        <h1>Practice CSS</h1>
+        <p>Understand CSS by writing and running real code. No setup required.</p>
         <button id="toggleTheme">Theme</button>
-
     </header>
 
     <div class="container">
-
-
         <!-- Sliding Drawer -->
         <aside class="drawer" id="drawer">
-
             <section class="lesson" id="lessonSection">
-
                 <div class="lesson-section">
-                    <h2>&lt;html&gt;, &lt;head&gt;, &lt;body&gt;</h2>
+                    <h2>Selectors, Properties & Values</h2>
                     <p>
-                        These are the foundational building blocks of any HTML document. Understanding their role is
-                        essential for building valid web pages.
+                        CSS allows you to style HTML elements by selecting them and applying style rules.
                     </p>
-
                     <ul>
-                        <li><strong>&lt;html&gt;</strong>: The root element that wraps all content on the page.</li>
-                        <li><strong>&lt;head&gt;</strong>: Contains metadata, links to stylesheets, scripts, and other
-                            non-visible elements like the page title.</li>
-                        <li><strong>&lt;body&gt;</strong>: Holds all the content you want users to see, like text,
-                            images, and interactive elements.</li>
+                        <li><strong>Selectors</strong>: Choose elements to style (e.g., `.class`, `#id`, `tag`).</li>
+                        <li><strong>Properties</strong>: Define what to style (e.g., `color`, `background`, `margin`).
+                        </li>
+                        <li><strong>Values</strong>: Set how it looks (e.g., `red`, `20px`, `flex`).</li>
                     </ul>
+                    <pre><code>/* CSS */
+.box {
+  background: teal;
+  color: white;
+  padding: 1rem;
+  border-radius: 6px;
+}</code><button class="copy-btn">Copy</button></pre>
 
-                    <p><strong>Example:</strong></p>
-                    <pre><code>&lt;!DOCTYPE html&gt;
-&lt;html&gt;
-  &lt;head&gt;
-    &lt;meta charset="UTF-8"&gt;
-    &lt;title&gt;My First Page&lt;/title&gt;
-    &lt;style&gt;
-      body {
-        font-family: sans-serif;
-        background-color: #f0f0f0;
-      }
-    &lt;/style&gt;
-  &lt;/head&gt;
-  &lt;body&gt;
-    &lt;h1&gt;Welcome!&lt;/h1&gt;
-    &lt;p&gt;This is the body of the HTML document.&lt;/p&gt;
-  &lt;/body&gt;
-&lt;/html&gt;</code><button class="copy-btn">Copy</button></pre>
-
-                    <p><strong>React Tip:</strong> In React projects, you usually don't write the full HTML skeleton.
-                        Tools like <code>create-react-app</code> handle that. You typically write components that go
-                        inside the <code>&lt;body&gt;</code>.</p>
-
-                    <pre><code>// public/index.html
-&lt;html lang="en"&gt;
-  &lt;head&gt;
-    &lt;title&gt;React App&lt;/title&gt;
-  &lt;/head&gt;
-  &lt;body&gt;
-    &lt;div id="root"&gt;&lt;/div&gt;
-  &lt;/body&gt;
-&lt;/html&gt;</code><button class="copy-btn">Copy</button></pre>
+                    <pre><code>&lt;!-- HTML --&gt;
+&lt;div class="box"&gt;Styled Box&lt;/div&gt;</code><button class="copy-btn">Copy</button></pre>
                 </div>
-
-                <!-- Additional sections can follow in the same format for divs, spans, forms, inputs, etc. -->
             </section>
         </aside>
 
@@ -332,19 +274,24 @@
         <section class="editor">
             <h2>Try it Yourself</h2>
 
-            <textarea id="htmlCode" placeholder="Write your HTML here...">
-                <!DOCTYPE html>
-<html>
-  <head>
-    <title>My HTML Test</title>
-  </head>
-  <body>
-    <h1>Hello World!</h1>
-    <p>This is my first HTML output.</p>
-  </body>
-</html>
-            </textarea>
+            <div class="editor-group">
+                <div style="flex:1">
+                    <h3>HTML</h3>
+                    <textarea id="htmlCode">&lt;div class="box"&gt;Hello CSS!&lt;/div&gt;</textarea>
+                </div>
+                <div style="flex:1">
+                    <h3>CSS</h3>
+                    <textarea id="cssCode">.box {
+  background-color: teal;
+  color: white;
+  padding: 1rem;
+  border-radius: 8px;
+}</textarea>
+                </div>
+            </div>
+
             <button id="runBtn">Run</button>
+
             <h2>Live Preview</h2>
             <iframe id="preview" sandbox="allow-scripts"></iframe>
         </section>
@@ -365,20 +312,22 @@
         });
 
         const runCode = () => {
-            const code = document.getElementById('htmlCode').value;
-            document.getElementById('preview').srcdoc = code;
-        }
+            const html = document.getElementById('htmlCode').value;
+            const css = document.getElementById('cssCode').value;
+            const output = `<style>${css}</style>${html}`;
+            document.getElementById('preview').srcdoc = output;
+        };
 
         document.getElementById('runBtn').addEventListener('click', runCode);
 
-        document.getElementById('htmlCode').addEventListener('keydown', (e) => {
+        document.addEventListener('keydown', (e) => {
             if (e.ctrlKey && e.key === 's') {
                 e.preventDefault();
                 runCode();
             }
         });
 
-        // Drawer toggle for mobile
+        // Drawer toggle
         const drawer = document.getElementById('drawer');
         const hamburgerBtn = document.getElementById('hamburgerBtn');
 
@@ -387,6 +336,9 @@
             document.body.style.overflow = drawer.classList.contains('open') ? 'hidden' : 'auto';
             hamburgerBtn.innerHTML = drawer.classList.contains('open') ? '&times;' : '&#9776;';
         });
+
+        // Run initial code
+        runCode();
     </script>
 </body>
 
