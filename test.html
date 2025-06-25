@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pre-React Terminal Interface | BMCIt Club</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap" rel="stylesheet">
+    <style>
+        html,
+        body {
+            margin: 0;
+            font-family: 'Fira Code', monospace;
+            background-color: #0d0d0d;
+            color: #33ff66;
+            height: 100%;
+        }
+
+        .terminal {
+            display: flex;
+            flex-direction: row;
+            padding: 1rem;
+        }
+
+        .output-container {
+            flex: 3;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .preview-container {
+            flex: 2;
+            padding: 1rem;
+            background-color: #111;
+            margin-left: 1rem;
+            border-left: 1px solid #333;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .preview-container h3 {
+            color: #66ff99;
+        }
+
+        .preview-container pre {
+            background-color: #0d0d0d;
+            padding: 1rem;
+            border-radius: 4px;
+            white-space: pre-wrap;
+            color: #fff;
+        }
+
+        .terminal-line {
+            display: flex;
+            flex-wrap: wrap;
+            word-break: break-word;
+        }
+
+        .prompt {
+            color: #33ff66;
+            margin-right: 0.5rem;
+            white-space: nowrap;
+        }
+
+        .type-wrapper {
+            display: inline-block;
+            white-space: nowrap;
+            overflow: hidden;
+            animation: type 2s steps(40, end);
+        }
+
+        .input-simulated {
+            display: inline;
+            color: #fff;
+        }
+
+        @keyframes type {
+            from {
+                width: 0;
+            }
+
+            to {
+                width: 100%;
+            }
+        }
+
+        .output {
+            margin-top: 1rem;
+            max-height: 70vh;
+            overflow-y: auto;
+            padding-right: 0.5rem;
+        }
+
+        .section-block {
+            background: #111;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid #33ff66;
+            border-radius: 6px;
+        }
+
+        .section-block h2 {
+            color: #66ff99;
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        .section-block ul {
+            margin-left: 1rem;
+            font-size: 0.95rem;
+        }
+
+        .section-block li::before {
+            content: "$ ";
+            color: #33ff66;
+        }
+
+        .topic {
+            cursor: pointer;
+        }
+
+        .topic:hover {
+            color: #66ff99;
+            text-decoration: underline;
+            font-weight: bold;
+            background: #222;
+            padding: 0.1rem 0.2rem;
+            border-radius: 4px;
+        }
+
+        .btn {
+            display: inline-block;
+            margin-top: 1rem;
+            padding: 0.4rem 1rem;
+            background: #33ff66;
+            color: #000;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 10px;
+            height: 18px;
+            background-color: #33ff66;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0;
+            }
+        }
+
+        .command-input {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            position: fixed;
+            bottom: 1rem;
+            left: 1rem;
+            right: 1rem;
+            background: #0d0d0d;
+            padding: 0.5rem;
+            z-index: 10;
+        }
+
+        .command-input label {
+            color: #33ff66;
+            white-space: nowrap;
+        }
+
+        .command-input input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid #33ff66;
+            color: #33ff66;
+            font-family: 'Fira Code', monospace;
+            font-size: 1rem;
+            outline: none;
+            padding: 0.3rem;
+        }
+
+        ::-webkit-scrollbar {
+            display: none;
+        }
+
+        #preview-box.dimmed {
+            opacity: 0.6;
+            transition: opacity 0.3s;
+        }
+
+        footer {
+            text-align: center;
+            font-size: 0.85rem;
+            color: #666;
+            margin: 1rem;
+            padding: 4rem 0 6rem 0;
+            border-top: 1px solid #222;
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(-10px);
+            /* slide down from above */
+            animation: fadeSlideDown 0.4s ease forwards;
+        }
+
+        @keyframes fadeSlideDown {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 900px) {
+            .terminal {
+                flex-direction: column;
+            }
+
+            .preview-container {
+                margin-left: 0;
+                margin-top: 1rem;
+            }
+        }
+
+        .ascii-art {
+            font-family: monospace;
+            white-space: pre;
+            color: #00ffcc;
+            margin-top: 0.5rem;
+        }
+
+        #preview-box::after {
+            content: '|';
+            animation: blink 1s step-end infinite;
+            color: lime;
+            margin-left: 5px;
+        }
+
+        @keyframes blink {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="terminal">
+        <div class="output-container">
+            <div class="terminal-line">
+                <span class="prompt">bmcit@prep:~$</span>
+                <span class="type-wrapper">
+                    <span class="input-simulated">welcome to pre-react training</span>
+                    <span class="cursor"></span>
+                </span>
+            </div>
+            <div class="output" id="terminal-output">
+
+                <div class='terminal-line'><span class='prompt'>bmcit@prep:~$</span> show reactjs</div>
+                <div class='section-block'>
+                    <h2>What is ReactJS?</h2>
+                    <p>
+                        ReactJS is a popular JavaScript library developed by Facebook for building fast, interactive
+                        user
+                        interfaces. It allows developers to create reusable UI components and manage dynamic data
+                        efficiently, making web applications more organized, scalable, and easier to maintain.
+                    </p>
+                    <a class="btn" href="#">Start React</a>
+
+                </div>
+
+
+                <div class="terminal-line"><span class="prompt">bmcit@prep:~$</span> show html-basics</div>
+                <div class="section-block">
+                    <h2>HTML Basics</h2>
+                    <ul>
+                        <li><span class="topic">&lt;html&gt;, &lt;head&gt;, &lt;body&gt;</span>: Core document structure
+                            of an HTML page.</li>
+                        <li><span class="topic">Headings & Paragraphs</span>: Using &lt;h1&gt;-&lt;h6&gt; and &lt;p&gt;
+                            to organize content.</li>
+                        <li><span class="topic">Divs & Spans</span>: Creating block-level and inline containers.</li>
+                        <li><span class="topic">Forms & Inputs</span>: Collecting user data with textboxes, checkboxes,
+                            etc.</li>
+                        <li><span class="topic">Buttons</span>: Triggering actions and form submissions.</li>
+                        <li><span class="topic">Lists</span>: Ordered (&lt;ol&gt;) and unordered (&lt;ul&gt;) lists.
+                        </li>
+                        <li><span class="topic">Links & Anchors</span>: Navigation using &lt;a href="..."&gt;.</li>
+                        <li><span class="topic">Images</span>: Displaying pictures with &lt;img&gt;.</li>
+                        <li><span class="topic">Tables</span>: Organizing tabular data.</li>
+                        <li><span class="topic">Semantic Tags</span>: Using &lt;header&gt;, &lt;footer&gt;,
+                            &lt;article&gt;, &lt;section&gt; for meaningful structure.</li>
+                        <li><span class="topic">Meta Tags</span>: Adding page metadata (viewport, charset, SEO).</li>
+                    </ul>
+                    <a class="btn" href="#">Start HTML</a>
+                </div>
+
+
+                <div class="terminal-line"><span class="prompt">bmcit@prep:~$</span> show css-fundamentals</div>
+                <div class="section-block">
+                    <h2>CSS Fundamentals</h2>
+                    <ul>
+                        <li><span class="topic">Selectors</span>: Targeting elements using tag, class, ID, attribute,
+                            and pseudo-selectors.</li>
+                        <li><span class="topic">Box Model</span>: Understanding margin, border, padding, and content.
+                        </li>
+                        <li><span class="topic">Display & Position</span>: Using block, inline, flex, grid, absolute,
+                            relative, etc.</li>
+                        <li><span class="topic">Colors & Backgrounds</span>: Styling with hex, RGB, gradients, and
+                            images.</li>
+                        <li><span class="topic">Typography</span>: Fonts, sizes, weights, line-height, letter-spacing.
+                        </li>
+                        <li><span class="topic">Flexbox</span>: Arranging elements in flexible, responsive layouts.</li>
+                        <li><span class="topic">CSS Grid</span>: Building complex 2D layouts with rows and columns.</li>
+                        <li><span class="topic">Transitions & Animations</span>: Adding visual effects and interactions.
+                        </li>
+                        <li><span class="topic">Media Queries</span>: Making responsive designs for different screen
+                            sizes.</li>
+                        <li><span class="topic">Z-index & Stacking</span>: Controlling layer order of elements.</li>
+                        <li><span class="topic">CSS Variables</span>: Reusing values for theme consistency.</li>
+                    </ul>
+                    <a class="btn" href="#">Start CSS</a>
+                </div>
+
+
+                <div class="terminal-line"><span class="prompt">bmcit@prep:~$</span> show javascript-essentials</div>
+                <div class="section-block">
+                    <h2>JavaScript Essentials</h2>
+                    <ul>
+                        <li><span class="topic">Variables</span>: Declaring with let, const, and var.</li>
+                        <li><span class="topic">Data Types</span>: Strings, numbers, booleans, null, undefined, objects,
+                            arrays.</li>
+                        <li><span class="topic">Functions</span>: Declaring, calling, and arrow functions.</li>
+                        <li><span class="topic">Conditionals</span>: if, else, switch for logic branching.</li>
+                        <li><span class="topic">Loops</span>: for, while, do-while, and forEach.</li>
+                        <li><span class="topic">Array Methods</span>: map, filter, reduce, find, includes.</li>
+                        <li><span class="topic">Objects</span>: Properties, nested objects, destructuring.</li>
+                        <li><span class="topic">DOM Manipulation</span>: Selecting and updating HTML elements with JS.
+                        </li>
+                        <li><span class="topic">Events</span>: Handling click, input, submit, etc.</li>
+                        <li><span class="topic">ES6 Features</span>: Arrow functions, template literals, spread/rest
+                            operators.</li>
+                        <li><span class="topic">Async JavaScript</span>: Promises, async/await, and fetch API.</li>
+                        <li><span class="topic">Modules</span>: import/export and code splitting.</li>
+                    </ul>
+                    <a class="btn" href="#">Start JavaScript</a>
+                </div>
+
+            </div>
+
+            <div class="command-input">
+                <label for="command">bmcit@prep:~$</label>
+                <input type="text" id="command" placeholder="type a command like 'clear' or 'help'..."
+                    onkeydown="handleCommand(event)" />
+            </div>
+        </div>
+        <div class="preview-container">
+            <h3>Preview</h3>
+            <pre id="preview-box" class=".terminal-input">Hover over a topic to see its usage/code here.</pre>
+        </div>
+    </div>
+
+    <footer>
+        &copy; 2025 BMCIt Club | Terminal Interface Edition 🖥️
+    </footer>
+
+    <script>
+        const previews = {
+            // HTML Topics
+            "<html>, <head>, <body>": ``,
+
+            "Headings & Paragraphs": `<h1>Main Heading</h1>
+<h2>Subheading</h2>
+<p>This is a paragraph with some text.</p>`,
+
+            "Divs & Spans": `<div class="box">
+  <span>Inline text</span>
+</div>`,
+
+            "Forms & Inputs": `<form>
+  <input type="text" placeholder="Your name">
+  <input type="email" placeholder="Email">
+</form>`,
+
+            "Buttons": `<button type="submit">Submit</button>`,
+
+            "Lists": `<ul>
+  <li>Item 1</li>
+  <li>Item 2</li>
+</ul>
+
+<ol>
+  <li>First</li>
+  <li>Second</li>
+</ol>`,
+
+            "Links & Anchors": `<a href="https://example.com">Visit Website</a>`,
+
+            "Images": `<img src="logo.png" alt="Logo" width="200">`,
+
+            "Tables": `<table>
+  <tr><th>Name</th><th>Age</th></tr>
+  <tr><td>Alice</td><td>22</td></tr>
+</table>`,
+
+            "Semantic Tags": `<header>Site Header</header>
+<section>Main Content</section>
+<footer>Footer Info</footer>`,
+
+            "Meta Tags": `<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">`,
+
+            // CSS Topics
+            "Selectors": `h1 {
+  color: blue;
+}
+
+.container > .item {
+  background: #eee;
+}`,
+
+            "Box Model": `.box {
+  margin: 10px;
+  border: 1px solid #000;
+  padding: 20px;
+}`,
+
+            "Display & Position": `.box {
+  display: flex;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+}`,
+
+            "Colors & Backgrounds": `.card {
+  background: linear-gradient(#fff, #ccc);
+  color: #333;
+}`,
+
+            "Typography": `p {
+  font-family: 'Arial';
+  font-size: 16px;
+  line-height: 1.5;
+}`,
+
+            "Flexbox": `.container {
+  display: flex;
+  justify-content: space-between;
+}`,
+
+            "CSS Grid": `.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}`,
+
+            "Transitions & Animations": `.btn {
+  transition: background 0.3s;
+}
+
+.btn:hover {
+  background: black;
+}`,
+
+            "Media Queries": `@media (max-width: 768px) {
+  body {
+    font-size: 14px;
+  }
+}`,
+
+            "Z-index & Stacking": `.modal {
+  position: absolute;
+  z-index: 1000;
+}`,
+
+            "CSS Variables": `:root {
+  --main-color: #4CAF50;
+}
+
+.button {
+  background: var(--main-color);
+}`,
+
+            // JavaScript Topics
+            "Variables": `let name = "BMC";
+const year = 2025;`,
+
+            "Data Types": `let str = "text";
+let num = 123;
+let bool = true;
+let obj = { key: "value" };
+let arr = [1, 2, 3];`,
+
+            "Functions": `function greet(name) {
+  return "Hello " + name;
+}`,
+
+            "Conditionals": `if (score > 80) {
+  console.log("Excellent");
+} else {
+  console.log("Keep improving!");
+}`,
+
+            "Loops": `for (let i = 0; i < 5; i++) {
+  console.log(i);
+}`,
+
+            "Array Methods": `const nums = [1, 2, 3];
+const doubled = nums.map(n => n * 2);`,
+
+            "Objects": `const user = {
+  name: "Alice",
+  age: 22
+};
+
+const { name } = user;`,
+
+            "DOM Manipulation": `document.getElementById("title").textContent = "Updated!";`,
+
+            "Events": `document.querySelector("button")
+  .addEventListener("click", () => alert("Clicked!"));`,
+
+            "ES6 Features": `const greet = (name) => \`Hello \${name}\`;
+const nums = [1, 2];
+const all = [...nums, 3];`,
+
+            "Async JavaScript": `async function load() {
+  const res = await fetch('/api');
+  const data = await res.json();
+}`,
+
+            "Modules": `// greet.js
+export function greet(name) {
+  return \`Hi \${name}\`;
+}
+
+// main.js
+import { greet } from './greet.js';`
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const topicSpans = document.querySelectorAll('.section-block .topic');
+            const previewBox = document.getElementById('preview-box');
+
+            topicSpans.forEach(span => {
+                span.addEventListener('mouseenter', () => {
+                    previewBox.classList.remove('dimmed');
+                    const text = span.textContent.trim();
+                    const preview = previews[text] || '// No preview available';
+
+                    // Clear previous content and cancel existing typeEffect
+                    previewBox.textContent = '';
+                    if (previewBox._typeEffectTimeouts) {
+                        previewBox._typeEffectTimeouts.forEach(timeout => clearTimeout(timeout));
+                    }
+
+                    // Run new typewriter effect and store its timeouts to allow cancelling
+                    previewBox._typeEffectTimeouts = [];
+                    let i = 0;
+                    function type() {
+                        if (i < preview.length) {
+                            previewBox.textContent += preview.charAt(i++);
+                            const timeout = setTimeout(type, 20);
+                            previewBox._typeEffectTimeouts.push(timeout);
+                        }
+                    }
+                    type();
+                });
+
+                span.addEventListener('mouseleave', () => {
+                    // Cancel ongoing typewriter animation
+                    if (previewBox._typeEffectTimeouts) {
+                        previewBox._typeEffectTimeouts.forEach(timeout => clearTimeout(timeout));
+                    }
+                    previewBox._typeEffectTimeouts = [];
+
+                    previewBox.classList.add('dimmed');
+                });
+            });
+        });
+    </script>
+
+
+    <script>
+        let reactjsBlockHTML = '';
+        let htmlBlockHTML = '';
+        let cssBlockHTML = '';
+        let jsBlockHTML = '';
+
+        window.onload = () => {
+            const blocks = document.querySelectorAll('.section-block');
+            reactjsBlockHTML = blocks[0]?.outerHTML || '';
+            htmlBlockHTML = blocks[1]?.outerHTML || '';
+            cssBlockHTML = blocks[2]?.outerHTML || '';
+            jsBlockHTML = blocks[3]?.outerHTML || '';
+        };
+
+        let commandHistory = [];
+        let historyIndex = -1;
+        function handleCommand(e) {
+
+            const input = e.target;
+            const output = document.getElementById('terminal-output');
+
+            if (e.key === 'ArrowUp') {
+                if (historyIndex > 0) {
+                    historyIndex--;
+                    input.value = commandHistory[historyIndex];
+                }
+                return;
+            } else if (e.key === 'ArrowDown') {
+                if (historyIndex < commandHistory.length - 1) {
+                    historyIndex++;
+                    input.value = commandHistory[historyIndex];
+                } else {
+                    input.value = '';
+                    historyIndex = commandHistory.length;
+                }
+                return;
+            }
+
+            if (e.key === 'Enter') {
+                const cmd = e.target.value.trim().toLowerCase();
+                if (cmd) {
+                    commandHistory.push(cmd);
+                    historyIndex = commandHistory.length; // reset index
+                }
+
+                const output = document.getElementById('terminal-output');
+
+                if (cmd === 'clear' || cmd === 'cls') {
+                    output.innerHTML = '';
+                } else if (cmd === 'help') {
+                    output.insertAdjacentHTML('beforeend', `
+                            <div class='terminal-line'><span class='prompt'>bmcit@prep:~$</span> help</div>
+                            <div class='section-block fade-in'>
+                              <h2>Help</h2>
+                              <ul>
+                                <li>clear/cls – clears the terminal</li>
+                                <li>help – shows available commands</li>
+                                <li>show react – show HTML topics</li>
+                                <li>show html – show HTML topics</li>
+                                <li>show css – show CSS topics</li>
+                                <li>show js – show JavaScript topics</li>
+                                <li>about – learn about this bootcamp</li>
+                                <li>motivate – get a motivational quote</li>
+                              </ul>
+                            </div>`);
+                } else if (cmd === 'bmcit' || cmd === 'logo' || cmd === 'ascii' || cmd === 'bmcitclub' || cmd === 'show logo' || cmd === 'club' || cmd === 'show bmcit' || cmd === 'show bmcit club' || cmd === 'show logo') {
+                    const asciiLogo = `
+                        <pre class="ascii-art fade-in">
+                                  ____  __  __  ____ ___ _____ 
+                                 | __ )|  \\/  |/ ___|_ _|_   _|
+                                 |  _ \\| |\\/| | |    | |  | |  
+                                 | |_) | |  | | |___ | |  | |  
+                                 |____/|_|  |_|\\____|___| |_|  
+                                                            
+                                      ........................                                      
+                                    .....:-=*#########+=:.....  ..                                  
+                              .....:*###*+:..+*.@@%#*+:.=*####=......  .                            
+                         ......-*##=-#%%-....#@...=@:.......:--*##+.....                            
+                         ...=##=:..%%:.:.   .+@:..*@.    .%@*=#@+.-*#*:..                           
+                       ..:*#+:*@:.=@:. .... .=@=..%@.    =@-  .::.*@--*#+......                     
+                   ....-#*-...*@@+.%@=:=%%...:=:..==.....-@*.....#@:....=#+.....                    
+                 ....:#*:*%=:.=@-%@::++=..-=+*######*+=-:..+%@%:#@::%%....=#*.....                  
+                 ...*#:...%@%@@@:.*:.-+##*+-..........:=+*##=:.*#.*@=..=+...+#=....                 
+              ....-#+.#@#..#@=....-##+:....:+###*#*=:.......-*#*:.*@-:@@:.:%%.##...                 
+              ...*#--@::@@@%-@::##+.....+#*#############=.......*#+.+@*.+@@=...+#-...               
+            ....*#:+@%.%*.=@:.##:.....*#####****###########*:.....=#+.#@@..*%...-#=...              
+            ...#*....+@@+*%:*#-..+*::*####+=*###*-::::::-+*##*. ....+#-=@::%%....:#+....            
+            ..*#...  ..-%*-#+..+##--#####*+#######.. .:==+++==:......:#*-+*-......-#=...            
+          ...+#....    ..=#-.=###=-#####+.+#######-. .*###########+-...+#:...   ...-#-....          
+          ..-#-.       .=#-:*###=:####+...:*#####=.. ...-+*##########+..+#:..    ...**..            
+  ..........#*:::::::::=#:-####*.=##*:.    ..-=:..         ..=****#####=.+#-:::::::::#+............ 
+.:=========+############+-#####=.=*=..                     ..:*###==*###+.#############===========-.
+..######################:*####*.....                       .=######*+####-:#######################:.
+..-####################--###*:*####*:..                    .*#######-####*.*#####################+..
+...*###################:+###=#######*:.                    .:*#####*+#####.+#####################:. 
+  ..##*:=+####+####+*##.+###=*######*..                     ..:-=-...+####:=*-=:#-=-#+--=#-+-###-...
+  ..=#*:=+*-+#=#*:#=*##.:###*=*####*..                          ..*#=.*###:-#*-++-#+=+--+==#=+#*..  
+  ..##*:--*--*+-*--:*##..+#####+....                            ..*##-=###.-*:--#--:#+::=#---###:...
+...*###################:..*#####=..                             .-###+.*#*.+#####################...
+..-####################-...+#####+..                            .+###*.*#=.*#####################+..
+..*####################*..:*=*####*...                   ........*####:=#::#######################:.
+.=*********#############=..*#*:*###*.. ....            ..=#####*-#####:...*############************.
+ ...........#*-------=-+#:..*##+.-*+..-*###*-..        .-#######+*###*...+#----------#+.............
+         ...-#-. ..=*-..+#:.:####+:..=#######=.        .:#######+*###+..=#:..#**....*#....          
+            .**...-*+*...+#:.:*#####*+#######=.......--..:*###*=+###*..=#:..*.-  ..-#-..            
+            ..#*....:#*-..-#=..*#####=+#####+:-=**#####-...=++*####*:.*#...==+. ..:#+...            
+            ..:#+....=++=:..##:.=*#####+---*#########*..:+########=.=#+...+*:....:#+...             
+             ...#*.....+#-=..:#*..=*##############*-.:*########*=.-##....+*=....:#+..               
+             ....##:.. .*=*....-##-..-*#######*-.=**########+:..+#*...=*++.....-#=....              
+              ....=#=....:-%-:....+##=............::::.......+##-....=+==.....*#:...                
+                 ..:#*.....-**-.:....=##*+-...... .....:=+##*-.....+=-=:....-#+...                  
+                 ....-#+....-..++=-......:=+*#########*=-:......:+#==:....-#*:...                   
+                    ...=#*:.....:#*++==:....................%.:#*.-.....-##:.....                   
+                      ...-##-......-*-#-+%*:::.+.:.::.--*==#:=.......:+#*:...                       
+                         ...+##-........-:+-++:+%:%#=#*:#=.... ...:+##-...                          
+                         ......+##*-........      .=+. ........=###-......                          
+                            .......=####+-...............-*###*-......                              
+                                   .....:-+*###########*=-:......                                   
+                                    ... .....   ....
+                        </pre>`;
+                    output.insertAdjacentHTML('beforeend', `<div class='terminal-line'><span class='prompt'>bmcit@prep:~$</span> ${cmd}</div>${asciiLogo}`);
+                } else if (cmd === 'time') {
+                    const now = new Date();
+                    const timeString = now.toLocaleTimeString();
+                    output.insertAdjacentHTML('beforeend', `<div class='terminal-line'><span class='prompt'>bmcit@prep:~$</span> ${cmd}</div>
+                         <div class="fade-in" style='margin-top: 0.5rem;'>🕒 Current time is <strong>${timeString}</strong></div>`);
+                } else if (cmd === 'whoami') {
+                    output.insertAdjacentHTML('beforeend', `<div class='terminal-line'><span class='prompt'>bmcit@prep:~$</span> ${cmd}</div>
+                         <div class="fade-in" style='margin-top: 0.5rem; color: #66ffcc;'>💻 You are a future React dev, dawg!</div>`);
+                } else if (cmd === 'joke') {
+                    const jokes = [
+                        "Why do programmers prefer dark mode? Because light attracts bugs!",
+                        "Why do Java developers wear glasses? Because they don’t see sharp.",
+                        "Debugging: Being the detective in a crime movie where you are also the murderer.",
+                        "There are 10 types of people in the world: those who understand binary and those who don’t.",
+                        "I told my computer I needed a break, and it said: 'Why? You barely function as it is.'"
+                    ];
+                    const joke = jokes[Math.floor(Math.random() * jokes.length)];
+                    output.insertAdjacentHTML('beforeend', `<div class='terminal-line'><span class='prompt'>bmcit@prep:~$</span> ${cmd}</div>
+                         <div class="fade-in" style='color:#ffcc00; margin-top: 0.5rem;'>😂 ${joke}</div>`);
+                } else if (cmd === 'show html') {
+                    output.insertAdjacentHTML('beforeend', `<div class='terminal-line'><span class='prompt'>bmcit@prep:~$</span> ${cmd}</div>`);
+                    appendContentWithFade(output, htmlBlockHTML);
+                } else if (cmd === 'reactjs' || cmd === 'show react') {
+                    output.insertAdjacentHTML('beforeend', `<div class='terminal-line'><span class='prompt'>bmcit@prep:~$</span> ${cmd}</div>`);
+                    appendContentWithFade(output, reactjsBlockHTML);
+                } else if (cmd === 'show css') {
+                    output.insertAdjacentHTML('beforeend', `<div class='terminal-line'><span class='prompt'>bmcit@prep:~$</span> ${cmd}</div>`);
+                    appendContentWithFade(output, cssBlockHTML);
+                } else if (cmd === 'show js') {
+                    output.insertAdjacentHTML('beforeend', `<div class='terminal-line'><span class='prompt'>bmcit@prep:~$</span> ${cmd}</div>`);
+                    appendContentWithFade(output, jsBlockHTML);
+                } else if (cmd === 'about') {
+                    output.insertAdjacentHTML('beforeend', `<div class='terminal-line'><span class='prompt'>bmcit@prep:~$</span> about</div>
+                        <div class='section-block fade-in'>
+                          <h2>About BMCIt Club</h2>
+                          <p>BMCIt Club is a student-led tech group at Bhairahawa Multiple Campus, committed to hands-on learning, collaboration, and growth.</p>
+                          <p>This Pre-React Bootcamp sets the stage for our in-depth 7-Day React Training with expert mentors.</p>
+                        </div>`);
+                } else if (cmd === 'motivate') {
+                    const quotes = [
+                        "“Code is like humor. When you have to explain it, it’s bad.”",
+                        "“First, solve the problem. Then, write the code.”",
+                        "“Experience is the name everyone gives to their mistakes.”",
+                        "“Learning never exhausts the mind.”",
+                        "“The best way to learn is by doing.”",
+                        "“Every great developer you know once struggled to understand the basics.”",
+                        "“Don’t worry about being great. Just be consistent.”",
+                        "“You don’t have to be perfect. You just have to start.”",
+                        "“React won’t learn itself — but you can absolutely learn it.”",
+                        "“Debugging is like being the detective in a crime movie where you are also the murderer.”"
+                    ];
+
+                    const quote = quotes[Math.floor(Math.random() * quotes.length)];
+                    output.insertAdjacentHTML('beforeend', `<div class='terminal-line'><span class='prompt'>bmcit@prep:~$</span> ${cmd}</div><div class="fade-in" style='margin: 1rem 0; color: #66ff99;'>${quote}</div>`);
+                } else {
+                    output.insertAdjacentHTML('beforeend', `<div class='terminal-line'><span class='prompt fade-in'>bmcit@prep:~$</span> ${cmd}</div>`);
+                    output.insertAdjacentHTML('beforeend', `<div class="fade-in" style='margin: 1rem 0; color: #777;'>Command not recognized. Try 'help'</div>`);
+                }
+
+                e.target.value = '';
+                output.scrollTop = output.scrollHeight;
+            }
+        }
+        function appendContentWithFade(output, html) {
+            const wrapper = document.createElement('div');
+            wrapper.classList.add('fade-in');
+            wrapper.innerHTML = html;
+            output.appendChild(wrapper);
+        }
+
+    </script>
+</body>
+
+</html>

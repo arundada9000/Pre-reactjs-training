@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pre-React Terminal Interface | BMCIt Club</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap" rel="stylesheet">
+    <style>
+        html,
+        body {
+            margin: 0;
+            font-family: 'Fira Code', monospace;
+            background-color: #0d0d0d;
+            color: #33ff66;
+            height: 100%;
+        }
+
+        .terminal {
+            display: flex;
+            flex-direction: column;
+            padding: 1rem 1rem 1rem;
+            max-width: 100%;
+        }
+
+        .terminal-line {
+            display: flex;
+            flex-wrap: wrap;
+            word-break: break-word;
+        }
+
+        .prompt {
+            color: #33ff66;
+            margin-right: 0.5rem;
+            white-space: nowrap;
+        }
+
+        .type-wrapper {
+            display: inline-block;
+            white-space: nowrap;
+            overflow: hidden;
+            animation: type 2s steps(40, end);
+        }
+
+        .input-simulated {
+            display: inline;
+            color: #fff;
+        }
+
+        @keyframes type {
+            from {
+                width: 0;
+            }
+
+            to {
+                width: 100%;
+            }
+        }
+
+        .output {
+            margin: 1rem 0 0;
+            max-height: 70vh;
+            overflow-y: auto;
+            padding-right: 0.5rem;
+        }
+
+        .section-block {
+            background: #111;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid #33ff66;
+            border-radius: 6px;
+        }
+
+        .section-block h2 {
+            color: #66ff99;
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        .section-block ul {
+            margin-left: 1rem;
+            font-size: 0.95rem;
+        }
+
+        .section-block li::before {
+            content: "$ ";
+            color: #33ff66;
+        }
+
+        .btn {
+            display: inline-block;
+            margin-top: 1rem;
+            padding: 0.4rem 1rem;
+            background: #33ff66;
+            color: #000;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 10px;
+            height: 18px;
+            background-color: #33ff66;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0;
+            }
+        }
+
+        .command-input {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            position: fixed;
+            bottom: 1rem;
+            left: 1rem;
+            right: 1rem;
+            background: #0d0d0d;
+            padding: 0.5rem;
+            z-index: 10;
+        }
+
+        .command-input label {
+            color: #33ff66;
+            white-space: nowrap;
+        }
+
+        .command-input input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid #33ff66;
+            color: #33ff66;
+            font-family: 'Fira Code', monospace;
+            font-size: 1rem;
+            outline: none;
+            padding: 0.3rem;
+        }
+
+        ::-webkit-scrollbar {
+            display: none;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #0d0d0d;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #33ff66;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #66ff99;
+        }
+
+        footer {
+            text-align: center;
+            font-size: 0.85rem;
+            color: #666;
+            margin: 1rem;
+            padding: 4rem 0 6rem 0;
+            border-top: 1px solid #222;
+        }
+
+        @media (max-width: 600px) {
+            .input-simulated {
+                font-size: 0.9rem;
+            }
+
+            .btn {
+                font-size: 0.8rem;
+            }
+
+            .section-block h2 {
+                font-size: 1rem;
+            }
+
+            .section-block ul {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="terminal">
+        <div class="terminal-line">
+            <span class="prompt">bmcit@prep:~$</span>
+            <span class="type-wrapper">
+                <span class="input-simulated">welcome to pre-react training</span>
+                <span class="cursor"></span>
+            </span>
+        </div>
+
+        <div class="output" id="terminal-output">
+
+            <div class='terminal-line'><span class='prompt'>bmcit@prep:~$</span> show reactjs</div>
+            <div class='section-block'>
+                <h2>What is ReactJS?</h2>
+                <p>
+                    ReactJS is a popular JavaScript library developed by Facebook for building fast, interactive user
+                    interfaces. It allows developers to create reusable UI components and manage dynamic data
+                    efficiently, making web applications more organized, scalable, and easier to maintain.
+                </p>
+                <a class="btn" href="#">Start React</a>
+
+            </div>
+
+
+            <div class="terminal-line"><span class="prompt">bmcit@prep:~$</span> show html-basics</div>
+            <div class="section-block">
+                <h2>HTML Basics</h2>
+                <ul>
+                    <li>Structure: &lt;html&gt;, &lt;head&gt;, &lt;body&gt;</li>
+                    <li>Common tags: headings, paragraphs, divs</li>
+                    <li>Forms, inputs, buttons</li>
+                </ul>
+                <a class="btn" href="#">Start HTML</a>
+            </div>
+
+            <div class="terminal-line"><span class="prompt">bmcit@prep:~$</span> show css-fundamentals</div>
+            <div class="section-block">
+                <h2>CSS Fundamentals</h2>
+                <ul>
+                    <li>Selectors, box model, spacing</li>
+                    <li>Flexbox, layout, colors</li>
+                    <li>Media queries & responsiveness</li>
+                </ul>
+                <a class="btn" href="#">Start CSS</a>
+            </div>
+
+            <div class="terminal-line"><span class="prompt">bmcit@prep:~$</span> show javascript-essentials</div>
+            <div class="section-block">
+                <h2>JavaScript Essentials</h2>
+                <ul>
+                    <li>Variables, functions, arrays</li>
+                    <li>map, filter, reduce</li>
+                    <li>Async/await, ES6 modules</li>
+                </ul>
+                <a class="btn" href="#">Start JavaScript</a>
+            </div>
+        </div>
+
+        <div class="command-input">
+            <label for="command">bmcit@prep:~$</label>
+            <input type="text" id="command" placeholder="type a command like 'clear' or 'help'..."
+                onkeydown="handleCommand(event)" />
+        </div>
+    </div>
+
+    <footer>
+        &copy; 2025 BMCIt Club | Terminal Interface Edition 🖥️
+    </footer>
+
+    <script>
+        let reactjsBlockHTML = '';
+        let htmlBlockHTML = '';
+        let cssBlockHTML = '';
+        let jsBlockHTML = '';
+
+        window.onload = () => {
+            const blocks = document.querySelectorAll('.section-block');
+            reactjsBlockHTML = blocks[0]?.outerHTML || '';
+            htmlBlockHTML = blocks[1]?.outerHTML || '';
+            cssBlockHTML = blocks[2]?.outerHTML || '';
+            jsBlockHTML = blocks[3]?.outerHTML || '';
+        };
+
+        // JavaScript command handler
+        function handleCommand(e) {
+            if (e.key === 'Enter') {
+                const cmd = e.target.value.trim().toLowerCase();
+                const output = document.getElementById('terminal-output');
+
+                if (cmd === 'clear' || cmd === 'cls') {
+                    output.innerHTML = '';
+                } else if (cmd === 'help') {
+                    output.innerHTML += `
+        <div class='terminal-line'><span class='prompt'>bmcit@prep:~$</span> help</div>
+        <div class='section-block'>
+          <h2>Help</h2>
+          <ul>
+            <li>clear/cls – clears the terminal</li>
+            <li>help – shows available commands</li>
+            <li>show react – show HTML topics</li>
+            <li>show html – show HTML topics</li>
+            <li>show css – show CSS topics</li>
+            <li>show js – show JavaScript topics</li>
+            <li>about – learn about this bootcamp</li>
+            <li>motivate – get a motivational quote</li>
+          </ul>
+        </div>`;
+                } else if (cmd === 'show html') {
+                    output.innerHTML += `<div class='terminal-line'><span class='prompt'>bmcit@prep:~$</span> ${cmd}</div>` + htmlBlockHTML;
+                } else if (cmd === 'reactjs' || cmd === 'show react') {
+                    output.innerHTML += `<div class='terminal-line'><span class='prompt'>bmcit@prep:~$</span> ${cmd}</div>` + reactjsBlockHTML;
+                } else if (cmd === 'show css') {
+                    output.innerHTML += `<div class='terminal-line'><span class='prompt'>bmcit@prep:~$</span> ${cmd}</div>` + cssBlockHTML;
+                } else if (cmd === 'show js') {
+                    output.innerHTML += `<div class='terminal-line'><span class='prompt'>bmcit@prep:~$</span> ${cmd}</div>` + jsBlockHTML;
+                } else if (cmd === 'about') {
+                    output.innerHTML += `<div class='terminal-line'><span class='prompt'>bmcit@prep:~$</span> about</div>
+        <div class='section-block'>
+          <h2>About BMCIt Club</h2>
+          <p>BMCIt Club is a student-led tech group at Bhairahawa Multiple Campus, committed to hands-on learning, collaboration, and growth.</p>
+          <p>This Pre-React Bootcamp sets the stage for our in-depth 7-Day React Training with expert mentors.</p>
+        </div>`;
+                } else if (cmd === 'motivate') {
+                    const quotes = [
+                        "“Code is like humor. When you have to explain it, it’s bad.”",
+                        "“First, solve the problem. Then, write the code.”",
+                        "“Experience is the name everyone gives to their mistakes.”",
+                        "“Learning never exhausts the mind.”",
+                        "“The best way to learn is by doing.”",
+                        "“Every great developer you know once struggled to understand the basics.”",
+                        "“Don’t worry about being great. Just be consistent.”",
+                        "“You don’t have to be perfect. You just have to start.”",
+                        "“React won’t learn itself — but you can absolutely learn it.”",
+                        "“Debugging is like being the detective in a crime movie where you are also the murderer.”"
+                    ];
+
+                    const quote = quotes[Math.floor(Math.random() * quotes.length)];
+                    output.innerHTML += `<div class='terminal-line'><span class='prompt'>bmcit@prep:~$</span> ${cmd}</div><div style='margin: 1rem 0; color: #66ff99;'>${quote}</div>`;
+                } else {
+                    output.innerHTML += `<div class='terminal-line'><span class='prompt'>bmcit@prep:~$</span> ${cmd}</div>`;
+                    output.innerHTML += `<div style='margin: 1rem 0; color: #777;'>Command not recognized. Try 'help'</div>`;
+                }
+
+                e.target.value = '';
+                output.scrollTop = output.scrollHeight;
+            }
+        } </script>
+
+</body>
+
+</html>
