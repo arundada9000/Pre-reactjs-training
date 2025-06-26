@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>HTML Practice - Learn by Doing</title>
+    <title>JavaScript Practice - Learn by Doing</title>
     <style>
         ::-webkit-scrollbar {
             display: none;
@@ -35,7 +35,11 @@
         body.dark,
         body.dark .container,
         body.dark .drawer,
-        body.dark .lesson-section {
+        body.dark .lesson-section,
+        body.dark #dropdownToggle,
+        body.dark .dropdown-menu,
+        body.dark textarea,
+        body.dark pre {
             background: #1e1e1e;
             color: #eee;
         }
@@ -43,28 +47,69 @@
         body.dark textarea,
         body.dark pre {
             background: #2b2b2b;
-            color: #eee;
         }
 
         header {
-            position: relative;
             background: var(--dark-bg);
             color: white;
-            padding: 1.25rem;
-            text-align: center;
+            padding: 1rem 1.25rem;
             border-bottom: 4px solid var(--accent);
         }
 
-        .hamburger {
-            display: none;
-            position: absolute;
-            top: 1.5rem;
-            left: 1rem;
-            font-size: 1.5rem;
-            background: none;
-            border: none;
-            color: white;
+        .header-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            position: relative;
+        }
+
+        .logo-title {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            flex: 1;
+            min-width: 0;
+        }
+
+        .logo {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            object-fit: cover;
             cursor: pointer;
+        }
+
+        .logo-title .text h1 {
+            font-size: 1.4rem;
+            margin: 0;
+        }
+
+        .logo-title .text p {
+            font-size: 0.9rem;
+            margin: 0;
+            opacity: 0.85;
+        }
+
+        .theme-btn,
+        .hamburger {
+            z-index: 999;
+            background: transparent;
+            font-size: 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            color: white;
+            padding: 0.4rem 0.75rem;
+        }
+
+        .theme-btn {
+            border: 1px solid white;
+        }
+
+        .hamburger {
+            border: 1px solid rgb(7, 249, 23);
+            font-size: 1.2rem;
+            padding: 0.3rem 0.6rem;
         }
 
         .container {
@@ -90,10 +135,8 @@
         }
 
         .drawer.open {
-            position: fixed;
-            top: 96px;
             left: 0;
-            bottom: 0;
+            top: 130px;
             overflow-y: scroll;
         }
 
@@ -116,6 +159,12 @@
             overflow-y: auto;
         }
 
+        .editor-group {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
         .copy-btn {
             position: absolute;
             top: 8px;
@@ -134,7 +183,6 @@
             border-radius: 10px;
             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
             margin-bottom: 2rem;
-            transition: box-shadow 0.3s ease;
         }
 
         .lesson-section h2 {
@@ -143,30 +191,18 @@
             margin-bottom: 0.5rem;
         }
 
-        .lesson-section h3 {
-            margin-top: 1.5rem;
-        }
-
-        .lesson-section p,
-        .lesson-section li {
-            line-height: 1.6;
-        }
-
         textarea {
             width: 100%;
-            height: 280px;
+            height: 220px;
             font-family: monospace;
             font-size: 1rem;
             padding: 0.75rem;
-            border: 1px solid #ccc;
             border-radius: 6px;
-            resize: vertical;
-            overflow: auto;
-
             background: #282c34;
             color: #f8f8f2;
             border: none;
             box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.2);
+            resize: vertical;
         }
 
         button#runBtn {
@@ -180,22 +216,6 @@
             font-size: 1rem;
         }
 
-        button#runBtn:hover {
-            background-color: #45a049;
-        }
-
-        button#runBtn:active {
-            transform: scale(0.98);
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) inset;
-        }
-
-        button#toggleTheme {
-            inset: 0;
-            cursor: pointer;
-            background-color: transparent;
-            color: white;
-        }
-
         iframe#preview {
             margin-top: 1rem;
             width: 100%;
@@ -203,16 +223,12 @@
             border: 1px solid #ccc;
             background: white;
             border-radius: 6px;
-            overflow: auto;
         }
 
+        /* Breakpoints */
         @media (min-width: 768px) {
             .hamburger {
                 display: none;
-            }
-
-            .container {
-                flex-direction: row;
             }
 
             .drawer {
@@ -220,8 +236,6 @@
                 left: 0 !important;
                 top: 0;
                 width: 40%;
-                height: auto;
-                max-width: none;
                 box-shadow: none;
                 padding: 2rem;
             }
@@ -229,20 +243,34 @@
             .editor {
                 width: 60%;
             }
+
+            .editor-group {
+                flex-direction: row;
+            }
         }
 
-        @media (max-width: 767px) {
+        @media (max-width: 768px) {
+            .header-wrapper {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.75rem;
+            }
+
+            .logo-title {
+                justify-content: flex-start;
+            }
+
+            .theme-btn {
+                align-self: flex-end;
+            }
+
             .hamburger {
+                align-self: flex-start;
                 display: block;
             }
 
-            .container {
-                flex-direction: column;
-            }
-
             .editor {
-                padding: 1rem;
-                padding-right: 2rem;
+                padding: 1rem 2rem 1rem 1rem;
             }
 
             #runBtn {
@@ -252,107 +280,1409 @@
                 z-index: 999;
                 box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
             }
+
+            .btn-wrapper {
+                width: 100%;
+                display: flex;
+                justify-content: space-between;
+            }
+        }
+
+        /* Dropdown Filter */
+        .dropdown {
+            position: relative;
+            margin-bottom: 1rem;
+        }
+
+        #dropdownToggle {
+            padding: 0.6rem 1rem;
+            border: 1px solid #ccc;
+            background: #f9f9f9;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem;
+            width: 100%;
+            text-align: left;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            z-index: 10;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 1rem;
+            margin-top: 0.4rem;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            display: none;
+            max-height: 300px;
+            overflow-y: auto;
+            width: 100%;
+        }
+
+        .dropdown-menu label {
+            display: block;
+            margin-bottom: 0.4rem;
+            font-size: 0.95rem;
+        }
+
+        .dropdown-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .dropdown-actions button {
+            padding: 0.3rem 0.6rem;
+            font-size: 0.9rem;
+            cursor: pointer;
+            border: 1px solid #ccc;
+            background: #eee;
+            border-radius: 4px;
+        }
+
+        .dropdown.open .dropdown-menu {
+            display: block;
+        }
+
+        @keyframes floatSpin {
+            0% {
+                transform: rotate(0deg) scale(1);
+                opacity: 1;
+            }
+
+            50% {
+                transform: rotate(180deg) scale(1.05);
+                opacity: 0.9;
+            }
+
+            100% {
+                transform: rotate(360deg) scale(1);
+                opacity: 1;
+            }
+        }
+
+        .logo.logo-animate {
+            animation: floatSpin 8s ease-in-out infinite;
+            transform-origin: center;
+            will-change: transform, opacity;
         }
     </style>
-
 </head>
 
 <body>
-
     <header>
-        <button class="hamburger" id="hamburgerBtn">&#9776;</button>
-        <h1>Practice HTML</h1>
-        <p>Understand HTML by writing and running real code. No setup required.</p>
-        <button id="toggleTheme">Theme</button>
+        <div class="header-wrapper">
 
+            <div class="logo-title">
+                <img src="./images/bmc-it-club-circle-logo.png" alt="Logo" class="logo logo-animate"
+                    onclick="window.location.href = './index.html'" />
+                <div class="text">
+                    <h1>Practice CSS</h1>
+                    <p>Write and run real code. No setup required.</p>
+                </div>
+            </div>
+            <div class="btn-wrapper">
+                <button class="hamburger" id="hamburgerBtn">&#9776;</button>
+                <button id="toggleTheme" class="theme-btn">🌗</button>
+            </div>
+        </div>
     </header>
 
     <div class="container">
-
-
         <!-- Sliding Drawer -->
         <aside class="drawer" id="drawer">
-
             <section class="lesson" id="lessonSection">
 
-                <div class="lesson-section">
-                    <h2>&lt;html&gt;, &lt;head&gt;, &lt;body&gt;</h2>
-                    <p>
-                        These are the foundational building blocks of any HTML document. Understanding their role is
-                        essential for building valid web pages.
-                    </p>
-
-                    <ul>
-                        <li><strong>&lt;html&gt;</strong>: The root element that wraps all content on the page.</li>
-                        <li><strong>&lt;head&gt;</strong>: Contains metadata, links to stylesheets, scripts, and other
-                            non-visible elements like the page title.</li>
-                        <li><strong>&lt;body&gt;</strong>: Holds all the content you want users to see, like text,
-                            images, and interactive elements.</li>
-                    </ul>
-
-                    <p><strong>Example:</strong></p>
-                    <pre><code>&lt;!DOCTYPE html&gt;
-&lt;html&gt;
-  &lt;head&gt;
-    &lt;meta charset="UTF-8"&gt;
-    &lt;title&gt;My First Page&lt;/title&gt;
-    &lt;style&gt;
-      body {
-        font-family: sans-serif;
-        background-color: #f0f0f0;
-      }
-    &lt;/style&gt;
-  &lt;/head&gt;
-  &lt;body&gt;
-    &lt;h1&gt;Welcome!&lt;/h1&gt;
-    &lt;p&gt;This is the body of the HTML document.&lt;/p&gt;
-  &lt;/body&gt;
-&lt;/html&gt;</code><button class="copy-btn">Copy</button></pre>
-
-                    <p><strong>React Tip:</strong> In React projects, you usually don't write the full HTML skeleton.
-                        Tools like <code>create-react-app</code> handle that. You typically write components that go
-                        inside the <code>&lt;body&gt;</code>.</p>
-
-                    <pre><code>// public/index.html
-&lt;html lang="en"&gt;
-  &lt;head&gt;
-    &lt;title&gt;React App&lt;/title&gt;
-  &lt;/head&gt;
-  &lt;body&gt;
-    &lt;div id="root"&gt;&lt;/div&gt;
-  &lt;/body&gt;
-&lt;/html&gt;</code><button class="copy-btn">Copy</button></pre>
+                <div id="filterDropdown" class="dropdown">
+                    <button id="dropdownToggle">Filter Topics</button>
+                    <div id="dropdownMenu" class="dropdown-menu">
+                        <div class="dropdown-actions">
+                            <button type="button" id="selectAllBtn">Select All</button>
+                            <button type="button" id="clearAllBtn">Remove All</button>
+                        </div>
+                        <div id="topicCheckboxes">
+                            <label><input type="checkbox" value="variables" checked> Variables</label>
+                            <label><input type="checkbox" value="data-types" checked> Data Types</label>
+                            <label><input type="checkbox" value="conditionals" checked> Conditionals</label>
+                            <label><input type="checkbox" value="loops" checked> Loops</label>
+                            <label><input type="checkbox" value="functions" checked> Functions</label>
+                            <label><input type="checkbox" value="arrays" checked> Arrays</label>
+                            <label><input type="checkbox" value="objects" checked> Objects</label>
+                            <label><input type="checkbox" value="dom" checked> DOM Manipulation</label>
+                            <label><input type="checkbox" value="dom-style-manipulation" checked> DOM Style
+                                Manipulation</label>
+                            <label><input type="checkbox" value="events" checked> Events</label>
+                            <label><input type="checkbox" value="es6" checked> ES6 Features</label>
+                            <label><input type="checkbox" value="async" checked> Async</label>
+                            <label><input type="checkbox" value="fetch-api" checked> API</label>
+                            <label><input type="checkbox" value="modules" checked> Modules</label>
+                            <label><input type="checkbox" value="event-loop" checked> Event Loop</label>
+                        </div>
+                    </div>
                 </div>
 
-                <!-- Additional sections can follow in the same format for divs, spans, forms, inputs, etc. -->
+                <div class="lesson-section" data-topic="variables">
+                    <h2>JavaScript Variables</h2>
+                    <p>
+                        Variables are used to store data in JavaScript so you can use and manipulate it later. Think of
+                        a variable like a
+                        labeled box that holds information such as numbers, text, or other types of data.
+                    </p>
+
+                    <h3>Types of Variable Declarations</h3>
+                    <ul>
+                        <li><strong>var</strong>: Old way of declaring variables (function-scoped, can be re-declared).
+                        </li>
+                        <li><strong>let</strong>: Modern way to declare variables (block-scoped, can be updated).</li>
+                        <li><strong>const</strong>: Block-scoped but <strong>cannot be reassigned</strong> once defined.
+                        </li>
+                    </ul>
+
+                    <h3>Declaring Variables</h3>
+                    <pre><code>// Using var
+var name = "Alice";
+
+// Using let
+let age = 25;
+
+// Using const
+const country = "Nepal";</code><button class="copy-btn">Copy</button></pre>
+
+                    <h3>Reassigning Values</h3>
+                    <pre><code>let score = 10;
+score = 20; // OK
+
+const year = 2024;
+year = 2025; // ❌ Error: Cannot reassign a const</code><button class="copy-btn">Copy</button></pre>
+
+                    <h3>Variable Naming Rules</h3>
+                    <ul>
+                        <li>Must start with a letter, <code>_</code> or <code>$</code>.</li>
+                        <li>Cannot start with a number.</li>
+                        <li>No spaces allowed.</li>
+                        <li>Use camelCase for multiple words: <code>userName</code></li>
+                    </ul>
+
+                    <h3>Example</h3>
+                    <pre><code>let userName = "John";
+let userAge = 30;
+
+console.log("Name:", userName);
+console.log("Age:", userAge);</code><button class="copy-btn">Copy</button></pre>
+
+                    <h3>Output</h3>
+                    <pre><code>Name: John
+Age: 30</code><button class="copy-btn">Copy</button></pre>
+
+                    <h3>Live HTML + JS Example</h3>
+                    <pre><code>&lt;script&gt;
+  let product = "Laptop";
+  let price = 1200;
+  alert("Product: " + product + "\\nPrice: $" + price);
+&lt;/script&gt;</code><button class="copy-btn">Copy</button></pre>
+                </div>
+
+                <div class="lesson-section" data-topic="data-types">
+                    <h2>JavaScript Data Types</h2>
+                    <p>
+                        Data types define the kind of value a variable can hold. JavaScript is a dynamically typed
+                        language, meaning you don’t have to specify the type — it figures it out for you.
+                    </p>
+
+                    <h3>Primitive Data Types</h3>
+                    <ul>
+                        <li><strong>String</strong>: Text data → <code>"hello"</code> or <code>'world'</code></li>
+                        <li><strong>Number</strong>: Numeric values → <code>42</code>, <code>3.14</code></li>
+                        <li><strong>Boolean</strong>: True or false → <code>true</code>, <code>false</code></li>
+                        <li><strong>Undefined</strong>: A variable declared but not assigned → <code>let a;</code></li>
+                        <li><strong>Null</strong>: Explicitly empty → <code>null</code></li>
+                        <li><strong>BigInt</strong>: Large integers → <code>123456789012345678901234567890n</code></li>
+                        <li><strong>Symbol</strong>: Unique identifier (advanced) → <code>Symbol("id")</code></li>
+                    </ul>
+
+                    <h3>Non-Primitive (Reference) Types</h3>
+                    <ul>
+                        <li><strong>Object</strong>: Key-value pairs → <code>{ name: "Alex", age: 30 }</code></li>
+                        <li><strong>Array</strong>: Ordered list of values → <code>[1, 2, 3]</code></li>
+                        <li><strong>Function</strong>: Reusable block of code → <code>function greet() { ... }</code>
+                        </li>
+                    </ul>
+
+                    <h3>Examples</h3>
+                    <pre><code>let name = "Sita";            // String
+let age = 22;                 // Number
+let isStudent = true;         // Boolean
+let nothing = null;           // Null
+let notDefined;               // Undefined
+let big = 1234567890123n;     // BigInt
+
+let person = { name: "Ram", age: 25 };  // Object
+let colors = ["red", "green", "blue"];  // Array
+let greet = function() {
+  console.log("Hello!");
+};                                     // Function</code><button class="copy-btn">Copy</button></pre>
+
+                    <h3>Checking Type</h3>
+                    <p>You can check a variable’s type using the <code>typeof</code> operator.</p>
+                    <pre><code>console.log(typeof "Hello");    // string
+console.log(typeof 123);        // number
+console.log(typeof true);       // boolean
+console.log(typeof {});         // object
+console.log(typeof []);         // object (yes, arrays are objects!)
+console.log(typeof null);       // object (this is a historical bug)</code><button class="copy-btn">Copy</button></pre>
+                </div>
+
+                <div class="lesson-section" data-topic="conditionals">
+                    <h2>JavaScript Conditionals</h2>
+                    <p>
+                        Conditional statements allow you to run different blocks of code based on different conditions.
+                        They're how your code makes decisions.
+                    </p>
+
+                    <h3>Types of Conditional Statements</h3>
+                    <ul>
+                        <li><strong>if</strong>: Runs a block of code if a condition is true</li>
+                        <li><strong>else</strong>: Runs if the condition is false</li>
+                        <li><strong>else if</strong>: Checks another condition if the previous one is false</li>
+                        <li><strong>switch</strong>: Selects one of many blocks of code to run</li>
+                        <li><strong>ternary operator</strong>: A shortcut for if...else</li>
+                    </ul>
+
+                    <h3>Examples</h3>
+                    <pre><code>// Basic if
+let score = 85;
+if (score > 80) {
+  console.log("Great job!");
+}
+
+// if...else
+let age = 16;
+if (age >= 18) {
+  console.log("You can vote.");
+} else {
+  console.log("You are too young to vote.");
+}
+
+// if...else if...else
+let time = 14;
+if (time &lt; 12) {
+  console.log("Good morning!");
+} else if (time &lt; 18) {
+  console.log("Good afternoon!");
+} else {
+  console.log("Good evening!");
+}
+
+// switch statement
+let color = "blue";
+switch (color) {
+  case "red":
+    console.log("Color is red");
+    break;
+  case "blue":
+    console.log("Color is blue");
+    break;
+  default:
+    console.log("Color not recognized");
+}
+
+// ternary operator
+let isLoggedIn = true;
+let message = isLoggedIn ? "Welcome back!" : "Please log in.";
+console.log(message);</code><button class="copy-btn">Copy</button></pre>
+
+                    <h3>Real Example</h3>
+                    <pre><code>&lt;script&gt;
+  let temperature = 30;
+
+  if (temperature &gt; 35) {
+    alert("It’s really hot outside!");
+  } else if (temperature &gt; 20) {
+    alert("Nice weather.");
+  } else {
+    alert("It’s a bit cold.");
+  }
+&lt;/script&gt;</code><button class="copy-btn">Copy</button></pre>
+                </div>
+
+                <div class="lesson-section" data-topic="loops">
+                    <h2>JavaScript Loops</h2>
+                    <p>
+                        Loops are used to repeat a block of code multiple times. They help reduce repetition and make
+                        code more efficient.
+                    </p>
+
+                    <h3>1. <code>for</code> Loop</h3>
+                    <p>Used when you know how many times to loop.</p>
+                    <pre><code>// For loop
+for (let i = 1; i &lt;= 5; i++) {
+  console.log("Count:", i);
+}</code><button class="copy-btn">Copy</button></pre>
+
+                    <h3>2. <code>while</code> Loop</h3>
+                    <p>Runs as long as the condition is true. Good when the number of iterations is not known
+                        beforehand.</p>
+                    <pre><code>// While loop
+let x = 1;
+while (x &lt;= 3) {
+  console.log("While Loop:", x);
+  x++;
+}</code><button class="copy-btn">Copy</button></pre>
+
+                    <h3>3. <code>do...while</code> Loop</h3>
+                    <p>Runs the code block once before checking the condition. It always runs at least once.</p>
+                    <pre><code>// Do...while loop
+let y = 1;
+do {
+  console.log("Do While Loop:", y);
+  y++;
+} while (y &lt;= 2);</code><button class="copy-btn">Copy</button></pre>
+
+                    <h3>4. <code>for...of</code> Loop</h3>
+                    <p>Used to loop through the values in an iterable (like arrays, strings, etc.).</p>
+                    <pre><code>// For...of loop
+let fruits = ["apple", "banana", "cherry"];
+for (let fruit of fruits) {
+  console.log("Fruit:", fruit);
+}</code><button class="copy-btn">Copy</button></pre>
+
+                    <h3>5. <code>for...in</code> Loop</h3>
+                    <p>Used to loop through the properties (keys) of an object.</p>
+                    <pre><code>// For...in loop
+let user = { name: "Alex", age: 20 };
+for (let key in user) {
+  console.log(key + ":", user[key]);
+}</code><button class="copy-btn">Copy</button></pre>
+
+                    <h3>Real Example</h3>
+                    <pre><code>&lt;script&gt;
+let colors = ["red", "green", "blue"];
+let list = "";
+
+for (let i = 0; i &lt; colors.length; i++) {
+  list += colors[i] + " ";
+}
+
+alert("Colors: " + list);
+&lt;/script&gt;</code><button class="copy-btn">Copy</button></pre>
+                </div>
+
+                <div class="lesson-section" data-topic="functions">
+                    <h2>JavaScript Functions</h2>
+                    <p>
+                        A <strong>function</strong> is a block of reusable code that performs a specific task. Functions
+                        help break code into smaller, manageable pieces.
+                    </p>
+
+                    <h3>Why Use Functions?</h3>
+                    <ul>
+                        <li>Write code once and reuse it.</li>
+                        <li>Keep your code organized and clean.</li>
+                        <li>Make large programs easier to manage.</li>
+                    </ul>
+
+                    <h3>Function Structure</h3>
+                    <pre><code>function functionName(parameters) {
+  // code to run
+}</code><button class="copy-btn">Copy</button></pre>
+
+                    <h3>1. Declaring and Calling a Function</h3>
+                    <p>Create a function using <code>function</code>, and then call it by its name followed by
+                        <code>()</code>.
+                    </p>
+                    <pre><code>// Declare the function
+function greet() {
+  console.log("Hello there!");
+}
+
+// Call the function
+greet();</code><button class="copy-btn">Copy</button></pre>
+
+                    <h3>2. Function with Parameters</h3>
+                    <p>You can pass values into a function using parameters (placeholders).</p>
+                    <pre><code>function greetUser(name) {
+  console.log("Hello, " + name + "!");
+}
+
+greetUser("Alex"); // Hello, Alex!</code><button class="copy-btn">Copy</button></pre>
+
+                    <h3>3. Function with Return Value</h3>
+                    <p>Use <code>return</code> to send a value back from a function.</p>
+                    <pre><code>function add(a, b) {
+  return a + b;
+}
+
+let sum = add(5, 3); // sum is 8
+console.log(sum);</code><button class="copy-btn">Copy</button></pre>
+
+                    <h3>4. Function Expression</h3>
+                    <p>You can also assign a function to a variable.</p>
+                    <pre><code>const multiply = function(x, y) {
+  return x * y;
+};
+
+console.log(multiply(4, 3));</code><button class="copy-btn">Copy</button></pre>
+
+                    <h3>5. Arrow Functions (Shorter Syntax)</h3>
+                    <p>Arrow functions are shorter versions of function expressions.</p>
+                    <pre><code>const square = (n) => {
+  return n * n;
+};
+
+console.log(square(5));</code><button class="copy-btn">Copy</button></pre>
+
+                    <h3>6. Real Example</h3>
+                    <p>Calculate area of a rectangle:</p>
+                    <pre><code>&lt;script&gt;
+function getArea(width, height) {
+  return width * height;
+}
+
+let area = getArea(10, 5);
+alert("Area is " + area);
+&lt;/script&gt;</code><button class="copy-btn">Copy</button></pre>
+
+                    <h3>Tips for Beginners</h3>
+                    <ul>
+                        <li>Always start with <code>function</code> keyword (unless using arrow functions).</li>
+                        <li>You can create multiple functions and call them as needed.</li>
+                        <li><strong>Parameters</strong> are like input; <strong>return</strong> gives output.</li>
+                        <li>Try to write small, focused functions for one task only.</li>
+                    </ul>
+                </div>
+
+                <div class="lesson-section" data-topic="arrays">
+                    <h2>JavaScript Arrays & Array Methods</h2>
+
+                    <p>
+                        An <strong>array</strong> is a list of items stored in a single variable. It's useful when you
+                        want to group similar data.
+                    </p>
+
+                    <h3>1. Creating Arrays</h3>
+                    <pre><code>let fruits = ["apple", "banana", "orange"];
+let numbers = [1, 2, 3, 4, 5];</code><button class="copy-btn">Copy</button></pre>
+
+                    <h3>2. Accessing Items</h3>
+                    <p>Array items start at index <code>0</code>.</p>
+                    <pre><code>console.log(fruits[0]); // "apple"</code><button class="copy-btn">Copy</button></pre>
+
+                    <h3>3. Changing Items</h3>
+                    <pre><code>fruits[1] = "mango";
+console.log(fruits); // ["apple", "mango", "orange"]</code><button class="copy-btn">Copy</button></pre>
+
+                    <h3>4. Adding & Removing Items</h3>
+                    <pre><code>fruits.push("grape"); // Add at end
+fruits.pop();         // Remove last
+
+fruits.unshift("kiwi"); // Add at beginning
+fruits.shift();         // Remove first</code><button class="copy-btn">Copy</button></pre>
+
+                    <h3>5. Looping Through Arrays</h3>
+                    <pre><code>fruits.forEach(function(fruit) {
+  console.log(fruit);
+});</code><button class="copy-btn">Copy</button></pre>
+
+                    <hr>
+
+                    <h2>Array Methods (React Favorites)</h2>
+
+                    <h3>1. map()</h3>
+                    <p><code>map()</code> creates a new array by transforming each item.</p>
+                    <pre><code>let nums = [1, 2, 3];
+let doubled = nums.map(n => n * 2);
+console.log(doubled); // [2, 4, 6]</code><button class="copy-btn">Copy</button></pre>
+
+                    <h3>2. filter()</h3>
+                    <p><code>filter()</code> creates a new array with only items that match a condition.</p>
+                    <pre><code>let nums = [1, 2, 3, 4, 5];
+let even = nums.filter(n => n % 2 === 0);
+console.log(even); // [2, 4]</code><button class="copy-btn">Copy</button></pre>
+
+                    <h3>3. find()</h3>
+                    <p><code>find()</code> returns the <strong>first</strong> item that matches a condition.</p>
+                    <pre><code>let users = [
+  { name: "Alice", age: 20 },
+  { name: "Bob", age: 25 }
+];
+
+let found = users.find(user => user.age === 25);
+console.log(found); // { name: "Bob", age: 25 }</code><button class="copy-btn">Copy</button></pre>
+
+                    <h3>4. includes()</h3>
+                    <p><code>includes()</code> checks if an item exists in an array.</p>
+                    <pre><code>let colors = ["red", "blue", "green"];
+console.log(colors.includes("blue")); // true</code><button class="copy-btn">Copy</button></pre>
+
+                    <h3>5. reduce()</h3>
+                    <p><code>reduce()</code> turns an array into a single value (like sum).</p>
+                    <pre><code>let prices = [10, 20, 30];
+let total = prices.reduce((sum, price) => sum + price, 0);
+console.log(total); // 60</code><button class="copy-btn">Copy</button></pre>
+
+                    <h3>Bonus: Chaining Methods</h3>
+                    <pre><code>let result = [1, 2, 3, 4, 5]
+  .filter(n => n % 2 === 0)
+  .map(n => n * 10);
+
+console.log(result); // [20, 40]</code><button class="copy-btn">Copy</button></pre>
+
+                    <h3>Why this matters for React</h3>
+                    <ul>
+                        <li><code>map()</code> is used to render lists of components.</li>
+                        <li><code>filter()</code> and <code>find()</code> help handle dynamic data.</li>
+                        <li><code>includes()</code> is used for checking selections.</li>
+                        <li><code>reduce()</code> is helpful for totals, scores, etc.</li>
+                    </ul>
+                </div>
+
+                <div class="lesson-section" data-topic="objects">
+                    <h2>JavaScript Objects</h2>
+
+                    <p>
+                        An <strong>object</strong> is a collection of key-value pairs (properties). It's used to store
+                        related data and functions in a structured way.
+                    </p>
+
+                    <h3>1. Creating an Object</h3>
+                    <pre><code>const person = {
+  name: "Alice",
+  age: 25,
+  isStudent: true
+};</code><button class="copy-btn">Copy</button></pre>
+
+                    <h3>2. Accessing Properties</h3>
+                    <p>You can access values using dot <code>.</code> or bracket <code>[]</code> notation:</p>
+                    <pre><code>console.log(person.name); // "Alice"
+console.log(person["age"]); // 25</code><button class="copy-btn">Copy</button></pre>
+
+                    <h3>3. Changing & Adding Properties</h3>
+                    <pre><code>person.age = 26; // Change
+person.city = "New York"; // Add
+console.log(person);</code><button class="copy-btn">Copy</button></pre>
+
+                    <h3>4. Deleting a Property</h3>
+                    <pre><code>delete person.isStudent;</code><button class="copy-btn">Copy</button></pre>
+
+                    <h3>5. Nested Objects</h3>
+                    <p>Objects can hold other objects as values.</p>
+                    <pre><code>const user = {
+  name: "Bob",
+  address: {
+    city: "Kathmandu",
+    zip: 44600
+  }
+};
+
+console.log(user.address.city); // "Kathmandu"</code><button class="copy-btn">Copy</button></pre>
+
+                    <h3>6. Object Destructuring</h3>
+                    <p>Destructuring lets you extract values from an object easily.</p>
+                    <pre><code>const person = {
+  name: "Alice",
+  age: 25,
+  city: "Pokhara"
+};
+
+// Destructure properties
+const { name, age } = person;
+console.log(name); // "Alice"
+console.log(age);  // 25</code><button class="copy-btn">Copy</button></pre>
+
+                    <h3>7. Nested Destructuring</h3>
+                    <pre><code>const user = {
+  name: "Bob",
+  address: {
+    city: "Birgunj",
+    zip: 44300
+  }
+};
+
+const { address: { city } } = user;
+console.log(city); // "Birgunj"</code><button class="copy-btn">Copy</button></pre>
+
+                    <h3>Bonus: Object in Arrays (Common in React)</h3>
+                    <pre><code>const people = [
+  { name: "Ram", age: 22 },
+  { name: "Sita", age: 28 }
+];
+
+people.forEach(person => {
+  console.log(person.name + " is " + person.age + " years old.");
+});</code><button class="copy-btn">Copy</button></pre>
+
+                    <p><strong>Why this matters in React:</strong> You'll often deal with objects (like user data, form
+                        state, API responses), and destructuring makes your code clean and readable!</p>
+                </div>
+
+                <div class="lesson-section" data-topic="dom">
+                    <h2>DOM Manipulation</h2>
+                    <p>
+                        DOM (Document Object Model) manipulation is how JavaScript interacts with and updates HTML
+                        elements on a page.
+                        You can select elements, change their content or style, add/remove elements, and handle events.
+                    </p>
+
+                    <h3>Selecting Elements</h3>
+                    <ul>
+                        <li><code>document.getElementById("id")</code> – Select by ID</li>
+                        <li><code>document.querySelector("selector")</code> – Select first match</li>
+                        <li><code>document.querySelectorAll("selector")</code> – Select all matches</li>
+                        <li><code>document.getElementsByClassName("class")</code> – Old method (HTMLCollection)</li>
+                        <li><code>document.getElementsByTagName("tag")</code> – Old method (HTMLCollection)</li>
+                    </ul>
+
+                    <h3>Example HTML</h3>
+                    <pre><code>&lt;h1 id="title"&gt;Original Title&lt;/h1&gt;
+&lt;p id="info"&gt;Some info&lt;/p&gt;
+&lt;div class="box"&gt;Box content&lt;/div&gt;
+&lt;ul&gt;&lt;li&gt;Item 1&lt;/li&gt;&lt;/ul&gt;
+&lt;button id="myBtn"&gt;Click Me&lt;/button&gt;</code><button class="copy-btn">Copy</button></pre>
+
+                    <h3>Changing Content</h3>
+                    <pre><code>// Change text
+document.getElementById("title").textContent = "Hello!";
+
+// Change HTML
+document.getElementById("info").innerHTML = "&lt;strong&gt;Updated!&lt;/strong&gt;";</code><button class="copy-btn">Copy</button></pre>
+
+                    <h3>Changing Styles</h3>
+                    <pre><code>const box = document.querySelector(".box");
+box.style.backgroundColor = "skyblue";
+box.style.padding = "20px";</code><button class="copy-btn">Copy</button></pre>
+
+                    <h3>Creating & Appending Elements</h3>
+                    <pre><code>const newItem = document.createElement("li");
+newItem.textContent = "New list item";
+document.querySelector("ul").appendChild(newItem);</code><button class="copy-btn">Copy</button></pre>
+
+                    <h3>Removing Elements</h3>
+                    <pre><code>const item = document.querySelector("li");
+item.remove();</code><button class="copy-btn">Copy</button></pre>
+
+                    <h3>Event Listeners</h3>
+                    <pre><code>const btn = document.getElementById("myBtn");
+btn.addEventListener("click", function () {
+  alert("Button clicked!");
+});</code><button class="copy-btn">Copy</button></pre>
+                </div>
+
+                <div class="lesson-section" data-topic="dom-style-manipulation">
+                    <h2>DOM: Styling & Element Manipulation</h2>
+                    <p>
+                        JavaScript can change the appearance and structure of your web page by modifying styles,
+                        classes, IDs, and HTML elements.
+                    </p>
+
+                    <h3>1. Changing Inline Styles</h3>
+                    <pre><code>const box = document.getElementById("myBox");
+
+// Add or update styles
+box.style.backgroundColor = "lightblue";
+box.style.padding = "1rem";
+
+// Remove a style
+box.style.backgroundColor = "";</code><button class="copy-btn">Copy</button></pre>
+
+                    <pre><code>&lt;div id="myBox"&gt;Styled Box&lt;/div&gt;</code><button class="copy-btn">Copy</button></pre>
+
+                    <h3>2. Working with Classes</h3>
+                    <pre><code>const btn = document.querySelector("button");
+
+// Add a class
+btn.classList.add("active");
+
+// Remove a class
+btn.classList.remove("active");
+
+// Toggle a class (add if not present, remove if present)
+btn.classList.toggle("highlight");
+
+// Check if a class exists
+console.log(btn.classList.contains("active"));</code><button class="copy-btn">Copy</button></pre>
+
+                    <pre><code>&lt;button&gt;Click Me&lt;/button&gt;</code><button class="copy-btn">Copy</button></pre>
+
+                    <h3>3. Changing or Removing ID</h3>
+                    <pre><code>const el = document.querySelector(".card");
+
+// Change ID
+el.id = "newId";
+
+// Remove ID
+el.removeAttribute("id");</code><button class="copy-btn">Copy</button></pre>
+
+                    <h3>4. Creating and Appending Elements</h3>
+                    <pre><code>// Create a new element
+const newPara = document.createElement("p");
+newPara.textContent = "This is a new paragraph";
+
+// Append it to a container
+const container = document.getElementById("content");
+container.appendChild(newPara);</code><button class="copy-btn">Copy</button></pre>
+
+                    <pre><code>&lt;div id="content"&gt;&lt;/div&gt;</code><button class="copy-btn">Copy</button></pre>
+
+                    <h3>5. Removing Elements</h3>
+                    <pre><code>const unwanted = document.getElementById("removeMe");
+unwanted.remove();</code><button class="copy-btn">Copy</button></pre>
+
+                    <pre><code>&lt;div id="removeMe"&gt;Goodbye&lt;/div&gt;</code><button class="copy-btn">Copy</button></pre>
+
+                    <h3>Quick Summary</h3>
+                    <ul>
+                        <li><strong>style.property</strong>: Change inline styles.</li>
+                        <li><strong>classList</strong>: Add/remove/toggle classes.</li>
+                        <li><strong>id</strong>: Set or remove element IDs.</li>
+                        <li><strong>createElement()</strong>: Create a new HTML element.</li>
+                        <li><strong>appendChild()</strong>: Add an element into the DOM.</li>
+                        <li><strong>remove()</strong>: Delete an element from the page.</li>
+                    </ul>
+                </div>
+
+
+                <div class="lesson-section" data-topic="events">
+                    <h2>JavaScript Events</h2>
+                    <p>
+                        Events let you respond to user interactions like clicks, typing, form submissions, and more. In
+                        JavaScript, you can attach "event listeners" to elements and define what should happen when an
+                        event occurs.
+                    </p>
+
+                    <h3>Example HTML</h3>
+                    <pre><code>&lt;button id="clickBtn"&gt;Click Me&lt;/button&gt;
+&lt;input id="nameInput" type="text" placeholder="Type something..." /&gt;
+&lt;select id="colorSelect"&gt;
+  &lt;option value="red"&gt;Red&lt;/option&gt;
+  &lt;option value="blue"&gt;Blue&lt;/option&gt;
+&lt;/select&gt;
+&lt;form id="myForm"&gt;
+  &lt;input type="text" placeholder="Your name" /&gt;
+  &lt;button type="submit"&gt;Submit&lt;/button&gt;
+&lt;/form&gt;</code><button class="copy-btn">Copy</button></pre>
+
+                    <h3>Adding Event Listeners</h3>
+                    <pre><code>element.addEventListener("event", functionToCall);</code><button class="copy-btn">Copy</button></pre>
+
+                    <h3>Click Event</h3>
+                    <pre><code>document.getElementById("clickBtn").addEventListener("click", function () {
+  alert("Button was clicked!");
+});</code><button class="copy-btn">Copy</button></pre>
+
+                    <h3>Input Event (Typing in Input Field)</h3>
+                    <pre><code>document.getElementById("nameInput").addEventListener("input", function (e) {
+  console.log("You typed:", e.target.value);
+});</code><button class="copy-btn">Copy</button></pre>
+
+                    <h3>Change Event (For dropdowns or when input loses focus)</h3>
+                    <pre><code>document.getElementById("colorSelect").addEventListener("change", function (e) {
+  console.log("Selected color:", e.target.value);
+});</code><button class="copy-btn">Copy</button></pre>
+
+                    <h3>Submit Event (On Forms)</h3>
+                    <pre><code>document.getElementById("myForm").addEventListener("submit", function (e) {
+  e.preventDefault(); // Prevents page reload
+  console.log("Form submitted!");
+});</code><button class="copy-btn">Copy</button></pre>
+
+                    <h3>Mouse Events</h3>
+                    <ul>
+                        <li><code>click</code>, <code>dblclick</code>, <code>mouseover</code>, <code>mouseout</code>,
+                            <code>mousemove</code>
+                        </li>
+                    </ul>
+
+                    <h3>Keyboard Events</h3>
+                    <ul>
+                        <li><code>keydown</code>: Fires when any key is pressed down</li>
+                        <li><code>keyup</code>: Fires when the key is released</li>
+                    </ul>
+                </div>
+
+                <div class="lesson-section" data-topic="es6">
+                    <h2>ES6 Features (Modern JavaScript)</h2>
+                    <p>
+                        ES6 (ECMAScript 2015) introduced powerful features that make JavaScript easier, cleaner, and
+                        more efficient. These are heavily used in React and modern development.
+                    </p>
+
+                    <h3>1. <code>let</code> and <code>const</code></h3>
+                    <ul>
+                        <li><code>let</code>: Block-scoped variable (reassignable)</li>
+                        <li><code>const</code>: Block-scoped constant (cannot be reassigned)</li>
+                    </ul>
+                    <pre><code>let count = 0;
+const name = "John";</code><button class="copy-btn">Copy</button></pre>
+
+                    <h3>2. Arrow Functions</h3>
+                    <p>Simpler function syntax. It also handles <code>this</code> differently.</p>
+                    <pre><code>// Normal function
+function greet() {
+  return "Hello";
+}
+
+// Arrow function
+const greet = () => "Hello";</code><button class="copy-btn">Copy</button></pre>
+
+                    <h3>3. Template Literals</h3>
+                    <p>Use backticks (<code>`</code>) to embed variables directly into strings.</p>
+                    <pre><code>const name = "Alice";
+console.log(`Hello, ${name}!`);</code><button class="copy-btn">Copy</button></pre>
+
+                    <h3>4. Destructuring</h3>
+                    <p>Extract values from objects or arrays easily.</p>
+                    <pre><code>// Object destructuring
+const user = { name: "John", age: 25 };
+const { name, age } = user;
+
+// Array destructuring
+const colors = ["red", "green", "blue"];
+const [first, second] = colors;</code><button class="copy-btn">Copy</button></pre>
+
+                    <h3>5. Spread Operator <code>...</code></h3>
+                    <p>Copies all elements or properties into a new array/object.</p>
+                    <pre><code>const arr1 = [1, 2];
+const arr2 = [...arr1, 3, 4]; // [1, 2, 3, 4]
+
+const user1 = { name: "Sam" };
+const user2 = { ...user1, age: 20 };</code><button class="copy-btn">Copy</button></pre>
+
+                    <h3>6. Rest Parameters</h3>
+                    <p>Use <code>...</code> to group extra arguments into an array.</p>
+                    <pre><code>function sum(...nums) {
+  return nums.reduce((a, b) => a + b, 0);
+}
+console.log(sum(1, 2, 3)); // 6</code><button class="copy-btn">Copy</button></pre>
+
+                    <h3>7. Default Parameters</h3>
+                    <pre><code>function greet(name = "Guest") {
+  console.log("Hello " + name);
+}
+greet(); // Hello Guest</code><button class="copy-btn">Copy</button></pre>
+
+                    <h3>8. Ternary Operator</h3>
+                    <p>Short form for <code>if/else</code>.</p>
+                    <pre><code>const age = 18;
+const message = age >= 18 ? "Adult" : "Minor";</code><button class="copy-btn">Copy</button></pre>
+                </div>
+
+                <div class="lesson-section" data-topic="async">
+                    <h2>Async JavaScript: Promises & <code>async/await</code></h2>
+                    <p>
+                        JavaScript is single-threaded, but it supports asynchronous behavior (like loading data from a
+                        server) without freezing the whole page. This is done using <strong>Promises</strong> and
+                        <strong>async/await</strong>.
+                    </p>
+
+                    <h3>1. What is a Promise?</h3>
+                    <p>
+                        A Promise is a special object that represents a task that will finish in the future (either
+                        success or failure).
+                    </p>
+                    <ul>
+                        <li><strong>Pending</strong>: Not finished yet</li>
+                        <li><strong>Resolved</strong>: Finished successfully</li>
+                        <li><strong>Rejected</strong>: Finished with an error</li>
+                    </ul>
+
+                    <pre><code>// Creating a Promise
+const myPromise = new Promise((resolve, reject) => {
+  const success = true;
+  setTimeout(() => {
+    if (success) {
+      resolve("It worked!");
+    } else {
+      reject("Something went wrong!");
+    }
+  }, 1000);
+});
+
+// Consuming the Promise
+myPromise
+  .then(result => console.log("Success:", result))
+  .catch(error => console.error("Error:", error));</code><button class="copy-btn">Copy</button></pre>
+
+                    <h3>2. Async & Await</h3>
+                    <p>
+                        <code>async</code> makes a function return a Promise.<br />
+                        <code>await</code> waits for a Promise to finish — and makes the code look synchronous and
+                        clean.
+                    </p>
+                    <pre><code>// Simulated async function
+function fetchData() {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve("Data loaded!");
+    }, 1500);
+  });
+}
+
+// Using async/await
+async function getData() {
+  console.log("Loading...");
+  const result = await fetchData();
+  console.log(result);
+}
+
+getData();</code><button class="copy-btn">Copy</button></pre>
+
+                    <h3>3. Error Handling with <code>try...catch</code></h3>
+                    <p>
+                        Use <code>try...catch</code> with <code>await</code> to catch errors (just like
+                        <code>.catch</code> with Promises).
+                    </p>
+                    <pre><code>async function getUser() {
+  try {
+    const user = await fetchUser(); // suppose this returns a Promise
+    console.log("User:", user);
+  } catch (err) {
+    console.error("Failed to get user:", err);
+  }
+}</code><button class="copy-btn">Copy</button></pre>
+
+                    <h3>4. Real Example: Simulate API Fetch</h3>
+                    <pre><code>function fakeApiCall() {
+  return new Promise((resolve) => {
+    setTimeout(() => resolve("✅ Fetched data from server!"), 2000);
+  });
+}
+
+async function showData() {
+  console.log("Fetching...");
+  const result = await fakeApiCall();
+  console.log(result);
+}
+
+showData();</code><button class="copy-btn">Copy</button></pre>
+
+                    <h3>Why Use Async/Await?</h3>
+                    <ul>
+                        <li>Cleaner and easier than <code>.then().catch()</code> chains</li>
+                        <li>Helps avoid "callback hell"</li>
+                        <li>Looks more like regular top-to-bottom code</li>
+                    </ul>
+                </div>
+
+                <div class="lesson-section" data-topic="fetch-api">
+                    <h2>Fetch API: Getting Data from the Internet</h2>
+                    <p>
+                        The <code>fetch()</code> API lets you get data from servers (like REST APIs). It returns a
+                        <strong>Promise</strong>, so you can use <code>then()</code> or <code>async/await</code> to
+                        handle the response.
+                    </p>
+
+                    <h3>1. Basic Fetch with <code>.then()</code></h3>
+                    <pre><code>// Example: Fetch a post from JSONPlaceholder
+fetch('https://jsonplaceholder.typicode.com/posts/1')
+  .then(res => res.json()) // convert response to JSON
+  .then(data => {
+    console.log('Post title:', data.title);
+  })
+  .catch(err => console.error('Error:', err));</code><button class="copy-btn">Copy</button></pre>
+
+                    <h3>2. Same Example Using <code>async/await</code></h3>
+                    <pre><code>async function getPost() {
+  try {
+    const res = await fetch('https://jsonplaceholder.typicode.com/posts/1');
+    const data = await res.json();
+    console.log('Post body:', data.body);
+  } catch (err) {
+    console.error('Failed to fetch:', err);
+  }
+}
+
+getPost();</code><button class="copy-btn">Copy</button></pre>
+
+                    <h3>3. Making a POST Request (Sending Data)</h3>
+                    <pre><code>async function createPost() {
+  try {
+    const res = await fetch('https://jsonplaceholder.typicode.com/posts', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        title: 'Hello!',
+        body: 'This is a new post.',
+        userId: 1
+      })
+    });
+    const result = await res.json();
+    console.log('New post created:', result);
+  } catch (err) {
+    console.error('Error creating post:', err);
+  }
+}
+
+createPost();</code><button class="copy-btn">Copy</button></pre>
+
+                    <h3>4. Notes:</h3>
+                    <ul>
+                        <li><code>fetch()</code> doesn’t reject on HTTP errors (like 404), only on network errors.</li>
+                        <li>You always need to use <code>res.json()</code> to read the response data.</li>
+                        <li>For POST/PUT/PATCH, always set the method and headers, and convert your object using
+                            <code>JSON.stringify()</code>.
+                        </li>
+                    </ul>
+
+                    <h3>5. Real Use Case</h3>
+                    <pre><code>// Get multiple posts and display titles
+async function getPosts() {
+  const res = await fetch('https://jsonplaceholder.typicode.com/posts');
+  const posts = await res.json();
+
+  posts.slice(0, 5).forEach(post => {
+    console.log(post.title);
+  });
+}
+
+getPosts();</code><button class="copy-btn">Copy</button></pre>
+                </div>
+
+                <div class="lesson-section" data-topic="modules">
+                    <h2>JavaScript Modules: <code>import</code>, <code>export</code> & Code Splitting</h2>
+
+                    <p>
+                        JavaScript modules let you split your code into smaller, reusable files. Each file can export
+                        values (like functions or variables), and others can import them. This keeps your code organized
+                        and efficient.
+                    </p>
+
+                    <h3>1. Exporting from a Module</h3>
+                    <p>You can export things from a file using <code>export</code>.</p>
+
+                    <pre><code>// utils.js
+export const PI = 3.14;
+
+export function add(a, b) {
+  return a + b;
+}</code><button class="copy-btn">Copy</button></pre>
+
+                    <h3>2. Importing from a Module</h3>
+                    <p>Use <code>import</code> to bring in values from another file.</p>
+
+                    <pre><code>// main.js
+import { PI, add } from './utils.js';
+
+console.log(PI);        // 3.14
+console.log(add(5, 3)); // 8</code><button class="copy-btn">Copy</button></pre>
+
+                    <h3>3. Default Export</h3>
+                    <p>You can export a single default value from a file.</p>
+
+                    <pre><code>// math.js
+export default function subtract(a, b) {
+  return a - b;
+}</code><button class="copy-btn">Copy</button></pre>
+
+                    <pre><code>// main.js
+import subtract from './math.js';
+
+console.log(subtract(10, 3)); // 7</code><button class="copy-btn">Copy</button></pre>
+
+                    <h3>4. Rename Imports</h3>
+                    <p>You can rename an import using <code>as</code>:</p>
+
+                    <pre><code>import { add as sum } from './utils.js';
+console.log(sum(2, 2));</code><button class="copy-btn">Copy</button></pre>
+
+                    <h3>5. What is Code Splitting?</h3>
+                    <p>
+                        Code splitting means breaking up your code into smaller files that are loaded only when needed —
+                        improving performance. Modern bundlers (like Webpack or Vite) and tools like React.lazy use
+                        modules to make this possible.
+                    </p>
+
+                    <h4>Example (React-style Lazy Loading)</h4>
+                    <pre><code>import React, { Suspense } from "react";
+
+const About = React.lazy(() => import('./About.js'));
+
+function App() {
+  return (
+    &lt;Suspense fallback={&lt;div&gt;Loading...&lt;/div&gt;}&gt;
+      &lt;About /&gt;
+    &lt;/Suspense&gt;
+  );
+}</code><button class="copy-btn">Copy</button></pre>
+
+                    <h3>Important Notes</h3>
+                    <ul>
+                        <li>Each module is scoped: variables/functions stay inside unless exported.</li>
+                        <li>Modules only work with a server (or use <code>type="module"</code> in a browser).</li>
+                        <li>Code splitting is a performance optimization done by bundlers like Webpack, Vite, etc.</li>
+                    </ul>
+
+                    <pre><code>&lt;script type="module" src="main.js"&gt;&lt;/script&gt;</code><button class="copy-btn">Copy</button></pre>
+                </div>
+
+                <div class="lesson-section" data-topic="event-loop">
+                    <h2>JavaScript Event Loop</h2>
+                    <p>
+                        The event loop is a mechanism that allows JavaScript (which runs on a single thread) to handle
+                        asynchronous tasks like <code>setTimeout</code>, <code>fetch</code>, and user events without
+                        blocking the main program. It constantly checks whether the call stack is empty and pulls tasks
+                        from the queue to execute.
+                    </p>
+
+                    <h3>How It Works</h3>
+                    <ul>
+                        <li><strong>Call Stack:</strong> Keeps track of the currently running functions. Only one
+                            function can run at a time.</li>
+                        <li><strong>Web APIs:</strong> Provided by the browser (e.g., <code>setTimeout</code>,
+                            <code>fetch</code>, <code>DOM Events</code>).
+                        </li>
+                        <li><strong>Callback Queue (Task Queue):</strong> Stores async callbacks ready to be executed
+                            once the stack is clear.</li>
+                        <li><strong>Microtask Queue:</strong> Holds promise callbacks and runs before the callback
+                            queue.</li>
+                        <li><strong>Event Loop:</strong> Keeps checking the call stack and pushes queued tasks to it
+                            when it's empty.</li>
+                    </ul>
+
+                    <h3>Simple Example</h3>
+                    <pre><code>console.log("Start");
+
+setTimeout(() => {
+  console.log("Inside setTimeout");
+}, 0);
+
+console.log("End");</code><button class="copy-btn">Copy</button></pre>
+
+                    <p><strong>Output:</strong></p>
+                    <pre><code>Start
+End
+Inside setTimeout</code><button class="copy-btn">Copy</button></pre>
+
+                    <h3>Microtask Queue (Promise Example)</h3>
+                    <pre><code>console.log("Start");
+
+Promise.resolve().then(() => {
+  console.log("Promise resolved");
+});
+
+console.log("End");</code><button class="copy-btn">Copy</button></pre>
+
+                    <p><strong>Output:</strong></p>
+                    <pre><code>Start
+End
+Promise resolved</code><button class="copy-btn">Copy</button></pre>
+
+                    <h3>Why It Matters</h3>
+                    <ul>
+                        <li>Helps understand why async code doesn’t block the UI.</li>
+                        <li>Crucial when using <code>Promises</code>, <code>async/await</code>, <code>fetch()</code>,
+                            and event handlers.</li>
+                        <li>Gives you better control over execution order.</li>
+                    </ul>
+                </div>
+
             </section>
         </aside>
 
-        <!-- Code Editor and Runner -->
+        <!-- Code Editor -->
         <section class="editor">
             <h2>Try it Yourself</h2>
 
-            <textarea id="htmlCode" placeholder="Write your HTML here...">
-                <!DOCTYPE html>
-<html>
-  <head>
-    <title>My HTML Test</title>
-  </head>
-  <body>
-    <h1>Hello World!</h1>
-    <p>This is my first HTML output.</p>
-  </body>
-</html>
-            </textarea>
+            <div class="code-group">
+                <label class="code-label" for="htmlCode">HTML</label>
+                <textarea id="htmlCode"
+                    placeholder="Write your HTML here...">&lt;h1 id="demo"&gt;Hello&lt;/h1&gt;</textarea>
+
+                <label class="code-label" for="cssCode">CSS</label>
+                <textarea id="cssCode" placeholder="Write your CSS here...">h1 { color: green; }</textarea>
+
+                <label class="code-label" for="jsCode">JavaScript</label>
+                <textarea id="jsCode"
+                    placeholder="Write your JS here...">document.getElementById("demo").innerText = "Hi from JS!";</textarea>
+            </div>
+
             <button id="runBtn">Run</button>
+
             <h2>Live Preview</h2>
             <iframe id="preview" sandbox="allow-scripts"></iframe>
+            <h2>Console Output</h2>
+            <div id="consoleOutput"
+                style="background:#111;color:#0f0;padding:1rem;border-radius:6px;font-family:monospace;font-size:0.9rem;height:150px;overflow:auto;">
+            </div>
+
         </section>
     </div>
 
     <script>
-        document.getElementById('toggleTheme').addEventListener('click', () => {
-            document.body.classList.toggle('dark');
+        const dropdownToggle = document.getElementById('dropdownToggle');
+        const dropdown = document.getElementById('filterDropdown');
+        const dropdownMenu = document.getElementById('dropdownMenu');
+        const topicCheckboxes = document.querySelectorAll('#topicCheckboxes input[type="checkbox"]');
+        const selectAllBtn = document.getElementById('selectAllBtn');
+        const clearAllBtn = document.getElementById('clearAllBtn');
+
+        function updateTopicVisibility() {
+            const selectedTopics = Array.from(topicCheckboxes)
+                .filter(cb => cb.checked)
+                .map(cb => cb.value);
+
+            document.querySelectorAll('.lesson-section').forEach(section => {
+                const topic = section.dataset.topic;
+                section.style.display = selectedTopics.includes(topic) ? 'block' : 'none';
+            });
+
+            updateDropdownLabel();
+        }
+
+
+        // Toggle dropdown
+        dropdownToggle.addEventListener('click', () => {
+            dropdown.classList.toggle('open');
+        });
+
+        // Outside click to close dropdown
+        document.addEventListener('click', (e) => {
+            if (!dropdown.contains(e.target)) {
+                dropdown.classList.remove('open');
+            }
+        });
+
+        topicCheckboxes.forEach(cb => {
+            cb.addEventListener('change', updateTopicVisibility);
+        });
+
+        selectAllBtn.addEventListener('click', () => {
+            topicCheckboxes.forEach(cb => cb.checked = true);
+            updateTopicVisibility(); // this now also updates label
+        });
+
+        clearAllBtn.addEventListener('click', () => {
+            topicCheckboxes.forEach(cb => cb.checked = false);
+            updateTopicVisibility();
+        });
+
+
+        // Initial setup
+        updateTopicVisibility();
+
+        function updateDropdownLabel() {
+            const checkedCount = Array.from(topicCheckboxes).filter(cb => cb.checked).length;
+            const totalCount = topicCheckboxes.length;
+
+            if (checkedCount === totalCount) {
+                dropdownToggle.textContent = 'Filter Topics (All selected)';
+            } else {
+                dropdownToggle.textContent = `Filter Topics (${checkedCount} selected)`;
+            }
+        }
+
+
+    </script>
+
+    <script>
+        const htmlInput = document.getElementById('htmlCode');
+        const cssInput = document.getElementById('cssCode');
+        const jsInput = document.getElementById('jsCode');
+        const preview = document.getElementById('preview');
+
+        function runCode() {
+            const html = htmlInput.value;
+            const css = `<style>${cssInput.value}</style>`;
+            const js = jsInput.value;
+
+            const combinedCode = `
+    ${html}
+    ${css}
+    <script>
+      (function(){
+        const send = (type, ...data) => {
+          const formatted = data.map(item => {
+            if (typeof item === 'object' && item !== null) {
+              try {
+                return JSON.stringify(item, null, 2);
+              } catch {
+                return '[Object]';
+              }
+            }
+            return String(item);
+          });
+          parent.postMessage({ type, data: formatted }, '*');
+        };
+
+        console.log = (...args) => send('log', ...args);
+        console.error = (...args) => send('error', ...args);
+        console.warn = (...args) => send('warn', ...args);
+        console.clear = () => send('clear');
+
+        window.alert = (msg) => send('alert', msg);
+        window.prompt = (msg, def) => {
+          send('prompt', msg);
+          return def || '';
+        };
+
+        try {
+          ${js}
+        } catch (e) {
+          console.error(e.message);
+        }
+          window.onerror = function (msg, url, line, col, error) {
+  console.error("Uncaught Error:", error?.message || msg);
+};
+
+window.addEventListener("unhandledrejection", function (event) {
+  console.error("Unhandled Promise rejection:", event.reason?.message || event.reason);
+});
+      })();
+    <\/script>
+  `;
+
+            preview.srcdoc = combinedCode;
+
+            document.getElementById('consoleOutput').innerHTML = '';
+        }
+
+        window.addEventListener('message', (event) => {
+            const { type, data } = event.data;
+            const output = document.getElementById('consoleOutput');
+            if (!output || !type) return;
+
+            const colors = {
+                log: '#0f0',
+                error: '#f55',
+                warn: '#ff0',
+                alert: '#09f',
+                prompt: '#fc0',
+                clear: null
+            };
+
+            if (type === 'clear') {
+                output.innerHTML = '';
+                return;
+            }
+
+            const msg = document.createElement('div');
+            msg.style.color = colors[type] || '#ccc';
+
+            if (type === 'alert') {
+                msg.textContent = `[alert] "${data.join(' ')}"`;
+            } else if (type === 'prompt') {
+                msg.textContent = `[prompt] "${data.join(' ')}" (prompt suppressed)`;
+            } else {
+                msg.textContent = `[${type}] ${data.join(' ')}`;
+            }
+
+            output.appendChild(msg);
+            output.scrollTop = output.scrollHeight;
+        });
+
+        document.getElementById('runBtn').addEventListener('click', runCode);
+
+        [htmlInput, cssInput, jsInput].forEach(el => {
+            el.addEventListener('keydown', e => {
+                if (e.ctrlKey && e.key === 's') {
+                    e.preventDefault();
+                    runCode();
+                }
+            });
         });
 
         document.querySelectorAll('.copy-btn').forEach(button => {
@@ -364,21 +1694,10 @@
             });
         });
 
-        const runCode = () => {
-            const code = document.getElementById('htmlCode').value;
-            document.getElementById('preview').srcdoc = code;
-        }
-
-        document.getElementById('runBtn').addEventListener('click', runCode);
-
-        document.getElementById('htmlCode').addEventListener('keydown', (e) => {
-            if (e.ctrlKey && e.key === 's') {
-                e.preventDefault();
-                runCode();
-            }
+        document.getElementById('toggleTheme').addEventListener('click', () => {
+            document.body.classList.toggle('dark');
         });
 
-        // Drawer toggle for mobile
         const drawer = document.getElementById('drawer');
         const hamburgerBtn = document.getElementById('hamburgerBtn');
 
@@ -387,7 +1706,10 @@
             document.body.style.overflow = drawer.classList.contains('open') ? 'hidden' : 'auto';
             hamburgerBtn.innerHTML = drawer.classList.contains('open') ? '&times;' : '&#9776;';
         });
+
+        runCode();
     </script>
+
 </body>
 
 </html>

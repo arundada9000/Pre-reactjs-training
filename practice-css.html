@@ -2,372 +2,463 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CSS Practice - Learn by Doing</title>
-    <style>
-        ::-webkit-scrollbar {
-            display: none;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CSS Practice - Learn by Doing</title>
+  <style>
+    ::-webkit-scrollbar {
+      display: none;
+    }
 
-        * {
-            -webkit-tap-highlight-color: transparent;
-            -webkit-touch-callout: none;
-            -webkit-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-        }
+    * {
+      -webkit-tap-highlight-color: transparent;
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
 
-        :root {
-            --accent: #4caf50;
-            --dark-bg: #2b2b2b;
-            --light-bg: #f9f9f9;
-        }
+    :root {
+      --accent: #4caf50;
+      --dark-bg: #2b2b2b;
+      --light-bg: #f9f9f9;
+    }
 
-        body {
-            font-family: 'Segoe UI', sans-serif;
-            margin: 0;
-            padding: 0;
-            background: var(--light-bg);
-            color: #333;
-        }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: var(--light-bg);
+      color: #333;
+    }
 
-        body.dark,
-        body.dark .container,
-        body.dark .drawer,
-        body.dark .lesson-section,
-        body.dark #dropdownToggle,
-        body.dark .dropdown-menu {
-            background: #1e1e1e;
-            color: #eee;
-        }
+    body.dark,
+    body.dark .container,
+    body.dark .drawer,
+    body.dark .lesson-section,
+    body.dark #dropdownToggle,
+    body.dark .dropdown-menu,
+    body.dark textarea,
+    body.dark pre {
+      background: #1e1e1e;
+      color: #eee;
+    }
 
-        body.dark textarea,
-        body.dark pre {
-            background: #2b2b2b;
-            color: #eee;
-        }
+    body.dark textarea,
+    body.dark pre {
+      background: #2b2b2b;
+    }
 
-        header {
-            position: relative;
-            background: var(--dark-bg);
-            color: white;
-            padding: 1.25rem;
-            text-align: center;
-            border-bottom: 4px solid var(--accent);
-        }
+    header {
+      background: var(--dark-bg);
+      color: white;
+      padding: 1rem 1.25rem;
+      border-bottom: 4px solid var(--accent);
+    }
 
-        .hamburger {
-            display: none;
-            position: absolute;
-            top: 1.5rem;
-            left: 1rem;
-            font-size: 1.5rem;
-            background: none;
-            border: none;
-            color: white;
-            cursor: pointer;
-        }
+    .header-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      position: relative;
+    }
 
-        .container {
-            display: flex;
-            flex-direction: row;
-            height: calc(100vh - 96px);
-            overflow: hidden;
-        }
+    .logo-title {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex: 1;
+      min-width: 0;
+    }
 
-        .drawer {
-            position: fixed;
-            top: 96px;
-            left: -100%;
-            width: 85%;
-            max-width: 300px;
-            height: calc(100% - 96px);
-            background: #fff;
-            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
-            z-index: 10;
-            transition: left 0.3s ease;
-            overflow-y: auto;
-            padding: 1rem;
-        }
+    .logo {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      object-fit: cover;
+      cursor: pointer;
+    }
 
-        .drawer.open {
-            position: fixed;
-            top: 96px;
-            left: 0;
-            bottom: 0;
-            overflow-y: scroll;
-        }
+    .logo-title .text h1 {
+      font-size: 1.4rem;
+      margin: 0;
+    }
 
-        .lesson h2,
-        .editor h2 {
-            margin-top: 0;
-        }
+    .logo-title .text p {
+      font-size: 0.9rem;
+      margin: 0;
+      opacity: 0.85;
+    }
 
-        .lesson pre {
-            background: #eee;
-            padding: 0.75rem;
-            border-radius: 6px;
-            overflow-x: auto;
-            position: relative;
-        }
+    .theme-btn,
+    .hamburger {
+      z-index: 999;
+      background: transparent;
+      font-size: 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      color: white;
+      padding: 0.4rem 0.75rem;
+    }
 
-        .editor {
-            flex: 1;
-            padding: 1rem 2rem;
-            overflow-y: auto;
-        }
+    .theme-btn {
+      border: 1px solid white;
+    }
 
-        .editor-group {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
+    .hamburger {
+      border: 1px solid rgb(7, 249, 23);
+      font-size: 1.2rem;
+      padding: 0.3rem 0.6rem;
+    }
 
-        .copy-btn {
-            position: absolute;
-            top: 8px;
-            right: 8px;
-            padding: 4px 8px;
-            background: #4caf50;
-            border: none;
-            color: white;
-            border-radius: 4px;
-            font-size: 0.8rem;
-            cursor: pointer;
-        }
+    .container {
+      display: flex;
+      flex-direction: row;
+      height: calc(100vh - 96px);
+      overflow: hidden;
+    }
 
-        .lesson-section {
-            background: #fff;
-            border-radius: 10px;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-            margin-bottom: 2rem;
-        }
+    .drawer {
+      position: fixed;
+      top: 96px;
+      left: -100%;
+      width: 85%;
+      max-width: 300px;
+      height: calc(100% - 96px);
+      background: #fff;
+      box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+      z-index: 10;
+      transition: left 0.3s ease;
+      overflow-y: auto;
+      padding: 1rem;
+    }
 
-        .lesson-section h2 {
-            font-size: 1.4rem;
-            color: var(--accent);
-            margin-bottom: 0.5rem;
-        }
+    .drawer.open {
+      left: 0;
+      top: 130px;
+      overflow-y: scroll;
+    }
 
-        textarea {
-            width: 100%;
-            height: 220px;
-            font-family: monospace;
-            font-size: 1rem;
-            padding: 0.75rem;
-            border-radius: 6px;
-            background: #282c34;
-            color: #f8f8f2;
-            border: none;
-            box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.2);
-            resize: vertical;
-        }
+    .lesson h2,
+    .editor h2 {
+      margin-top: 0;
+    }
 
-        button#runBtn {
-            margin-top: 1rem;
-            padding: 0.5rem 1rem;
-            background-color: var(--accent);
-            color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 1rem;
-        }
+    .lesson pre {
+      background: #eee;
+      padding: 0.75rem;
+      border-radius: 6px;
+      overflow-x: auto;
+      position: relative;
+    }
 
-        button#toggleTheme {
-            inset: 0;
-            cursor: pointer;
-            background-color: transparent;
-            color: white;
-        }
+    .editor {
+      flex: 1;
+      padding: 1rem 2rem;
+      overflow-y: auto;
+    }
 
-        iframe#preview {
-            margin-top: 1rem;
-            width: 100%;
-            height: 300px;
-            border: 1px solid #ccc;
-            background: white;
-            border-radius: 6px;
-        }
+    .editor-group {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
 
-        @media (min-width: 768px) {
-            .hamburger {
-                display: none;
-            }
+    .copy-btn {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      padding: 4px 8px;
+      background: #4caf50;
+      border: none;
+      color: white;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      cursor: pointer;
+    }
 
-            .drawer {
-                position: relative;
-                left: 0 !important;
-                top: 0;
-                width: 40%;
-                box-shadow: none;
-                padding: 2rem;
-            }
+    .lesson-section {
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      margin-bottom: 2rem;
+    }
 
-            .editor {
-                width: 60%;
-            }
+    .lesson-section h2 {
+      font-size: 1.4rem;
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+    }
 
-            .editor-group {
-                flex-direction: row;
-            }
-        }
+    textarea {
+      width: 100%;
+      height: 220px;
+      font-family: monospace;
+      font-size: 1rem;
+      padding: 0.75rem;
+      border-radius: 6px;
+      background: #282c34;
+      color: #f8f8f2;
+      border: none;
+      box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.2);
+      resize: vertical;
+    }
 
-        @media (max-width: 767px) {
-            .hamburger {
-                display: block;
-            }
+    button#runBtn {
+      margin-top: 1rem;
+      padding: 0.5rem 1rem;
+      background-color: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
 
-            .editor {
-                padding: 1rem;
-                padding-right: 2rem;
-            }
+    iframe#preview {
+      margin-top: 1rem;
+      width: 100%;
+      height: 300px;
+      border: 1px solid #ccc;
+      background: white;
+      border-radius: 6px;
+    }
 
-            #runBtn {
-                position: fixed;
-                bottom: 1rem;
-                right: 1rem;
-                z-index: 999;
-                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-            }
-        }
+    /* Breakpoints */
+    @media (min-width: 768px) {
+      .hamburger {
+        display: none;
+      }
 
-        .dropdown {
-            position: relative;
-            margin-bottom: 1rem;
-        }
+      .drawer {
+        position: relative;
+        left: 0 !important;
+        top: 0;
+        width: 40%;
+        box-shadow: none;
+        padding: 2rem;
+      }
 
-        #dropdownToggle {
-            padding: 0.6rem 1rem;
-            border: 1px solid #ccc;
-            background: #f9f9f9;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 1rem;
-            width: 100%;
-            text-align: left;
-        }
+      .editor {
+        width: 60%;
+      }
 
-        .dropdown-menu {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            z-index: 10;
-            background: white;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            padding: 1rem;
-            margin-top: 0.4rem;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-            display: none;
-            max-height: 300px;
-            overflow-y: auto;
-            width: 100%;
-        }
+      .editor-group {
+        flex-direction: row;
+      }
+    }
 
-        .dropdown-menu label {
-            display: block;
-            margin-bottom: 0.4rem;
-            font-size: 0.95rem;
-        }
+    @media (max-width: 768px) {
+      .header-wrapper {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.75rem;
+      }
 
-        .dropdown-actions {
-            display: flex;
-            gap: 0.5rem;
-            margin-bottom: 0.75rem;
-        }
+      .logo-title {
+        justify-content: flex-start;
+      }
 
-        .dropdown-actions button {
-            padding: 0.3rem 0.6rem;
-            font-size: 0.9rem;
-            cursor: pointer;
-            border: 1px solid #ccc;
-            background: #eee;
-            border-radius: 4px;
-        }
+      .theme-btn {
+        align-self: flex-end;
+      }
 
-        .dropdown.open .dropdown-menu {
-            display: block;
-        }
-    </style>
+      .hamburger {
+        align-self: flex-start;
+        display: block;
+      }
+
+      .editor {
+        padding: 1rem 2rem 1rem 1rem;
+      }
+
+      #runBtn {
+        position: fixed;
+        bottom: 1rem;
+        right: 1rem;
+        z-index: 999;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+      }
+
+      .btn-wrapper {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+      }
+    }
+
+    /* Dropdown Filter */
+    .dropdown {
+      position: relative;
+      margin-bottom: 1rem;
+    }
+
+    #dropdownToggle {
+      padding: 0.6rem 1rem;
+      border: 1px solid #ccc;
+      background: #f9f9f9;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 1rem;
+      width: 100%;
+      text-align: left;
+    }
+
+    .dropdown-menu {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      z-index: 10;
+      background: white;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      padding: 1rem;
+      margin-top: 0.4rem;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      display: none;
+      max-height: 300px;
+      overflow-y: auto;
+      width: 100%;
+    }
+
+    .dropdown-menu label {
+      display: block;
+      margin-bottom: 0.4rem;
+      font-size: 0.95rem;
+    }
+
+    .dropdown-actions {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .dropdown-actions button {
+      padding: 0.3rem 0.6rem;
+      font-size: 0.9rem;
+      cursor: pointer;
+      border: 1px solid #ccc;
+      background: #eee;
+      border-radius: 4px;
+    }
+
+    .dropdown.open .dropdown-menu {
+      display: block;
+    }
+
+    @keyframes floatSpin {
+      0% {
+        transform: rotate(0deg) scale(1);
+        opacity: 1;
+      }
+
+      50% {
+        transform: rotate(180deg) scale(1.05);
+        opacity: 0.9;
+      }
+
+      100% {
+        transform: rotate(360deg) scale(1);
+        opacity: 1;
+      }
+    }
+
+    .logo.logo-animate {
+      animation: floatSpin 8s ease-in-out infinite;
+      transform-origin: center;
+      will-change: transform, opacity;
+    }
+  </style>
 </head>
 
 <body>
-    <header>
+  <header>
+    <div class="header-wrapper">
+
+      <div class="logo-title">
+        <img src="./images/bmc-it-club-circle-logo.png" alt="Logo" class="logo logo-animate"
+          onclick="window.location.href = './index.html'" />
+        <div class="text">
+          <h1>Practice CSS</h1>
+          <p>Write and run real code. No setup required.</p>
+        </div>
+      </div>
+      <div class="btn-wrapper">
         <button class="hamburger" id="hamburgerBtn">&#9776;</button>
-        <h1>Practice CSS</h1>
-        <p>Understand CSS by writing and running real code. No setup required.</p>
-        <button id="toggleTheme">Theme</button>
-    </header>
+        <button id="toggleTheme" class="theme-btn">🌗</button>
+      </div>
+    </div>
+  </header>
 
-    <div class="container">
-        <!-- Sliding Drawer -->
-        <aside class="drawer" id="drawer">
-            <div id="filterDropdown" class="dropdown">
-                <button id="dropdownToggle">Filter Topics</button>
-                <div id="dropdownMenu" class="dropdown-menu">
-                    <div class="dropdown-actions">
-                        <button type="button" id="selectAllBtn">Select All</button>
-                        <button type="button" id="clearAllBtn">Remove All</button>
-                    </div>
-                    <div id="topicCheckboxes">
-                        <label><input type="checkbox" value="selectors" checked> Selectors</label>
-                        <label><input type="checkbox" value="box-model" checked> Box Model</label>
-                        <label><input type="checkbox" value="shadow-and-borders" checked> Shadow and Borders</label>
-                        <label><input type="checkbox" value="units" checked> Units</label>
-                        <label><input type="checkbox" value="display" checked> Display</label>
-                        <label><input type="checkbox" value="overflow" checked> Overflow & Visibility</label>
-                        <label><input type="checkbox" value="position" checked> Position</label>
-                        <label><input type="checkbox" value="colors" checked> Colors & Backgrounds</label>
-                        <label><input type="checkbox" value="typography" checked> Typography</label>
-                        <label><input type="checkbox" value="flexbox" checked> Flexbox</label>
-                        <label><input type="checkbox" value="grid" checked> Grid</label>
-                        <label><input type="checkbox" value="transitions" checked> Transitions & Animations</label>
-                        <label><input type="checkbox" value="media" checked> Media Queries</label>
-                        <label><input type="checkbox" value="z-index" checked> Z-Index & Stacking</label>
-                        <label><input type="checkbox" value="variables" checked> CSS Variables</label>
-                        <label><input type="checkbox" value="pseudo-classes" checked> Pseudo-classes</label>
-                        <label><input type="checkbox" value="specificity" checked> CSS Specificity</label>
-                    </div>
-                </div>
-            </div>
 
-            <section class="lesson" id="lessonSection">
+  <div class="container">
+    <!-- Sliding Drawer -->
+    <aside class="drawer" id="drawer">
+      <div id="filterDropdown" class="dropdown">
+        <button id="dropdownToggle">Filter Topics</button>
+        <div id="dropdownMenu" class="dropdown-menu">
+          <div class="dropdown-actions">
+            <button type="button" id="selectAllBtn">Select All</button>
+            <button type="button" id="clearAllBtn">Remove All</button>
+          </div>
+          <div id="topicCheckboxes">
+            <label><input type="checkbox" value="selectors" checked> Selectors</label>
+            <label><input type="checkbox" value="box-model" checked> Box Model</label>
+            <label><input type="checkbox" value="shadow-and-borders" checked> Shadow and Borders</label>
+            <label><input type="checkbox" value="units" checked> Units</label>
+            <label><input type="checkbox" value="display" checked> Display</label>
+            <label><input type="checkbox" value="overflow" checked> Overflow & Visibility</label>
+            <label><input type="checkbox" value="position" checked> Position</label>
+            <label><input type="checkbox" value="colors" checked> Colors & Backgrounds</label>
+            <label><input type="checkbox" value="typography" checked> Typography</label>
+            <label><input type="checkbox" value="flexbox" checked> Flexbox</label>
+            <label><input type="checkbox" value="grid" checked> Grid</label>
+            <label><input type="checkbox" value="transitions" checked> Transitions & Animations</label>
+            <label><input type="checkbox" value="media" checked> Media Queries</label>
+            <label><input type="checkbox" value="z-index" checked> Z-Index & Stacking</label>
+            <label><input type="checkbox" value="variables" checked> CSS Variables</label>
+            <label><input type="checkbox" value="pseudo-classes" checked> Pseudo-classes</label>
+            <label><input type="checkbox" value="specificity" checked> CSS Specificity</label>
+          </div>
+        </div>
+      </div>
 
-                <div class="lesson-section" data-topic="selectors">
-                    <h2>CSS Selectors</h2>
-                    <p>
-                        Selectors are used to target HTML elements so you can style them. CSS provides a wide range of
-                        selectors.
-                    </p>
-                    <ul>
-                        <li><strong>Universal Selector</strong>: Targets all elements → <code>*</code></li>
-                        <li><strong>Type Selector</strong>: Targets elements by tag name → <code>div</code>,
-                            <code>p</code>
-                        </li>
-                        <li><strong>Class Selector</strong>: Targets elements with a specific class → <code>.btn</code>
-                        </li>
-                        <li><strong>ID Selector</strong>: Targets an element with a specific ID → <code>#header</code>
-                        </li>
-                        <li><strong>Group Selector</strong>: Targets multiple elements → <code>h1, h2, h3</code></li>
-                        <li><strong>Descendant Selector</strong>: Targets elements inside others → <code>.card p</code>
-                        </li>
-                        <li><strong>Child Selector</strong>: Direct child only → <code>.container > p</code></li>
-                        <li><strong>Adjacent Sibling Selector</strong>: Immediate next sibling → <code>h2 + p</code>
-                        </li>
-                        <li><strong>General Sibling Selector</strong>: Any next siblings → <code>h2 ~ p</code></li>
-                        <li><strong>Attribute Selector</strong>: Target by attribute → <code>input[type="text"]</code>
-                        </li>
-                        <li><strong>Pseudo-classes</strong>: Based on state → <code>a:hover</code>,
-                            <code>:nth-child(2)</code>
-                        </li>
-                        <li><strong>Pseudo-elements</strong>: Style parts → <code>p::first-line</code>,
-                            <code>::before</code>
-                        </li>
-                    </ul>
+      <section class="lesson" id="lessonSection">
 
-                    <pre><code>/* Examples */
+        <div class="lesson-section" data-topic="selectors">
+          <h2>CSS Selectors</h2>
+          <p>
+            Selectors are used to target HTML elements so you can style them. CSS provides a wide range of
+            selectors.
+          </p>
+          <ul>
+            <li><strong>Universal Selector</strong>: Targets all elements → <code>*</code></li>
+            <li><strong>Type Selector</strong>: Targets elements by tag name → <code>div</code>,
+              <code>p</code>
+            </li>
+            <li><strong>Class Selector</strong>: Targets elements with a specific class → <code>.btn</code>
+            </li>
+            <li><strong>ID Selector</strong>: Targets an element with a specific ID → <code>#header</code>
+            </li>
+            <li><strong>Group Selector</strong>: Targets multiple elements → <code>h1, h2, h3</code></li>
+            <li><strong>Descendant Selector</strong>: Targets elements inside others → <code>.card p</code>
+            </li>
+            <li><strong>Child Selector</strong>: Direct child only → <code>.container > p</code></li>
+            <li><strong>Adjacent Sibling Selector</strong>: Immediate next sibling → <code>h2 + p</code>
+            </li>
+            <li><strong>General Sibling Selector</strong>: Any next siblings → <code>h2 ~ p</code></li>
+            <li><strong>Attribute Selector</strong>: Target by attribute → <code>input[type="text"]</code>
+            </li>
+            <li><strong>Pseudo-classes</strong>: Based on state → <code>a:hover</code>,
+              <code>:nth-child(2)</code>
+            </li>
+            <li><strong>Pseudo-elements</strong>: Style parts → <code>p::first-line</code>,
+              <code>::before</code>
+            </li>
+          </ul>
+
+          <pre><code>/* Examples */
 * {
   margin: 0;
 }
@@ -390,7 +481,7 @@ p::first-line {
   font-weight: bold;
 }</code><button class="copy-btn">Copy</button></pre>
 
-                    <pre><code>&lt;div class="container"&gt;
+          <pre><code>&lt;div class="container"&gt;
   &lt;h1 id="main-title"&gt;Selectors Demo&lt;/h1&gt;
   &lt;div class="card"&gt;
     &lt;h2&gt;Heading&lt;/h2&gt;
@@ -398,22 +489,22 @@ p::first-line {
   &lt;/div&gt;
   &lt;a href="#"&gt;Hover me&lt;/a&gt;
 &lt;/div&gt;</code><button class="copy-btn">Copy</button></pre>
-                </div>
+        </div>
 
-                <div class="lesson-section" data-topic="box-model">
-                    <h2>Box Model</h2>
-                    <p>
-                        Every HTML element is a rectangular box. The box model describes the spacing around and inside
-                        elements using:
-                    </p>
-                    <ul>
-                        <li><strong>Content</strong>: The actual text or child elements inside the box.</li>
-                        <li><strong>Padding</strong>: Space between the content and the border.</li>
-                        <li><strong>Border</strong>: The edge around the padding and content.</li>
-                        <li><strong>Margin</strong>: Space outside the border, separating it from other elements.</li>
-                    </ul>
+        <div class="lesson-section" data-topic="box-model">
+          <h2>Box Model</h2>
+          <p>
+            Every HTML element is a rectangular box. The box model describes the spacing around and inside
+            elements using:
+          </p>
+          <ul>
+            <li><strong>Content</strong>: The actual text or child elements inside the box.</li>
+            <li><strong>Padding</strong>: Space between the content and the border.</li>
+            <li><strong>Border</strong>: The edge around the padding and content.</li>
+            <li><strong>Margin</strong>: Space outside the border, separating it from other elements.</li>
+          </ul>
 
-                    <pre><code>/* CSS */
+          <pre><code>/* CSS */
 .box {
   width: 200px;
   padding: 20px;
@@ -422,40 +513,40 @@ p::first-line {
   background-color: lightyellow;
 }</code><button class="copy-btn">Copy</button></pre>
 
-                    <pre><code>&lt;div class="box"&gt;
+          <pre><code>&lt;div class="box"&gt;
   Box Model Example
 &lt;/div&gt;</code><button class="copy-btn">Copy</button></pre>
-                </div>
+        </div>
 
-                <div class="lesson-section" data-topic="shadow-and-borders">
-                    <h2>Shadows & Borders</h2>
-                    <p>
-                        Shadows and borders help highlight elements and add depth or visual separation in your UI
-                        design.
-                    </p>
+        <div class="lesson-section" data-topic="shadow-and-borders">
+          <h2>Shadows & Borders</h2>
+          <p>
+            Shadows and borders help highlight elements and add depth or visual separation in your UI
+            design.
+          </p>
 
-                    <h3><code>border</code></h3>
-                    <ul>
-                        <li><code>border-width</code>: Thickness (e.g., <code>2px</code>)</li>
-                        <li><code>border-style</code>: Style (e.g., <code>solid</code>, <code>dashed</code>,
-                            <code>dotted</code>)
-                        </li>
-                        <li><code>border-color</code>: Color (e.g., <code>#333</code>)</li>
-                        <li><code>border-radius</code>: Rounds corners (e.g., <code>10px</code>)</li>
-                    </ul>
+          <h3><code>border</code></h3>
+          <ul>
+            <li><code>border-width</code>: Thickness (e.g., <code>2px</code>)</li>
+            <li><code>border-style</code>: Style (e.g., <code>solid</code>, <code>dashed</code>,
+              <code>dotted</code>)
+            </li>
+            <li><code>border-color</code>: Color (e.g., <code>#333</code>)</li>
+            <li><code>border-radius</code>: Rounds corners (e.g., <code>10px</code>)</li>
+          </ul>
 
-                    <h3><code>box-shadow</code></h3>
-                    <p>
-                        Adds shadow around an element. Syntax: <code>offset-x offset-y blur-radius color</code>
-                    </p>
-                    <ul>
-                        <li><code>box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.3);</code></li>
-                        <li>You can add multiple shadows with commas</li>
-                        <li>Use <code>inset</code> for inner shadows</li>
-                    </ul>
+          <h3><code>box-shadow</code></h3>
+          <p>
+            Adds shadow around an element. Syntax: <code>offset-x offset-y blur-radius color</code>
+          </p>
+          <ul>
+            <li><code>box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.3);</code></li>
+            <li>You can add multiple shadows with commas</li>
+            <li>Use <code>inset</code> for inner shadows</li>
+          </ul>
 
-                    <h3>Examples</h3>
-                    <pre><code>/* CSS */
+          <h3>Examples</h3>
+          <pre><code>/* CSS */
 .shadow-box {
   padding: 1rem;
   background: white;
@@ -464,30 +555,30 @@ p::first-line {
   box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.25);
 }</code><button class="copy-btn">Copy</button></pre>
 
-                    <pre><code>&lt;div class="shadow-box"&gt;
+          <pre><code>&lt;div class="shadow-box"&gt;
   I have a border and a shadow!
 &lt;/div&gt;</code><button class="copy-btn">Copy</button></pre>
-                </div>
+        </div>
 
-                <div class="lesson-section" data-topic="units">
-                    <h2>CSS Units</h2>
-                    <p>CSS units define how sizes like width, padding, margin, and font-size are measured. They can be
-                        either absolute (fixed) or relative (flexible).</p>
+        <div class="lesson-section" data-topic="units">
+          <h2>CSS Units</h2>
+          <p>CSS units define how sizes like width, padding, margin, and font-size are measured. They can be
+            either absolute (fixed) or relative (flexible).</p>
 
-                    <h3>Common Units</h3>
-                    <ul>
-                        <li><strong>px</strong> – Pixels (absolute unit, fixed size)</li>
-                        <li><strong>em</strong> – Relative to the font-size of the parent</li>
-                        <li><strong>rem</strong> – Relative to the root element’s font-size</li>
-                        <li><strong>%</strong> – Percentage, relative to the parent element</li>
-                        <li><strong>vw</strong> – Viewport width</li>
-                        <li><strong>vh</strong> – Viewport height</li>
-                        <li><strong>fr</strong> – Fraction of available space (for Grid layout)</li>
-                        <li><strong>ch</strong> – Width of the “0” character (used in typography)</li>
-                    </ul>
+          <h3>Common Units</h3>
+          <ul>
+            <li><strong>px</strong> – Pixels (absolute unit, fixed size)</li>
+            <li><strong>em</strong> – Relative to the font-size of the parent</li>
+            <li><strong>rem</strong> – Relative to the root element’s font-size</li>
+            <li><strong>%</strong> – Percentage, relative to the parent element</li>
+            <li><strong>vw</strong> – Viewport width</li>
+            <li><strong>vh</strong> – Viewport height</li>
+            <li><strong>fr</strong> – Fraction of available space (for Grid layout)</li>
+            <li><strong>ch</strong> – Width of the “0” character (used in typography)</li>
+          </ul>
 
-                    <h3>Examples</h3>
-                    <pre><code>/* CSS */
+          <h3>Examples</h3>
+          <pre><code>/* CSS */
 .unit-demo {
   padding: 1rem;
   font-size: 1.5em;
@@ -498,32 +589,32 @@ p::first-line {
   margin: 2ch;
 }</code><button class="copy-btn">Copy</button></pre>
 
-                    <pre><code>&lt;div class="unit-demo"&gt;
+          <pre><code>&lt;div class="unit-demo"&gt;
   Resize the screen or adjust font-size to see changes!
 &lt;/div&gt;</code><button class="copy-btn">Copy</button></pre>
-                </div>
+        </div>
 
-                <div class="lesson-section" data-topic="display">
-                    <h2>Display Property</h2>
-                    <p>
-                        The <code>display</code> property controls how elements are displayed in the layout. Common
-                        values include:
-                    </p>
-                    <ul>
-                        <li><strong>block</strong>: Takes full width, starts on a new line (e.g.,
-                            <code>&lt;div&gt;</code>).
-                        </li>
-                        <li><strong>inline</strong>: Takes only as much width as needed, stays in line (e.g.,
-                            <code>&lt;span&gt;</code>).
-                        </li>
-                        <li><strong>inline-block</strong>: Like <code>inline</code> but allows setting width and height.
-                        </li>
-                        <li><strong>none</strong>: Completely hides the element from layout.</li>
-                        <li><strong>flex</strong>: Enables Flexbox layout for flexible, responsive designs.</li>
-                        <li><strong>grid</strong>: Enables Grid layout for 2D positioning.</li>
-                    </ul>
+        <div class="lesson-section" data-topic="display">
+          <h2>Display Property</h2>
+          <p>
+            The <code>display</code> property controls how elements are displayed in the layout. Common
+            values include:
+          </p>
+          <ul>
+            <li><strong>block</strong>: Takes full width, starts on a new line (e.g.,
+              <code>&lt;div&gt;</code>).
+            </li>
+            <li><strong>inline</strong>: Takes only as much width as needed, stays in line (e.g.,
+              <code>&lt;span&gt;</code>).
+            </li>
+            <li><strong>inline-block</strong>: Like <code>inline</code> but allows setting width and height.
+            </li>
+            <li><strong>none</strong>: Completely hides the element from layout.</li>
+            <li><strong>flex</strong>: Enables Flexbox layout for flexible, responsive designs.</li>
+            <li><strong>grid</strong>: Enables Grid layout for 2D positioning.</li>
+          </ul>
 
-                    <pre><code>/* CSS */
+          <pre><code>/* CSS */
 .block {
   display: block;
   background: lightblue;
@@ -541,7 +632,7 @@ p::first-line {
   gap: 1rem;
 }</code><button class="copy-btn">Copy</button></pre>
 
-                    <pre><code>&lt;div class="block"&gt;Block Element&lt;/div&gt;
+          <pre><code>&lt;div class="block"&gt;Block Element&lt;/div&gt;
 
 &lt;span class="inline"&gt;Inline A&lt;/span&gt;
 &lt;span class="inline"&gt;Inline B&lt;/span&gt;
@@ -550,33 +641,33 @@ p::first-line {
   &lt;div&gt;Flex 1&lt;/div&gt;
   &lt;div&gt;Flex 2&lt;/div&gt;
 &lt;/div&gt;</code><button class="copy-btn">Copy</button></pre>
-                </div>
+        </div>
 
-                <div class="lesson-section" data-topic="overflow">
-                    <h2>Overflow & Visibility</h2>
-                    <p>
-                        These properties control how content behaves when it overflows the boundaries of its container
-                        or whether it's visible at all.
-                    </p>
+        <div class="lesson-section" data-topic="overflow">
+          <h2>Overflow & Visibility</h2>
+          <p>
+            These properties control how content behaves when it overflows the boundaries of its container
+            or whether it's visible at all.
+          </p>
 
-                    <h3><code>overflow</code></h3>
-                    <p>Controls what happens to content that overflows its container.</p>
-                    <ul>
-                        <li><code>visible</code> (default) – content spills out</li>
-                        <li><code>hidden</code> – excess content is clipped</li>
-                        <li><code>scroll</code> – always adds scrollbars</li>
-                        <li><code>auto</code> – adds scrollbars only when needed</li>
-                    </ul>
+          <h3><code>overflow</code></h3>
+          <p>Controls what happens to content that overflows its container.</p>
+          <ul>
+            <li><code>visible</code> (default) – content spills out</li>
+            <li><code>hidden</code> – excess content is clipped</li>
+            <li><code>scroll</code> – always adds scrollbars</li>
+            <li><code>auto</code> – adds scrollbars only when needed</li>
+          </ul>
 
-                    <h3><code>visibility</code></h3>
-                    <p>Controls whether an element is visible or not, without removing it from the layout.</p>
-                    <ul>
-                        <li><code>visible</code> – element is shown</li>
-                        <li><code>hidden</code> – element is invisible but still takes up space</li>
-                    </ul>
+          <h3><code>visibility</code></h3>
+          <p>Controls whether an element is visible or not, without removing it from the layout.</p>
+          <ul>
+            <li><code>visible</code> – element is shown</li>
+            <li><code>hidden</code> – element is invisible but still takes up space</li>
+          </ul>
 
-                    <h3>Examples</h3>
-                    <pre><code>/* CSS */
+          <h3>Examples</h3>
+          <pre><code>/* CSS */
 .overflow-box {
   width: 200px;
   height: 20px;
@@ -591,32 +682,32 @@ p::first-line {
   visibility: hidden;
 }</code><button class="copy-btn">Copy</button></pre>
 
-                    <pre><code>&lt;div class="overflow-box"&gt;
+          <pre><code>&lt;div class="overflow-box"&gt;
   This box has more content than it can fit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ut...
 &lt;/div&gt;
 
 &lt;div class="invisible-box"&gt;
   You can't see me, but I take up space!
 &lt;/div&gt;</code><button class="copy-btn">Copy</button></pre>
-                </div>
+        </div>
 
-                <div class="lesson-section" data-topic="position">
-                    <h2>Position Property</h2>
-                    <p>
-                        The <code>position</code> property defines how an element is positioned in the document. Common
-                        values:
-                    </p>
-                    <ul>
-                        <li><strong>static</strong>: Default positioning (no special layout behavior).</li>
-                        <li><strong>relative</strong>: Moves element relative to its normal spot.</li>
-                        <li><strong>absolute</strong>: Removes element from flow; positions it relative to nearest
-                            positioned ancestor.</li>
-                        <li><strong>fixed</strong>: Fixed to the viewport. Stays in place when scrolling.</li>
-                        <li><strong>sticky</strong>: Acts like relative, but sticks in place when it reaches a scroll
-                            threshold.</li>
-                    </ul>
+        <div class="lesson-section" data-topic="position">
+          <h2>Position Property</h2>
+          <p>
+            The <code>position</code> property defines how an element is positioned in the document. Common
+            values:
+          </p>
+          <ul>
+            <li><strong>static</strong>: Default positioning (no special layout behavior).</li>
+            <li><strong>relative</strong>: Moves element relative to its normal spot.</li>
+            <li><strong>absolute</strong>: Removes element from flow; positions it relative to nearest
+              positioned ancestor.</li>
+            <li><strong>fixed</strong>: Fixed to the viewport. Stays in place when scrolling.</li>
+            <li><strong>sticky</strong>: Acts like relative, but sticks in place when it reaches a scroll
+              threshold.</li>
+          </ul>
 
-                    <pre><code>/* CSS */
+          <pre><code>/* CSS */
 .static-box {
   position: static;
   background: lightgray;
@@ -665,7 +756,7 @@ p::first-line {
   z-index: 10;
 }</code><button class="copy-btn">Copy</button></pre>
 
-                    <pre><code>&lt;div class="static-box"&gt;Static Position (default)&lt;/div&gt;
+          <pre><code>&lt;div class="static-box"&gt;Static Position (default)&lt;/div&gt;
 
 &lt;div class="relative-box"&gt;Relative Position&lt;/div&gt;
 
@@ -679,30 +770,30 @@ p::first-line {
 &lt;div style="height: 400px"&gt;&lt;/div&gt;
 
 &lt;div class="fixed-box"&gt;Fixed to Bottom Right&lt;/div&gt;</code><button class="copy-btn">Copy</button></pre>
-                </div>
+        </div>
 
-                <div class="lesson-section" data-topic="colors">
-                    <h2>Colors & Backgrounds</h2>
-                    <p>
-                        CSS gives you control over how elements look by letting you set colors and background styles.
-                        Let's understand some key properties:
-                    </p>
+        <div class="lesson-section" data-topic="colors">
+          <h2>Colors & Backgrounds</h2>
+          <p>
+            CSS gives you control over how elements look by letting you set colors and background styles.
+            Let's understand some key properties:
+          </p>
 
-                    <ul>
-                        <li><strong>color</strong>: Changes the text color.</li>
-                        <li><strong>background-color</strong>: Sets the background color of an element.</li>
-                        <li><strong>background-image</strong>: Adds an image as the background.</li>
-                        <li><strong>background-size</strong>: Defines how the image scales (e.g., <code>cover</code>,
-                            <code>contain</code>).
-                        </li>
-                        <li><strong>background-repeat</strong>: Determines if the image repeats.</li>
-                        <li><strong>background</strong>: A shorthand to combine multiple background properties.</li>
-                        <li><strong>opacity</strong>: Controls transparency of the entire element (not just the
-                            background).</li>
-                    </ul>
+          <ul>
+            <li><strong>color</strong>: Changes the text color.</li>
+            <li><strong>background-color</strong>: Sets the background color of an element.</li>
+            <li><strong>background-image</strong>: Adds an image as the background.</li>
+            <li><strong>background-size</strong>: Defines how the image scales (e.g., <code>cover</code>,
+              <code>contain</code>).
+            </li>
+            <li><strong>background-repeat</strong>: Determines if the image repeats.</li>
+            <li><strong>background</strong>: A shorthand to combine multiple background properties.</li>
+            <li><strong>opacity</strong>: Controls transparency of the entire element (not just the
+              background).</li>
+          </ul>
 
-                    <h3>Color Formats</h3>
-                    <pre><code>/* CSS */
+          <h3>Color Formats</h3>
+          <pre><code>/* CSS */
 .named-color {
   color: red; /* Named color */
   background-color: lightgray;
@@ -738,14 +829,14 @@ p::first-line {
   margin-bottom: 1rem;
 }</code><button class="copy-btn">Copy</button></pre>
 
-                    <pre><code>&lt;div class="named-color"&gt;Named Color Example&lt;/div&gt;
+          <pre><code>&lt;div class="named-color"&gt;Named Color Example&lt;/div&gt;
 &lt;div class="hex-color"&gt;HEX Color Example&lt;/div&gt;
 &lt;div class="rgb-color"&gt;RGB Color Example&lt;/div&gt;
 &lt;div class="rgba-color"&gt;RGBA with Transparency&lt;/div&gt;
 &lt;div class="hsl-color"&gt;HSL Color Example&lt;/div&gt;</code><button class="copy-btn">Copy</button></pre>
 
-                    <h3>Background Styles</h3>
-                    <pre><code>/* CSS */
+          <h3>Background Styles</h3>
+          <pre><code>/* CSS */
 .bg-solid {
   background-color: skyblue;
   padding: 1rem;
@@ -772,33 +863,33 @@ p::first-line {
   border-radius: 6px;
 }</code><button class="copy-btn">Copy</button></pre>
 
-                    <pre><code>&lt;div class="bg-solid"&gt;Solid Background Color&lt;/div&gt;
+          <pre><code>&lt;div class="bg-solid"&gt;Solid Background Color&lt;/div&gt;
 
 &lt;div class="bg-image"&gt;Background Image&lt;/div&gt;
 
 &lt;div class="bg-gradient"&gt;Linear Gradient Background&lt;/div&gt;</code><button class="copy-btn">Copy</button></pre>
-                </div>
+        </div>
 
-                <div class="lesson-section" data-topic="typography">
-                    <h2>Typography</h2>
-                    <p>
-                        Typography in CSS deals with how text appears on the page — including its font, size, weight,
-                        spacing, alignment, and more.
-                    </p>
+        <div class="lesson-section" data-topic="typography">
+          <h2>Typography</h2>
+          <p>
+            Typography in CSS deals with how text appears on the page — including its font, size, weight,
+            spacing, alignment, and more.
+          </p>
 
-                    <ul>
-                        <li><strong>font-family</strong>: Sets the typeface (e.g., Arial, Georgia, sans-serif).</li>
-                        <li><strong>font-size</strong>: Controls the size of the text (e.g., 16px, 1.2em, 120%).</li>
-                        <li><strong>font-weight</strong>: Defines thickness (e.g., normal, bold, 100–900).</li>
-                        <li><strong>line-height</strong>: Sets spacing between lines of text.</li>
-                        <li><strong>letter-spacing</strong>: Controls spacing between letters.</li>
-                        <li><strong>text-align</strong>: Aligns text (left, center, right, justify).</li>
-                        <li><strong>text-transform</strong>: Changes case (uppercase, lowercase, capitalize).</li>
-                        <li><strong>text-decoration</strong>: Adds decoration like underline or line-through.</li>
-                        <li><strong>font-style</strong>: Italicizes text (normal, italic, oblique).</li>
-                    </ul>
+          <ul>
+            <li><strong>font-family</strong>: Sets the typeface (e.g., Arial, Georgia, sans-serif).</li>
+            <li><strong>font-size</strong>: Controls the size of the text (e.g., 16px, 1.2em, 120%).</li>
+            <li><strong>font-weight</strong>: Defines thickness (e.g., normal, bold, 100–900).</li>
+            <li><strong>line-height</strong>: Sets spacing between lines of text.</li>
+            <li><strong>letter-spacing</strong>: Controls spacing between letters.</li>
+            <li><strong>text-align</strong>: Aligns text (left, center, right, justify).</li>
+            <li><strong>text-transform</strong>: Changes case (uppercase, lowercase, capitalize).</li>
+            <li><strong>text-decoration</strong>: Adds decoration like underline or line-through.</li>
+            <li><strong>font-style</strong>: Italicizes text (normal, italic, oblique).</li>
+          </ul>
 
-                    <pre><code>/* CSS */
+          <pre><code>/* CSS */
 .typography-example {
   font-family: 'Georgia', serif;
   font-size: 1.2rem;
@@ -815,12 +906,12 @@ p::first-line {
   margin-bottom: 1rem;
 }</code><button class="copy-btn">Copy</button></pre>
 
-                    <pre><code>&lt;div class="typography-example"&gt;
+          <pre><code>&lt;div class="typography-example"&gt;
 this is a sample text demonstrating font styles and spacing in css.
 &lt;/div&gt;</code><button class="copy-btn">Copy</button></pre>
 
-                    <h3>Quick Font Families Demo</h3>
-                    <pre><code>/* CSS */
+          <h3>Quick Font Families Demo</h3>
+          <pre><code>/* CSS */
 .sans-serif {
   font-family: Arial, Helvetica, sans-serif;
 }
@@ -833,32 +924,32 @@ this is a sample text demonstrating font styles and spacing in css.
   font-family: 'Courier New', monospace;
 }</code><button class="copy-btn">Copy</button></pre>
 
-                    <pre><code>&lt;p class="sans-serif"&gt;This is Sans-Serif font&lt;/p&gt;
+          <pre><code>&lt;p class="sans-serif"&gt;This is Sans-Serif font&lt;/p&gt;
 &lt;p class="serif"&gt;This is Serif font&lt;/p&gt;
 &lt;p class="monospace"&gt;This is Monospace font&lt;/p&gt;</code><button class="copy-btn">Copy</button></pre>
-                </div>
+        </div>
 
-                <div class="lesson-section" data-topic="flexbox">
-                    <h2>Flexbox</h2>
-                    <p>
-                        Flexbox is a one-dimensional layout system in CSS that makes it easy to align and distribute
-                        space among items in a container.
-                        It works either in rows or columns.
-                    </p>
+        <div class="lesson-section" data-topic="flexbox">
+          <h2>Flexbox</h2>
+          <p>
+            Flexbox is a one-dimensional layout system in CSS that makes it easy to align and distribute
+            space among items in a container.
+            It works either in rows or columns.
+          </p>
 
-                    <ul>
-                        <li><strong>display: flex</strong> – Enables flex layout on a container.</li>
-                        <li><strong>flex-direction</strong> – Defines direction: row (default), column, row-reverse,
-                            column-reverse.</li>
-                        <li><strong>justify-content</strong> – Aligns items along the main axis (e.g., center,
-                            space-between).</li>
-                        <li><strong>align-items</strong> – Aligns items along the cross axis (e.g., center, flex-start).
-                        </li>
-                        <li><strong>gap</strong> – Adds spacing between flex items.</li>
-                        <li><strong>flex</strong> – Controls how a flex item grows/shrinks inside its container.</li>
-                    </ul>
+          <ul>
+            <li><strong>display: flex</strong> – Enables flex layout on a container.</li>
+            <li><strong>flex-direction</strong> – Defines direction: row (default), column, row-reverse,
+              column-reverse.</li>
+            <li><strong>justify-content</strong> – Aligns items along the main axis (e.g., center,
+              space-between).</li>
+            <li><strong>align-items</strong> – Aligns items along the cross axis (e.g., center, flex-start).
+            </li>
+            <li><strong>gap</strong> – Adds spacing between flex items.</li>
+            <li><strong>flex</strong> – Controls how a flex item grows/shrinks inside its container.</li>
+          </ul>
 
-                    <pre><code>/* CSS */
+          <pre><code>/* CSS */
 .flex-container {
   display: flex;
   flex-direction: row;
@@ -878,54 +969,54 @@ this is a sample text demonstrating font styles and spacing in css.
   text-align: center;
 }</code><button class="copy-btn">Copy</button></pre>
 
-                    <pre><code>&lt;div class="flex-container"&gt;
+          <pre><code>&lt;div class="flex-container"&gt;
   &lt;div class="flex-item"&gt;Item 1&lt;/div&gt;
   &lt;div class="flex-item"&gt;Item 2&lt;/div&gt;
   &lt;div class="flex-item"&gt;Item 3&lt;/div&gt;
 &lt;/div&gt;</code><button class="copy-btn">Copy</button></pre>
 
-                    <h3>Other Useful Properties</h3>
-                    <ul>
-                        <li><strong>align-self</strong>: Override alignment for one specific item.</li>
-                        <li><strong>flex-wrap</strong>: Allow items to wrap onto multiple lines (e.g., `wrap`,
-                            `nowrap`).</li>
-                        <li><strong>order</strong>: Change the order of items in layout (without changing HTML).</li>
-                    </ul>
+          <h3>Other Useful Properties</h3>
+          <ul>
+            <li><strong>align-self</strong>: Override alignment for one specific item.</li>
+            <li><strong>flex-wrap</strong>: Allow items to wrap onto multiple lines (e.g., `wrap`,
+              `nowrap`).</li>
+            <li><strong>order</strong>: Change the order of items in layout (without changing HTML).</li>
+          </ul>
 
-                    <pre><code>/* CSS */
+          <pre><code>/* CSS */
 .flex-wrap-example {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
 }</code><button class="copy-btn">Copy</button></pre>
 
-                    <pre><code>&lt;div class="flex-wrap-example"&gt;
+          <pre><code>&lt;div class="flex-wrap-example"&gt;
   &lt;div class="flex-item"&gt;One&lt;/div&gt;
   &lt;div class="flex-item"&gt;Two&lt;/div&gt;
   &lt;div class="flex-item"&gt;Three&lt;/div&gt;
   &lt;div class="flex-item"&gt;Four&lt;/div&gt;
   &lt;div class="flex-item"&gt;Five&lt;/div&gt;
 &lt;/div&gt;</code><button class="copy-btn">Copy</button></pre>
-                </div>
+        </div>
 
-                <div class="lesson-section" data-topic="grid">
-                    <h2>CSS Grid</h2>
-                    <p>
-                        CSS Grid is a powerful two-dimensional layout system for web design. It allows you to layout
-                        content in rows and columns with full control over alignment, spacing, and placement.
-                    </p>
+        <div class="lesson-section" data-topic="grid">
+          <h2>CSS Grid</h2>
+          <p>
+            CSS Grid is a powerful two-dimensional layout system for web design. It allows you to layout
+            content in rows and columns with full control over alignment, spacing, and placement.
+          </p>
 
-                    <ul>
-                        <li><strong>display: grid</strong>: Turns an element into a grid container.</li>
-                        <li><strong>grid-template-columns</strong>: Defines the number and size of columns.</li>
-                        <li><strong>grid-template-rows</strong>: Defines the number and size of rows.</li>
-                        <li><strong>gap</strong>: Adds spacing between grid items (both rows and columns).</li>
-                        <li><strong>grid-column</strong> & <strong>grid-row</strong>: Controls how items span
-                            columns/rows.</li>
-                        <li><strong>place-items</strong>: Shorthand for align-items and justify-items.</li>
-                    </ul>
+          <ul>
+            <li><strong>display: grid</strong>: Turns an element into a grid container.</li>
+            <li><strong>grid-template-columns</strong>: Defines the number and size of columns.</li>
+            <li><strong>grid-template-rows</strong>: Defines the number and size of rows.</li>
+            <li><strong>gap</strong>: Adds spacing between grid items (both rows and columns).</li>
+            <li><strong>grid-column</strong> & <strong>grid-row</strong>: Controls how items span
+              columns/rows.</li>
+            <li><strong>place-items</strong>: Shorthand for align-items and justify-items.</li>
+          </ul>
 
-                    <pre><code>/* CSS */
+          <pre><code>/* CSS */
 .grid-container {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -942,7 +1033,7 @@ this is a sample text demonstrating font styles and spacing in css.
   text-align: center;
 }</code><button class="copy-btn">Copy</button></pre>
 
-                    <pre><code>&lt;div class="grid-container"&gt;
+          <pre><code>&lt;div class="grid-container"&gt;
   &lt;div class="grid-item"&gt;1&lt;/div&gt;
   &lt;div class="grid-item"&gt;2&lt;/div&gt;
   &lt;div class="grid-item"&gt;3&lt;/div&gt;
@@ -951,8 +1042,8 @@ this is a sample text demonstrating font styles and spacing in css.
   &lt;div class="grid-item"&gt;6&lt;/div&gt;
 &lt;/div&gt;</code><button class="copy-btn">Copy</button></pre>
 
-                    <h3>Spanning Rows and Columns</h3>
-                    <pre><code>/* CSS */
+          <h3>Spanning Rows and Columns</h3>
+          <pre><code>/* CSS */
 .grid-span-example {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -967,33 +1058,33 @@ this is a sample text demonstrating font styles and spacing in css.
   grid-row: span 2;
 }</code><button class="copy-btn">Copy</button></pre>
 
-                    <pre><code>&lt;div class="grid-span-example"&gt;
+          <pre><code>&lt;div class="grid-span-example"&gt;
   &lt;div class="grid-item item1"&gt;Span 2 cols&lt;/div&gt;
   &lt;div class="grid-item"&gt;2&lt;/div&gt;
   &lt;div class="grid-item item4"&gt;Span 2 rows&lt;/div&gt;
   &lt;div class="grid-item"&gt;4&lt;/div&gt;
   &lt;div class="grid-item"&gt;5&lt;/div&gt;
 &lt;/div&gt;</code><button class="copy-btn">Copy</button></pre>
-                </div>
+        </div>
 
-                <div class="lesson-section" data-topic="transitions">
-                    <h2>Transitions & Animations</h2>
-                    <p>
-                        CSS allows you to create smooth effects using <strong>transitions</strong> for simple state
-                        changes (like hover), and <strong>animations</strong> for more complex keyframe-based motion.
-                    </p>
+        <div class="lesson-section" data-topic="transitions">
+          <h2>Transitions & Animations</h2>
+          <p>
+            CSS allows you to create smooth effects using <strong>transitions</strong> for simple state
+            changes (like hover), and <strong>animations</strong> for more complex keyframe-based motion.
+          </p>
 
-                    <h3>CSS Transitions</h3>
-                    <p>
-                        Transitions let you smoothly animate property changes over time.
-                    </p>
+          <h3>CSS Transitions</h3>
+          <p>
+            Transitions let you smoothly animate property changes over time.
+          </p>
 
-                    <ul>
-                        <li><strong>transition</strong>: Sets which property to animate and how long it takes.</li>
-                        <li>Commonly used with <code>:hover</code>, <code>:focus</code>, etc.</li>
-                    </ul>
+          <ul>
+            <li><strong>transition</strong>: Sets which property to animate and how long it takes.</li>
+            <li>Commonly used with <code>:hover</code>, <code>:focus</code>, etc.</li>
+          </ul>
 
-                    <pre><code>/* CSS */
+          <pre><code>/* CSS */
 .box {
   background: steelblue;
   color: white;
@@ -1007,21 +1098,21 @@ this is a sample text demonstrating font styles and spacing in css.
   transform: scale(1.1);
 }</code><button class="copy-btn">Copy</button></pre>
 
-                    <pre><code>&lt;div class="box"&gt;Hover over me!&lt;/div&gt;</code><button class="copy-btn">Copy</button></pre>
+          <pre><code>&lt;div class="box"&gt;Hover over me!&lt;/div&gt;</code><button class="copy-btn">Copy</button></pre>
 
-                    <h3>CSS Animations</h3>
-                    <p>
-                        Animations use keyframes to describe how an element should move or change over time.
-                    </p>
+          <h3>CSS Animations</h3>
+          <p>
+            Animations use keyframes to describe how an element should move or change over time.
+          </p>
 
-                    <ul>
-                        <li><strong>@keyframes</strong>: Define steps of an animation.</li>
-                        <li><strong>animation-name</strong>, <strong>animation-duration</strong>,
-                            <strong>animation-iteration-count</strong>, etc.
-                        </li>
-                    </ul>
+          <ul>
+            <li><strong>@keyframes</strong>: Define steps of an animation.</li>
+            <li><strong>animation-name</strong>, <strong>animation-duration</strong>,
+              <strong>animation-iteration-count</strong>, etc.
+            </li>
+          </ul>
 
-                    <pre><code>/* CSS */
+          <pre><code>/* CSS */
 @keyframes bounce {
   0%, 100% {
     transform: translateY(0);
@@ -1039,34 +1130,34 @@ this is a sample text demonstrating font styles and spacing in css.
   animation: bounce 0.8s ease infinite;
 }</code><button class="copy-btn">Copy</button></pre>
 
-                    <pre><code>&lt;div class="bouncer"&gt;I'm bouncing!&lt;/div&gt;</code><button class="copy-btn">Copy</button></pre>
+          <pre><code>&lt;div class="bouncer"&gt;I'm bouncing!&lt;/div&gt;</code><button class="copy-btn">Copy</button></pre>
 
-                    <h3>Other Useful Properties</h3>
-                    <ul>
-                        <li><strong>animation-delay</strong>: Start animation after a delay.</li>
-                        <li><strong>animation-fill-mode</strong>: Controls styles after animation ends.</li>
-                        <li><strong>transition-delay</strong>, <strong>transition-timing-function</strong>: More control
-                            for transitions.</li>
-                    </ul>
-                </div>
+          <h3>Other Useful Properties</h3>
+          <ul>
+            <li><strong>animation-delay</strong>: Start animation after a delay.</li>
+            <li><strong>animation-fill-mode</strong>: Controls styles after animation ends.</li>
+            <li><strong>transition-delay</strong>, <strong>transition-timing-function</strong>: More control
+              for transitions.</li>
+          </ul>
+        </div>
 
-                <div class="lesson-section" data-topic="media">
-                    <h2>Responsive & Resizable Design</h2>
-                    <p>
-                        Media queries allow your website to adapt to different screen sizes and devices by applying CSS
-                        conditionally based on the viewport’s width, height, resolution, and more.
-                        You can also allow users to resize certain elements using the <code>resize</code> property.
-                    </p>
+        <div class="lesson-section" data-topic="media">
+          <h2>Responsive & Resizable Design</h2>
+          <p>
+            Media queries allow your website to adapt to different screen sizes and devices by applying CSS
+            conditionally based on the viewport’s width, height, resolution, and more.
+            You can also allow users to resize certain elements using the <code>resize</code> property.
+          </p>
 
-                    <ul>
-                        <li><strong>@media</strong>: Applies styles based on screen conditions.</li>
-                        <li>Resize helps users adjust element size manually (works best with <code>overflow</code>).
-                        </li>
-                        <li>Great for building flexible, user-friendly interfaces.</li>
-                    </ul>
+          <ul>
+            <li><strong>@media</strong>: Applies styles based on screen conditions.</li>
+            <li>Resize helps users adjust element size manually (works best with <code>overflow</code>).
+            </li>
+            <li>Great for building flexible, user-friendly interfaces.</li>
+          </ul>
 
-                    <h3>Basic Media Query</h3>
-                    <pre><code>/* CSS */
+          <h3>Basic Media Query</h3>
+          <pre><code>/* CSS */
 @media (max-width: 600px) {
   .box {
     background: orange;
@@ -1074,18 +1165,18 @@ this is a sample text demonstrating font styles and spacing in css.
   }
 }</code><button class="copy-btn">Copy</button></pre>
 
-                    <pre><code>&lt;div class="box"&gt;Resize the screen!&lt;/div&gt;</code><button class="copy-btn">Copy</button></pre>
+          <pre><code>&lt;div class="box"&gt;Resize the screen!&lt;/div&gt;</code><button class="copy-btn">Copy</button></pre>
 
-                    <h3>Common Breakpoints</h3>
-                    <ul>
-                        <li><code>max-width: 480px</code> → Mobile phones</li>
-                        <li><code>max-width: 768px</code> → Tablets</li>
-                        <li><code>max-width: 1024px</code> → Small laptops</li>
-                        <li><code>min-width: 1025px</code> → Desktops</li>
-                    </ul>
+          <h3>Common Breakpoints</h3>
+          <ul>
+            <li><code>max-width: 480px</code> → Mobile phones</li>
+            <li><code>max-width: 768px</code> → Tablets</li>
+            <li><code>max-width: 1024px</code> → Small laptops</li>
+            <li><code>min-width: 1025px</code> → Desktops</li>
+          </ul>
 
-                    <h3>Responsive + Resizable Box</h3>
-                    <pre><code>/* CSS */
+          <h3>Responsive + Resizable Box</h3>
+          <pre><code>/* CSS */
 .responsive-box {
   background: #f0f0f0;
   padding: 1rem;
@@ -1112,29 +1203,29 @@ this is a sample text demonstrating font styles and spacing in css.
   }
 }</code><button class="copy-btn">Copy</button></pre>
 
-                    <pre><code>&lt;div class="responsive-box"&gt;
+          <pre><code>&lt;div class="responsive-box"&gt;
   Resize me on different screens!
 &lt;/div&gt;</code><button class="copy-btn">Copy</button></pre>
-                </div>
+        </div>
 
-                <div class="lesson-section" data-topic="z-index">
-                    <h2>Z-Index and Stacking Context</h2>
-                    <p>
-                        The <strong>z-index</strong> property in CSS controls the vertical stacking order of elements.
-                        It determines which element appears on top when elements overlap.
-                    </p>
+        <div class="lesson-section" data-topic="z-index">
+          <h2>Z-Index and Stacking Context</h2>
+          <p>
+            The <strong>z-index</strong> property in CSS controls the vertical stacking order of elements.
+            It determines which element appears on top when elements overlap.
+          </p>
 
-                    <ul>
-                        <li><strong>Higher z-index</strong> = on top.</li>
-                        <li>Only works on positioned elements (<code>position: relative</code>, <code>absolute</code>,
-                            <code>fixed</code>, or <code>sticky</code>).
-                        </li>
-                        <li>Each stacking context is isolated—children are stacked relative to their closest stacking
-                            parent.</li>
-                    </ul>
+          <ul>
+            <li><strong>Higher z-index</strong> = on top.</li>
+            <li>Only works on positioned elements (<code>position: relative</code>, <code>absolute</code>,
+              <code>fixed</code>, or <code>sticky</code>).
+            </li>
+            <li>Each stacking context is isolated—children are stacked relative to their closest stacking
+              parent.</li>
+          </ul>
 
-                    <h3>Basic Example</h3>
-                    <pre><code>/* CSS */
+          <h3>Basic Example</h3>
+          <pre><code>/* CSS */
 .box {
   position: absolute;
   width: 120px;
@@ -1163,44 +1254,44 @@ this is a sample text demonstrating font styles and spacing in css.
   z-index: 3;
 }</code><button class="copy-btn">Copy</button></pre>
 
-                    <pre><code>&lt;div class="box box1"&gt;z-index: 1&lt;/div&gt;
+          <pre><code>&lt;div class="box box1"&gt;z-index: 1&lt;/div&gt;
 &lt;div class="box box2"&gt;z-index: 2&lt;/div&gt;
 &lt;div class="box box3"&gt;z-index: 3&lt;/div&gt;</code><button class="copy-btn">Copy</button></pre>
 
-                    <h3>Stacking Context Triggers</h3>
-                    <p>
-                        A new stacking context is created when an element has:
-                    </p>
-                    <ul>
-                        <li><code>position</code> with <code>z-index</code></li>
-                        <li><code>opacity &lt; 1</code></li>
-                        <li><code>transform</code>, <code>filter</code>, <code>perspective</code>,
-                            <code>will-change</code>, etc.
-                        </li>
-                    </ul>
+          <h3>Stacking Context Triggers</h3>
+          <p>
+            A new stacking context is created when an element has:
+          </p>
+          <ul>
+            <li><code>position</code> with <code>z-index</code></li>
+            <li><code>opacity &lt; 1</code></li>
+            <li><code>transform</code>, <code>filter</code>, <code>perspective</code>,
+              <code>will-change</code>, etc.
+            </li>
+          </ul>
 
-                    <h3>Visual Explanation</h3>
-                    <p>Try changing the z-index values and see which box appears on top!</p>
-                </div>
+          <h3>Visual Explanation</h3>
+          <p>Try changing the z-index values and see which box appears on top!</p>
+        </div>
 
-                <div class="lesson-section" data-topic="variables">
-                    <h2>CSS Variables (Custom Properties)</h2>
-                    <p>
-                        CSS variables allow you to store values (like colors, spacing, fonts, etc.) in reusable names.
-                        They make your stylesheets more maintainable and dynamic.
-                    </p>
+        <div class="lesson-section" data-topic="variables">
+          <h2>CSS Variables (Custom Properties)</h2>
+          <p>
+            CSS variables allow you to store values (like colors, spacing, fonts, etc.) in reusable names.
+            They make your stylesheets more maintainable and dynamic.
+          </p>
 
-                    <ul>
-                        <li>Defined using <code>--variable-name</code> syntax inside a selector (often
-                            <code>:root</code>).
-                        </li>
-                        <li>Accessed with the <code>var(--variable-name)</code> function.</li>
-                        <li>Support fallback values: <code>var(--color, black)</code></li>
-                        <li>They follow the cascade and inheritance rules of CSS.</li>
-                    </ul>
+          <ul>
+            <li>Defined using <code>--variable-name</code> syntax inside a selector (often
+              <code>:root</code>).
+            </li>
+            <li>Accessed with the <code>var(--variable-name)</code> function.</li>
+            <li>Support fallback values: <code>var(--color, black)</code></li>
+            <li>They follow the cascade and inheritance rules of CSS.</li>
+          </ul>
 
-                    <h3>Basic Example</h3>
-                    <pre><code>/* CSS */
+          <h3>Basic Example</h3>
+          <pre><code>/* CSS */
 :root {
   --main-color: #3498db;
   --padding: 1rem;
@@ -1214,19 +1305,19 @@ this is a sample text demonstrating font styles and spacing in css.
   font-weight: bold;
 }</code><button class="copy-btn">Copy</button></pre>
 
-                    <pre><code>&lt;div class="variable-box"&gt;
+          <pre><code>&lt;div class="variable-box"&gt;
   This box uses CSS variables!
 &lt;/div&gt;</code><button class="copy-btn">Copy</button></pre>
 
-                    <h3>Benefits</h3>
-                    <ul>
-                        <li>Update theme or layout by changing just one variable.</li>
-                        <li>Can be re-declared in specific elements for scoped overrides.</li>
-                        <li>Great for dark mode, spacing systems, and reusable themes.</li>
-                    </ul>
+          <h3>Benefits</h3>
+          <ul>
+            <li>Update theme or layout by changing just one variable.</li>
+            <li>Can be re-declared in specific elements for scoped overrides.</li>
+            <li>Great for dark mode, spacing systems, and reusable themes.</li>
+          </ul>
 
-                    <h3>Override Example</h3>
-                    <pre><code>/* CSS */
+          <h3>Override Example</h3>
+          <pre><code>/* CSS */
 :root {
   --main-color: teal;
 }
@@ -1235,40 +1326,40 @@ this is a sample text demonstrating font styles and spacing in css.
   --main-color: crimson;
 }</code><button class="copy-btn">Copy</button></pre>
 
-                    <pre><code>&lt;div class="variable-box"&gt;Global Color (teal)&lt;/div&gt;
+          <pre><code>&lt;div class="variable-box"&gt;Global Color (teal)&lt;/div&gt;
 &lt;div class="variable-box override"&gt;Overridden Color (crimson)&lt;/div&gt;</code><button class="copy-btn">Copy</button></pre>
-                </div>
+        </div>
 
-                <div class="lesson-section" data-topic="pseudo-classes">
-                    <h2>Pseudo-classes & Pseudo-elements</h2>
-                    <p>
-                        Pseudo-classes and pseudo-elements allow you to style elements based on their state or parts of
-                        them that aren’t directly in the HTML.
-                    </p>
+        <div class="lesson-section" data-topic="pseudo-classes">
+          <h2>Pseudo-classes & Pseudo-elements</h2>
+          <p>
+            Pseudo-classes and pseudo-elements allow you to style elements based on their state or parts of
+            them that aren’t directly in the HTML.
+          </p>
 
-                    <h3>Pseudo-classes</h3>
-                    <p>Used to define a special state of an element.</p>
-                    <ul>
-                        <li><code>:hover</code> – when the mouse is over an element</li>
-                        <li><code>:active</code> – when the element is being clicked</li>
-                        <li><code>:focus</code> – when the element is focused (e.g., input field)</li>
-                        <li><code>:nth-child(n)</code> – selects the nth child of a parent</li>
-                        <li><code>:first-child</code>, <code>:last-child</code></li>
-                        <li><code>:checked</code>, <code>:disabled</code>, <code>:required</code>, etc.</li>
-                    </ul>
+          <h3>Pseudo-classes</h3>
+          <p>Used to define a special state of an element.</p>
+          <ul>
+            <li><code>:hover</code> – when the mouse is over an element</li>
+            <li><code>:active</code> – when the element is being clicked</li>
+            <li><code>:focus</code> – when the element is focused (e.g., input field)</li>
+            <li><code>:nth-child(n)</code> – selects the nth child of a parent</li>
+            <li><code>:first-child</code>, <code>:last-child</code></li>
+            <li><code>:checked</code>, <code>:disabled</code>, <code>:required</code>, etc.</li>
+          </ul>
 
-                    <h3>Pseudo-elements</h3>
-                    <p>Used to style specific parts of an element.</p>
-                    <ul>
-                        <li><code>::before</code> – insert content before an element</li>
-                        <li><code>::after</code> – insert content after an element</li>
-                        <li><code>::first-letter</code> – style the first letter</li>
-                        <li><code>::first-line</code> – style the first line</li>
-                        <li><code>::selection</code> – style selected text</li>
-                    </ul>
+          <h3>Pseudo-elements</h3>
+          <p>Used to style specific parts of an element.</p>
+          <ul>
+            <li><code>::before</code> – insert content before an element</li>
+            <li><code>::after</code> – insert content after an element</li>
+            <li><code>::first-letter</code> – style the first letter</li>
+            <li><code>::first-line</code> – style the first line</li>
+            <li><code>::selection</code> – style selected text</li>
+          </ul>
 
-                    <h3>Examples</h3>
-                    <pre><code>/* CSS */
+          <h3>Examples</h3>
+          <pre><code>/* CSS */
 .pseudo-box {
   padding: 1rem;
   border: 2px solid teal;
@@ -1284,32 +1375,32 @@ this is a sample text demonstrating font styles and spacing in css.
   color: gold;
 }</code><button class="copy-btn">Copy</button></pre>
 
-                    <pre><code>&lt;div class="pseudo-box"&gt;
+          <pre><code>&lt;div class="pseudo-box"&gt;
   Hover me! I have a star before me.
 &lt;/div&gt;</code><button class="copy-btn">Copy</button></pre>
-                </div>
+        </div>
 
-                <div class="lesson-section" data-topic="specificity">
-                    <h2>CSS Specificity</h2>
-                    <p>
-                        CSS Specificity determines which style rules are applied when multiple rules target the same
-                        element.
-                        It's a hierarchy based on how specifically an element is selected.
-                    </p>
+        <div class="lesson-section" data-topic="specificity">
+          <h2>CSS Specificity</h2>
+          <p>
+            CSS Specificity determines which style rules are applied when multiple rules target the same
+            element.
+            It's a hierarchy based on how specifically an element is selected.
+          </p>
 
-                    <h3>Specificity Rules (from low to high)</h3>
-                    <ul>
-                        <li><strong>Type selectors</strong> (e.g., <code>div</code>, <code>p</code>)</li>
-                        <li><strong>Class, attribute, and pseudo-class selectors</strong> (e.g., <code>.class</code>,
-                            <code>[type="text"]</code>, <code>:hover</code>)
-                        </li>
-                        <li><strong>ID selectors</strong> (e.g., <code>#header</code>)</li>
-                        <li><strong>Inline styles</strong> (e.g., <code>style="..."</code> in HTML)</li>
-                        <li><strong>!important</strong> overrides everything (use with caution!)</li>
-                    </ul>
+          <h3>Specificity Rules (from low to high)</h3>
+          <ul>
+            <li><strong>Type selectors</strong> (e.g., <code>div</code>, <code>p</code>)</li>
+            <li><strong>Class, attribute, and pseudo-class selectors</strong> (e.g., <code>.class</code>,
+              <code>[type="text"]</code>, <code>:hover</code>)
+            </li>
+            <li><strong>ID selectors</strong> (e.g., <code>#header</code>)</li>
+            <li><strong>Inline styles</strong> (e.g., <code>style="..."</code> in HTML)</li>
+            <li><strong>!important</strong> overrides everything (use with caution!)</li>
+          </ul>
 
-                    <h3>Specificity Comparison</h3>
-                    <pre><code>/* Type selector (low specificity) */
+          <h3>Specificity Comparison</h3>
+          <pre><code>/* Type selector (low specificity) */
 p {
   color: gray;
 }
@@ -1328,159 +1419,164 @@ p {
 &lt;p style="color: green;"&gt;Inline wins!&lt;/p&gt;
 </code><button class="copy-btn">Copy</button></pre>
 
-                    <pre><code>&lt;p id="mainText" class="text"&gt;This is a paragraph.&lt;/p&gt;</code><button class="copy-btn">Copy</button></pre>
+          <pre><code>&lt;p id="mainText" class="text"&gt;This is a paragraph.&lt;/p&gt;</code><button class="copy-btn">Copy</button></pre>
 
-                    <h3>Specificity Score</h3>
-                    <p>Think of specificity as a 4-digit score: <code>(a, b, c, d)</code></p>
-                    <ul>
-                        <li><strong>a</strong>: Inline styles</li>
-                        <li><strong>b</strong>: ID selectors</li>
-                        <li><strong>c</strong>: Classes, attributes, pseudo-classes</li>
-                        <li><strong>d</strong>: Element selectors and pseudo-elements</li>
-                    </ul>
+          <h3>Specificity Score</h3>
+          <p>Think of specificity as a 4-digit score: <code>(a, b, c, d)</code></p>
+          <ul>
+            <li><strong>a</strong>: Inline styles</li>
+            <li><strong>b</strong>: ID selectors</li>
+            <li><strong>c</strong>: Classes, attributes, pseudo-classes</li>
+            <li><strong>d</strong>: Element selectors and pseudo-elements</li>
+          </ul>
 
-                    <p>Example: <code>#nav ul li a:hover</code> → <code>(0,1,2,3)</code></p>
-                </div>
+          <p>Example: <code>#nav ul li a:hover</code> → <code>(0,1,2,3)</code></p>
+        </div>
 
-            </section>
-        </aside>
+      </section>
+    </aside>
 
-        <!-- Code Editor and Runner -->
-        <section class="editor">
-            <h2>Try it Yourself</h2>
+    <!-- Code Editor and Runner -->
+    <section class="editor">
+      <h2>Try it Yourself <span id="big-screen">Press ctrl+s to run</span></h2>
 
-            <div class="editor-group">
-                <div style="flex:1">
-                    <h3>HTML</h3>
-                    <textarea id="htmlCode">&lt;div class="box"&gt;Hello CSS!&lt;/div&gt;</textarea>
-                </div>
-                <div style="flex:1">
-                    <h3>CSS</h3>
-                    <textarea id="cssCode">.box {
+      <div class="editor-group">
+        <div style="flex:1">
+          <h3>HTML</h3>
+          <textarea id="htmlCode">&lt;div class="box"&gt;Hello CSS!&lt;/div&gt;</textarea>
+        </div>
+        <div style="flex:1">
+          <h3>CSS</h3>
+          <textarea id="cssCode">.box {
   background-color: teal;
   color: white;
   padding: 1rem;
   border-radius: 8px;
 }</textarea>
-                </div>
-            </div>
+        </div>
+      </div>
 
-            <button id="runBtn">Run</button>
+      <button id="runBtn">Run</button>
 
-            <h2>Live Preview</h2>
-            <iframe id="preview" sandbox="allow-scripts"></iframe>
-        </section>
-    </div>
+      <h2>Live Preview</h2>
+      <iframe id="preview" sandbox="allow-scripts"></iframe>
+    </section>
+  </div>
 
-    <script>
-        const dropdownToggle = document.getElementById('dropdownToggle');
-        const dropdown = document.getElementById('filterDropdown');
-        const dropdownMenu = document.getElementById('dropdownMenu');
-        const topicCheckboxes = document.querySelectorAll('#topicCheckboxes input[type="checkbox"]');
-        const selectAllBtn = document.getElementById('selectAllBtn');
-        const clearAllBtn = document.getElementById('clearAllBtn');
+  <script>
+    const isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 
-        function updateTopicVisibility() {
-            const selectedTopics = Array.from(topicCheckboxes)
-                .filter(cb => cb.checked)
-                .map(cb => cb.value);
+    if (isMobile) {
+      document.getElementById('big-screen').style.display = 'none';
+    }
+    const dropdownToggle = document.getElementById('dropdownToggle');
+    const dropdown = document.getElementById('filterDropdown');
+    const dropdownMenu = document.getElementById('dropdownMenu');
+    const topicCheckboxes = document.querySelectorAll('#topicCheckboxes input[type="checkbox"]');
+    const selectAllBtn = document.getElementById('selectAllBtn');
+    const clearAllBtn = document.getElementById('clearAllBtn');
 
-            document.querySelectorAll('.lesson-section').forEach(section => {
-                const topic = section.dataset.topic;
-                section.style.display = selectedTopics.includes(topic) ? 'block' : 'none';
-            });
+    function updateTopicVisibility() {
+      const selectedTopics = Array.from(topicCheckboxes)
+        .filter(cb => cb.checked)
+        .map(cb => cb.value);
 
-            updateDropdownLabel();
-        }
+      document.querySelectorAll('.lesson-section').forEach(section => {
+        const topic = section.dataset.topic;
+        section.style.display = selectedTopics.includes(topic) ? 'block' : 'none';
+      });
 
-
-        // Toggle dropdown
-        dropdownToggle.addEventListener('click', () => {
-            dropdown.classList.toggle('open');
-        });
-
-        // Outside click to close dropdown
-        document.addEventListener('click', (e) => {
-            if (!dropdown.contains(e.target)) {
-                dropdown.classList.remove('open');
-            }
-        });
-
-        topicCheckboxes.forEach(cb => {
-            cb.addEventListener('change', updateTopicVisibility);
-        });
-
-        selectAllBtn.addEventListener('click', () => {
-            topicCheckboxes.forEach(cb => cb.checked = true);
-            updateTopicVisibility(); // this now also updates label
-        });
-
-        clearAllBtn.addEventListener('click', () => {
-            topicCheckboxes.forEach(cb => cb.checked = false);
-            updateTopicVisibility();
-        });
+      updateDropdownLabel();
+    }
 
 
-        // Initial setup
-        updateTopicVisibility();
+    // Toggle dropdown
+    dropdownToggle.addEventListener('click', () => {
+      dropdown.classList.toggle('open');
+    });
 
-        function updateDropdownLabel() {
-            const checkedCount = Array.from(topicCheckboxes).filter(cb => cb.checked).length;
-            const totalCount = topicCheckboxes.length;
+    // Outside click to close dropdown
+    document.addEventListener('click', (e) => {
+      if (!dropdown.contains(e.target)) {
+        dropdown.classList.remove('open');
+      }
+    });
 
-            if (checkedCount === totalCount) {
-                dropdownToggle.textContent = 'Filter Topics (All selected)';
-            } else {
-                dropdownToggle.textContent = `Filter Topics (${checkedCount} selected)`;
-            }
-        }
+    topicCheckboxes.forEach(cb => {
+      cb.addEventListener('change', updateTopicVisibility);
+    });
+
+    selectAllBtn.addEventListener('click', () => {
+      topicCheckboxes.forEach(cb => cb.checked = true);
+      updateTopicVisibility(); // this now also updates label
+    });
+
+    clearAllBtn.addEventListener('click', () => {
+      topicCheckboxes.forEach(cb => cb.checked = false);
+      updateTopicVisibility();
+    });
 
 
-    </script>
+    // Initial setup
+    updateTopicVisibility();
 
-    <script>
-        document.getElementById('toggleTheme').addEventListener('click', () => {
-            document.body.classList.toggle('dark');
-        });
+    function updateDropdownLabel() {
+      const checkedCount = Array.from(topicCheckboxes).filter(cb => cb.checked).length;
+      const totalCount = topicCheckboxes.length;
 
-        document.querySelectorAll('.copy-btn').forEach(button => {
-            button.addEventListener('click', () => {
-                const code = button.parentElement.querySelector('code').innerText;
-                navigator.clipboard.writeText(code);
-                button.innerText = "Copied!";
-                setTimeout(() => button.innerText = "Copy", 2000);
-            });
-        });
+      if (checkedCount === totalCount) {
+        dropdownToggle.textContent = 'Filter Topics (All selected)';
+      } else {
+        dropdownToggle.textContent = `Filter Topics (${checkedCount} selected)`;
+      }
+    }
 
-        const runCode = () => {
-            const html = document.getElementById('htmlCode').value;
-            const css = document.getElementById('cssCode').value;
-            const output = `<style>${css}</style>${html}`;
-            document.getElementById('preview').srcdoc = output;
-        };
 
-        document.getElementById('runBtn').addEventListener('click', runCode);
+  </script>
 
-        document.addEventListener('keydown', (e) => {
-            if (e.ctrlKey && e.key === 's') {
-                e.preventDefault();
-                runCode();
-            }
-        });
+  <script>
+    document.getElementById('toggleTheme').addEventListener('click', () => {
+      document.body.classList.toggle('dark');
+    });
 
-        // Drawer toggle
-        const drawer = document.getElementById('drawer');
-        const hamburgerBtn = document.getElementById('hamburgerBtn');
+    document.querySelectorAll('.copy-btn').forEach(button => {
+      button.addEventListener('click', () => {
+        const code = button.parentElement.querySelector('code').innerText;
+        navigator.clipboard.writeText(code);
+        button.innerText = "Copied!";
+        setTimeout(() => button.innerText = "Copy", 2000);
+      });
+    });
 
-        hamburgerBtn.addEventListener('click', () => {
-            drawer.classList.toggle('open');
-            document.body.style.overflow = drawer.classList.contains('open') ? 'hidden' : 'auto';
-            hamburgerBtn.innerHTML = drawer.classList.contains('open') ? '&times;' : '&#9776;';
-        });
+    const runCode = () => {
+      const html = document.getElementById('htmlCode').value;
+      const css = document.getElementById('cssCode').value;
+      const output = `<style>${css}</style>${html}`;
+      document.getElementById('preview').srcdoc = output;
+    };
 
-        // Run initial code
+    document.getElementById('runBtn').addEventListener('click', runCode);
+
+    document.addEventListener('keydown', (e) => {
+      if (e.ctrlKey && e.key === 's') {
+        e.preventDefault();
         runCode();
-    </script>
+      }
+    });
+
+    // Drawer toggle
+    const drawer = document.getElementById('drawer');
+    const hamburgerBtn = document.getElementById('hamburgerBtn');
+
+    hamburgerBtn.addEventListener('click', () => {
+      drawer.classList.toggle('open');
+      document.body.style.overflow = drawer.classList.contains('open') ? 'hidden' : 'auto';
+      hamburgerBtn.innerHTML = drawer.classList.contains('open') ? '&times;' : '&#9776;';
+    });
+
+    // Run initial code
+    runCode();
+  </script>
 </body>
 
 </html>

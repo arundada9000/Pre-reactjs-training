@@ -606,9 +606,14 @@ import { greet } from './greet.js';`
         };
 
         document.addEventListener('DOMContentLoaded', startPreview);
+        const isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
         function startPreview() {
             const topicSpans = document.querySelectorAll('.section-block .topic');
             const previewBox = document.getElementById('preview-box');
+
+            if (isMobile) {
+                previewBox.textContent = 'Tap on a topic to see its usage/code here.';
+            }
 
             topicSpans.forEach(span => {
                 span.addEventListener('mouseenter', () => {
