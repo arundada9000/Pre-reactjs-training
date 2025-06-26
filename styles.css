@@ -1,0 +1,286 @@
+html,
+body {
+  margin: 0;
+  font-family: "Fira Code", monospace;
+  background-color: #0d0d0d;
+  color: #33ff66;
+  height: 100%;
+}
+
+.terminal {
+  display: flex;
+  flex-direction: row;
+  padding: 1rem;
+}
+
+.output-container {
+  flex: 3;
+  display: flex;
+  flex-direction: column;
+}
+
+.preview-container {
+  flex: 2;
+  padding: 1rem;
+  background-color: #111;
+  margin-left: 1rem;
+  border-left: 1px solid #333;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.preview-container h3 {
+  color: #66ff99;
+}
+
+.preview-container pre {
+  background-color: #0d0d0d;
+  padding: 1rem;
+  border-radius: 4px;
+  white-space: pre-wrap;
+  color: #fff;
+}
+
+.terminal-line {
+  display: flex;
+  flex-wrap: wrap;
+  word-break: break-word;
+}
+
+.prompt {
+  color: #33ff66;
+  margin-right: 0.5rem;
+  white-space: nowrap;
+}
+
+.type-wrapper {
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  animation: type 2s steps(40, end);
+}
+
+.input-simulated {
+  display: inline;
+  color: #fff;
+}
+
+@keyframes type {
+  from {
+    width: 0;
+  }
+
+  to {
+    width: 100%;
+  }
+}
+
+.output {
+  margin-top: 1rem;
+  max-height: 70vh;
+  overflow-y: auto;
+  padding-right: 0.5rem;
+}
+
+.section-block {
+  background: #111;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  border-left: 4px solid #33ff66;
+  border-radius: 6px;
+}
+
+.section-block h2 {
+  color: #66ff99;
+  margin-bottom: 0.5rem;
+  font-size: 1.2rem;
+}
+
+.section-block ul {
+  margin-left: 1rem;
+  font-size: 0.95rem;
+}
+
+.section-block li::before {
+  content: "$ ";
+  color: #33ff66;
+}
+
+.topic {
+  cursor: pointer;
+}
+
+.topic:hover {
+  color: #66ff99;
+  text-decoration: underline;
+  font-weight: bold;
+  background: #222;
+  padding: 0.1rem 0.2rem;
+  border-radius: 4px;
+}
+
+.btn {
+  display: inline-block;
+  margin-top: 1rem;
+  padding: 0.4rem 1rem;
+  background: #33ff66;
+  color: #000;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+.cursor {
+  display: inline-block;
+  width: 10px;
+  height: 18px;
+  background-color: #33ff66;
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
+}
+
+.command-input {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  position: fixed;
+  bottom: 1rem;
+  left: 1rem;
+  right: 1rem;
+  background: #0d0d0d;
+  padding: 0.5rem;
+  z-index: 10;
+}
+
+.command-input label {
+  color: #33ff66;
+  white-space: nowrap;
+}
+
+.command-input input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid #33ff66;
+  color: #33ff66;
+  font-family: "Fira Code", monospace;
+  font-size: 1rem;
+  outline: none;
+  padding: 0.3rem;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+#preview-box.dimmed {
+  opacity: 0.6;
+  transition: opacity 0.3s;
+}
+
+footer {
+  text-align: center;
+  font-size: 0.85rem;
+  color: #666;
+  margin: 1rem;
+  padding: 4rem 0 6rem 0;
+  border-top: 1px solid #222;
+}
+
+.fade-in {
+  opacity: 0;
+  transform: translateY(-10px);
+  /* slide down from above */
+  animation: fadeSlideDown 0.4s ease forwards;
+}
+
+@keyframes fadeSlideDown {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 900px) {
+  .terminal {
+    flex-direction: column;
+  }
+
+  .preview-container {
+    margin-left: 0;
+    margin-top: 1rem;
+  }
+}
+
+.ascii-art {
+  font-family: monospace;
+  white-space: pre;
+  color: #00ffcc;
+  margin-top: 0.5rem;
+}
+
+#preview-box::after {
+  content: "|";
+  animation: blink 1s step-end infinite;
+  color: lime;
+  margin-left: 5px;
+}
+
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
+}
+
+.logo-container {
+  position: absolute;
+  top: 30px;
+  right: 10px;
+  z-index: 999;
+  opacity: 0;
+  transform: translateY(0);
+  transition: all 0.8s ease-in-out;
+}
+
+.bmc-logo {
+  width: 40px;
+  height: 40px;
+  animation: floatLogo 3s ease-in-out infinite;
+  filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.3));
+}
+
+.logo-container.show {
+  opacity: 1;
+  transform: translateY(-20px);
+}
+
+@keyframes floatLogo {
+  0% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-5px);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
+}
