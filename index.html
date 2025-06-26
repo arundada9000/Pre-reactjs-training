@@ -259,6 +259,42 @@
                 opacity: 0;
             }
         }
+
+        .logo-container {
+            position: absolute;
+            top: 30px;
+            right: 10px;
+            z-index: 999;
+            opacity: 0;
+            transform: translateY(0);
+            transition: all 0.8s ease-in-out;
+        }
+
+        .bmc-logo {
+            width: 40px;
+            height: 40px;
+            animation: floatLogo 3s ease-in-out infinite;
+            filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.3));
+        }
+
+        .logo-container.show {
+            opacity: 1;
+            transform: translateY(-20px);
+        }
+
+        @keyframes floatLogo {
+            0% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-5px);
+            }
+
+            100% {
+                transform: translateY(0);
+            }
+        }
     </style>
 </head>
 
@@ -271,6 +307,9 @@
                     <span class="input-simulated">welcome to pre-react training</span>
                     <span class="cursor"></span>
                 </span>
+                <div class="logo-container1">
+                    <img src="./images/bmc-it-club-circle-logo.png" alt="BMC IT Club logo" class="bmc-logo" />
+                </div>
             </div>
             <div class="output" id="terminal-output">
 
@@ -309,7 +348,7 @@
                             &lt;article&gt;, &lt;section&gt; for meaningful structure.</li>
                         <li><span class="topic">Meta Tags</span>: Adding page metadata (viewport, charset, SEO).</li>
                     </ul>
-                    <a class="btn" href="#">Start HTML</a>
+                    <a class="btn" href="./practice-html.html">Start HTML</a>
                 </div>
 
 
@@ -336,7 +375,7 @@
                         <li><span class="topic">Z-index & Stacking</span>: Controlling layer order of elements.</li>
                         <li><span class="topic">CSS Variables</span>: Reusing values for theme consistency.</li>
                     </ul>
-                    <a class="btn" href="#">Start CSS</a>
+                    <a class="btn" href="./practice-css.html">Start CSS</a>
                 </div>
 
 
@@ -360,7 +399,7 @@
                         <li><span class="topic">Async JavaScript</span>: Promises, async/await, and fetch API.</li>
                         <li><span class="topic">Modules</span>: import/export and code splitting.</li>
                     </ul>
-                    <a class="btn" href="#">Start JavaScript</a>
+                    <a class="btn" href="./practice-js.html">Start JavaScript</a>
                 </div>
 
             </div>
@@ -380,6 +419,17 @@
     <footer>
         &copy; 2025 BMCIt Club | ReactJs Training Edition
     </footer>
+
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                const logo = document.querySelector('.logo-container1');
+                requestAnimationFrame(() => {
+                    logo.classList.add('logo-container', 'show');
+                });
+            }, 1000);
+        });
+    </script>
 
     <script>
         const previews = {
@@ -411,7 +461,7 @@
   <li>Second</li>
 </ol>`,
 
-            "Links & Anchors": `<a href="https://example.com">Visit Website</a>`,
+            "Links & Anchors": `<a href="https://arunneupane.netlify.app">Visit Website</a>`,
 
             "Images": `<img src="logo.png" alt="Logo" width="200">`,
 

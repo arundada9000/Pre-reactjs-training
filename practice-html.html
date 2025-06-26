@@ -2,296 +2,380 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>HTML Practice - Learn by Doing</title>
-    <style>
-        ::-webkit-scrollbar {
-            display: none;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HTML Practice - Learn by Doing</title>
+  <style>
+    ::-webkit-scrollbar {
+      display: none;
+    }
 
-        * {
-            -webkit-tap-highlight-color: transparent;
-            -webkit-touch-callout: none;
-            -webkit-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-        }
+    * {
+      -webkit-tap-highlight-color: transparent;
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
 
-        :root {
-            --accent: #4caf50;
-            --dark-bg: #2b2b2b;
-            --light-bg: #f9f9f9;
-        }
+    :root {
+      --accent: #4caf50;
+      --dark-bg: #2b2b2b;
+      --light-bg: #f9f9f9;
+    }
 
-        body {
-            font-family: 'Segoe UI', sans-serif;
-            margin: 0;
-            padding: 0;
-            background: var(--light-bg);
-            color: #333;
-        }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: var(--light-bg);
+      color: #333;
+    }
 
-        body.dark,
-        body.dark .container,
-        body.dark .drawer,
-        body.dark .lesson-section {
-            background: #1e1e1e;
-            color: #eee;
-        }
+    body.dark,
+    body.dark .container,
+    body.dark .drawer,
+    body.dark .lesson-section,
+    body.dark #dropdownToggle,
+    body.dark .dropdown-menu {
+      background: #1e1e1e;
+      color: #eee;
+    }
 
-        body.dark textarea,
-        body.dark pre {
-            background: #2b2b2b;
-            color: #eee;
-        }
+    body.dark textarea,
+    body.dark pre {
+      background: #2b2b2b;
+      color: #eee;
+    }
 
-        header {
-            position: relative;
-            background: var(--dark-bg);
-            color: white;
-            padding: 1.25rem;
-            text-align: center;
-            border-bottom: 4px solid var(--accent);
-        }
+    header {
+      position: relative;
+      background: var(--dark-bg);
+      color: white;
+      padding: 1.25rem;
+      text-align: center;
+      border-bottom: 4px solid var(--accent);
+    }
 
-        .hamburger {
-            display: none;
-            position: absolute;
-            top: 1.5rem;
-            left: 1rem;
-            font-size: 1.5rem;
-            background: none;
-            border: none;
-            color: white;
-            cursor: pointer;
-        }
+    .hamburger {
+      display: none;
+      position: absolute;
+      top: 1.5rem;
+      left: 1rem;
+      font-size: 1.5rem;
+      background: none;
+      border: none;
+      color: white;
+      cursor: pointer;
+    }
 
-        .container {
-            display: flex;
-            flex-direction: row;
-            height: calc(100vh - 96px);
-            overflow: hidden;
-        }
+    .container {
+      display: flex;
+      flex-direction: row;
+      height: calc(100vh - 96px);
+      overflow: hidden;
+    }
 
-        .drawer {
-            position: fixed;
-            top: 96px;
-            left: -100%;
-            width: 85%;
-            max-width: 300px;
-            height: calc(100% - 96px);
-            background: #fff;
-            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
-            z-index: 10;
-            transition: left 0.3s ease;
-            overflow-y: auto;
-            padding: 1rem;
-        }
+    .drawer {
+      position: fixed;
+      top: 96px;
+      left: -100%;
+      width: 85%;
+      max-width: 300px;
+      height: calc(100% - 96px);
+      background: #fff;
+      box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+      z-index: 10;
+      transition: left 0.3s ease;
+      overflow-y: auto;
+      padding: 1rem;
+    }
 
-        .drawer.open {
-            position: fixed;
-            top: 96px;
-            left: 0;
-            bottom: 0;
-            overflow-y: scroll;
-        }
+    .drawer.open {
+      position: fixed;
+      top: 96px;
+      left: 0;
+      bottom: 0;
+      overflow-y: scroll;
+    }
 
-        .lesson h2,
-        .editor h2 {
-            margin-top: 0;
-        }
+    .lesson h2,
+    .editor h2 {
+      margin-top: 0;
+    }
 
-        .lesson pre {
-            background: #eee;
-            padding: 0.75rem;
-            border-radius: 6px;
-            overflow-x: auto;
-            position: relative;
-        }
+    .lesson pre {
+      background: #eee;
+      padding: 0.75rem;
+      border-radius: 6px;
+      overflow-x: auto;
+      position: relative;
+    }
 
-        .editor {
-            flex: 1;
-            padding: 1rem 2rem;
-            overflow-y: auto;
-        }
+    .editor {
+      flex: 1;
+      padding: 1rem 2rem;
+      overflow-y: auto;
+    }
 
-        .copy-btn {
-            position: absolute;
-            top: 8px;
-            right: 8px;
-            padding: 4px 8px;
-            background: #4caf50;
-            border: none;
-            color: white;
-            border-radius: 4px;
-            font-size: 0.8rem;
-            cursor: pointer;
-        }
+    .copy-btn {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      padding: 4px 8px;
+      background: #4caf50;
+      border: none;
+      color: white;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      cursor: pointer;
+    }
 
-        .lesson-section {
-            background: #fff;
-            border-radius: 10px;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-            margin-bottom: 2rem;
-            transition: box-shadow 0.3s ease;
-        }
+    .lesson-section {
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      margin-bottom: 2rem;
+      transition: box-shadow 0.3s ease;
+    }
 
-        .lesson-section h2 {
-            font-size: 1.4rem;
-            color: var(--accent);
-            margin-bottom: 0.5rem;
-        }
+    .lesson-section h2 {
+      font-size: 1.4rem;
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+    }
 
-        .lesson-section h3 {
-            margin-top: 1.5rem;
-        }
+    .lesson-section h3 {
+      margin-top: 1.5rem;
+    }
 
-        .lesson-section p,
-        .lesson-section li {
-            line-height: 1.6;
-        }
+    .lesson-section p,
+    .lesson-section li {
+      line-height: 1.6;
+    }
 
-        textarea {
-            width: 100%;
-            height: 280px;
-            font-family: monospace;
-            font-size: 1rem;
-            padding: 0.75rem;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            resize: vertical;
-            overflow: auto;
+    textarea {
+      width: 100%;
+      height: 280px;
+      font-family: monospace;
+      font-size: 1rem;
+      padding: 0.75rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      resize: vertical;
+      overflow: auto;
 
-            background: #282c34;
-            color: #f8f8f2;
-            border: none;
-            box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.2);
-        }
+      background: #282c34;
+      color: #f8f8f2;
+      border: none;
+      box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.2);
+    }
 
-        button#runBtn {
-            margin-top: 1rem;
-            padding: 0.5rem 1rem;
-            background-color: var(--accent);
-            color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 1rem;
-        }
+    button#runBtn {
+      margin-top: 1rem;
+      padding: 0.5rem 1rem;
+      background-color: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
 
-        button#runBtn:hover {
-            background-color: #45a049;
-        }
+    button#runBtn:hover {
+      background-color: #45a049;
+    }
 
-        button#runBtn:active {
-            transform: scale(0.98);
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) inset;
-        }
+    button#runBtn:active {
+      transform: scale(0.98);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) inset;
+    }
 
-        button#toggleTheme {
-            inset: 0;
-            cursor: pointer;
-            background-color: transparent;
-            color: white;
-        }
+    button#toggleTheme {
+      inset: 0;
+      cursor: pointer;
+      background-color: transparent;
+      color: white;
+    }
 
-        iframe#preview {
-            margin-top: 1rem;
-            width: 100%;
-            height: 300px;
-            border: 1px solid #ccc;
-            background: white;
-            border-radius: 6px;
-            overflow: auto;
-        }
+    iframe#preview {
+      margin-top: 1rem;
+      width: 100%;
+      height: 300px;
+      border: 1px solid #ccc;
+      background: white;
+      border-radius: 6px;
+      overflow: auto;
+    }
 
-        @media (min-width: 768px) {
-            .hamburger {
-                display: none;
-            }
+    @media (min-width: 768px) {
+      .hamburger {
+        display: none;
+      }
 
-            .container {
-                flex-direction: row;
-            }
+      .container {
+        flex-direction: row;
+      }
 
-            .drawer {
-                position: relative;
-                left: 0 !important;
-                top: 0;
-                width: 40%;
-                height: auto;
-                max-width: none;
-                box-shadow: none;
-                padding: 2rem;
-            }
+      .drawer {
+        position: relative;
+        left: 0 !important;
+        top: 0;
+        width: 40%;
+        height: auto;
+        max-width: none;
+        box-shadow: none;
+        padding: 2rem;
+      }
 
-            .editor {
-                width: 60%;
-            }
-        }
+      .editor {
+        width: 60%;
+      }
+    }
 
-        @media (max-width: 767px) {
-            .hamburger {
-                display: block;
-            }
+    @media (max-width: 767px) {
+      .hamburger {
+        display: block;
+      }
 
-            .container {
-                flex-direction: column;
-            }
+      .container {
+        flex-direction: column;
+      }
 
-            .editor {
-                padding: 1rem;
-                padding-right: 2rem;
-            }
+      .editor {
+        padding: 1rem;
+        padding-right: 2rem;
+      }
 
-            #runBtn {
-                position: fixed;
-                bottom: 1rem;
-                right: 1rem;
-                z-index: 999;
-                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-            }
-        }
-    </style>
+      #runBtn {
+        position: fixed;
+        bottom: 1rem;
+        right: 1rem;
+        z-index: 999;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+      }
+    }
+
+    .dropdown {
+      position: relative;
+      margin-bottom: 1rem;
+    }
+
+    #dropdownToggle {
+      padding: 0.6rem 1rem;
+      border: 1px solid #ccc;
+      background: #f9f9f9;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 1rem;
+      width: 100%;
+      text-align: left;
+    }
+
+    .dropdown-menu {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      z-index: 10;
+      background: white;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      padding: 1rem;
+      margin-top: 0.4rem;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      display: none;
+      max-height: 300px;
+      overflow-y: auto;
+      width: 100%;
+    }
+
+    .dropdown-menu label {
+      display: block;
+      margin-bottom: 0.4rem;
+      font-size: 0.95rem;
+    }
+
+    .dropdown-actions {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .dropdown-actions button {
+      padding: 0.3rem 0.6rem;
+      font-size: 0.9rem;
+      cursor: pointer;
+      border: 1px solid #ccc;
+      background: #eee;
+      border-radius: 4px;
+    }
+
+    .dropdown.open .dropdown-menu {
+      display: block;
+    }
+  </style>
 
 </head>
 
 <body>
 
-    <header>
-        <button class="hamburger" id="hamburgerBtn">&#9776;</button>
-        <h1>Practice HTML</h1>
-        <p>Understand HTML by writing and running real code. No setup required.</p>
-        <button id="toggleTheme">Theme</button>
+  <header>
+    <button class="hamburger" id="hamburgerBtn">&#9776;</button>
+    <h1>Practice HTML</h1>
+    <p>Understand HTML by writing and running real code. No setup required.</p>
+    <button id="toggleTheme">Theme</button>
 
-    </header>
+  </header>
 
-    <div class="container">
+  <div class="container">
 
 
-        <!-- Sliding Drawer -->
-        <aside class="drawer" id="drawer">
+    <!-- Sliding Drawer -->
+    <aside class="drawer" id="drawer">
 
-            <section class="lesson" id="lessonSection">
+      <div id="filterDropdown" class="dropdown">
+        <button id="dropdownToggle">Filter Topics</button>
+        <div id="dropdownMenu" class="dropdown-menu">
+          <div class="dropdown-actions">
+            <button type="button" id="selectAllBtn">Select All</button>
+            <button type="button" id="clearAllBtn">Remove All</button>
+          </div>
+          <div id="topicCheckboxes">
+            <label><input type="checkbox" value="html,head,body" checked> html, head, body</label>
+            <label><input type="checkbox" value="heading-and-paragraph" checked> Heading and Paragraph</label>
+            <label><input type="checkbox" value="div-and-span" checked> Div and Span</label>
+            <label><input type="checkbox" value="form" checked> Forms</label>
+            <label><input type="checkbox" value="input" checked> Input</label>
+            <label><input type="checkbox" value="button" checked> Button</label>
+            <label><input type="checkbox" value="anchor-link" checked> Anchor/Link</label>
+            <label><input type="checkbox" value="lists" checked> Lists</label>
+            <label><input type="checkbox" value="images" checked> Images</label>
+            <label><input type="checkbox" value="tables" checked> Tables</label>
+            <label><input type="checkbox" value="semantic-tags" checked> Semantic Tags</label>
+            <label><input type="checkbox" value="meta-tags" checked> Meta Tags</label>
+          </div>
+        </div>
+      </div>
 
-                <div class="lesson-section">
-                    <h2>&lt;html&gt;, &lt;head&gt;, &lt;body&gt;</h2>
-                    <p>
-                        These are the foundational building blocks of any HTML document. Understanding their role is
-                        essential for building valid web pages.
-                    </p>
+      <section class="lesson" id="lessonSection">
 
-                    <ul>
-                        <li><strong>&lt;html&gt;</strong>: The root element that wraps all content on the page.</li>
-                        <li><strong>&lt;head&gt;</strong>: Contains metadata, links to stylesheets, scripts, and other
-                            non-visible elements like the page title.</li>
-                        <li><strong>&lt;body&gt;</strong>: Holds all the content you want users to see, like text,
-                            images, and interactive elements.</li>
-                    </ul>
+        <div class="lesson-section" data-topic="html,head,body">
+          <h2>&lt;html&gt;, &lt;head&gt;, &lt;body&gt;</h2>
+          <p>
+            These are the foundational building blocks of any HTML document. Understanding their role is
+            essential for building valid web pages.
+          </p>
 
-                    <p><strong>Example:</strong></p>
-                    <pre><code>&lt;!DOCTYPE html&gt;
+          <ul>
+            <li><strong>&lt;html&gt;</strong>: The root element that wraps all content on the page.</li>
+            <li><strong>&lt;head&gt;</strong>: Contains metadata, links to stylesheets, scripts, and other
+              non-visible elements like the page title.</li>
+            <li><strong>&lt;body&gt;</strong>: Holds all the content you want users to see, like text,
+              images, and interactive elements.</li>
+          </ul>
+
+          <p><strong>Example:</strong></p>
+          <pre><code>&lt;!DOCTYPE html&gt;
 &lt;html&gt;
   &lt;head&gt;
     &lt;meta charset="UTF-8"&gt;
@@ -309,11 +393,11 @@
   &lt;/body&gt;
 &lt;/html&gt;</code><button class="copy-btn">Copy</button></pre>
 
-                    <p><strong>React Tip:</strong> In React projects, you usually don't write the full HTML skeleton.
-                        Tools like <code>create-react-app</code> handle that. You typically write components that go
-                        inside the <code>&lt;body&gt;</code>.</p>
+          <p><strong>React Tip:</strong> In React projects, you usually don't write the full HTML skeleton.
+            Tools like <code>create-react-app</code> handle that. You typically write components that go
+            inside the <code>&lt;body&gt;</code>.</p>
 
-                    <pre><code>// public/index.html
+          <pre><code>// public/index.html
 &lt;html lang="en"&gt;
   &lt;head&gt;
     &lt;title&gt;React App&lt;/title&gt;
@@ -322,26 +406,26 @@
     &lt;div id="root"&gt;&lt;/div&gt;
   &lt;/body&gt;
 &lt;/html&gt;</code><button class="copy-btn">Copy</button></pre>
-                </div>
+        </div>
 
 
-                <div class="lesson-section">
-                    <h2>Headings and Paragraphs</h2>
-                    <p>
-                        Headings and paragraphs are the building blocks of textual content in HTML. Use them to
-                        structure your document semantically and clearly.
-                    </p>
+        <div class="lesson-section" data-topic="heading-and-paragraph">
+          <h2>Headings and Paragraphs</h2>
+          <p>
+            Headings and paragraphs are the building blocks of textual content in HTML. Use them to
+            structure your document semantically and clearly.
+          </p>
 
-                    <p><strong>Headings:</strong> HTML provides six levels of headings from <code>&lt;h1&gt;</code> to
-                        <code>&lt;h6&gt;</code>. <code>&lt;h1&gt;</code> is the most important, typically used once per
-                        page for the main title. Use lower-level headings to indicate sub-sections.
-                    </p>
+          <p><strong>Headings:</strong> HTML provides six levels of headings from <code>&lt;h1&gt;</code> to
+            <code>&lt;h6&gt;</code>. <code>&lt;h1&gt;</code> is the most important, typically used once per
+            page for the main title. Use lower-level headings to indicate sub-sections.
+          </p>
 
-                    <p><strong>Paragraphs:</strong> The <code>&lt;p&gt;</code> tag defines a paragraph of text. Browsers
-                        automatically add spacing (margin) before and after paragraphs for readability.</p>
+          <p><strong>Paragraphs:</strong> The <code>&lt;p&gt;</code> tag defines a paragraph of text. Browsers
+            automatically add spacing (margin) before and after paragraphs for readability.</p>
 
-                    <p><strong>Example:</strong></p>
-                    <pre><code>&lt;!DOCTYPE html&gt;
+          <p><strong>Example:</strong></p>
+          <pre><code>&lt;!DOCTYPE html&gt;
 &lt;html&gt;
   &lt;head&gt;
     &lt;title&gt;Headings and Paragraphs&lt;/title&gt;
@@ -359,9 +443,9 @@
   &lt;/body&gt;
 &lt;/html&gt;</code><button class="copy-btn">Copy</button></pre>
 
-                    <p><strong>React Tip:</strong> In React, heading and paragraph tags are written the same way as in
-                        HTML, but JSX requires self-closing for void tags and camelCase for attributes.</p>
-                    <pre><code>// JSX Example
+          <p><strong>React Tip:</strong> In React, heading and paragraph tags are written the same way as in
+            HTML, but JSX requires self-closing for void tags and camelCase for attributes.</p>
+          <pre><code>// JSX Example
 function AboutPage() {
   return (
     &lt;div&gt;
@@ -370,27 +454,27 @@ function AboutPage() {
     &lt;/div&gt;
   );
 }</code><button class="copy-btn">Copy</button></pre>
-                </div>
+        </div>
 
-                <div class="lesson-section">
-                    <h2>&lt;div&gt; and &lt;span&gt;</h2>
-                    <p>
-                        Both <code>&lt;div&gt;</code> and <code>&lt;span&gt;</code> are generic container elements in
-                        HTML, but they serve different purposes:
-                    </p>
+        <div class="lesson-section" data-topic="div-and-span">
+          <h2>&lt;div&gt; and &lt;span&gt;</h2>
+          <p>
+            Both <code>&lt;div&gt;</code> and <code>&lt;span&gt;</code> are generic container elements in
+            HTML, but they serve different purposes:
+          </p>
 
-                    <ul>
-                        <li><code>&lt;div&gt;</code> is a <strong>block-level</strong> element — it starts on a new line
-                            and takes up the full width available.</li>
-                        <li><code>&lt;span&gt;</code> is an <strong>inline</strong> element — it stays within the flow
-                            of surrounding text and only takes up as much width as necessary.</li>
-                    </ul>
+          <ul>
+            <li><code>&lt;div&gt;</code> is a <strong>block-level</strong> element — it starts on a new line
+              and takes up the full width available.</li>
+            <li><code>&lt;span&gt;</code> is an <strong>inline</strong> element — it stays within the flow
+              of surrounding text and only takes up as much width as necessary.</li>
+          </ul>
 
-                    <p>These tags are often used with CSS or JavaScript to style or manipulate content when no semantic
-                        tag is appropriate.</p>
+          <p>These tags are often used with CSS or JavaScript to style or manipulate content when no semantic
+            tag is appropriate.</p>
 
-                    <p><strong>Example:</strong></p>
-                    <pre><code>&lt;!DOCTYPE html&gt;
+          <p><strong>Example:</strong></p>
+          <pre><code>&lt;!DOCTYPE html&gt;
 &lt;html&gt;
   &lt;head&gt;
     &lt;title&gt;Div and Span Example&lt;/title&gt;
@@ -408,12 +492,12 @@ function AboutPage() {
   &lt;/body&gt;
 &lt;/html&gt;</code><button class="copy-btn">Copy</button></pre>
 
-                    <p><strong>React Tip:</strong> In React, use <code>&lt;div&gt;</code> and <code>&lt;span&gt;</code>
-                        just like in HTML. However, remember that class attributes must be written as
-                        <code>className</code>.
-                    </p>
+          <p><strong>React Tip:</strong> In React, use <code>&lt;div&gt;</code> and <code>&lt;span&gt;</code>
+            just like in HTML. However, remember that class attributes must be written as
+            <code>className</code>.
+          </p>
 
-                    <pre><code>// JSX Example
+          <pre><code>// JSX Example
 function Alert() {
   return (
     &lt;div className="alert-box"&gt;
@@ -421,25 +505,25 @@ function Alert() {
     &lt;/div&gt;
   );
 }</code><button class="copy-btn">Copy</button></pre>
-                </div>
+        </div>
 
-                <div class="lesson-section">
-                    <h2>&lt;form&gt; — HTML Forms</h2>
-                    <p>
-                        Forms are used to collect user input. They can contain various elements like
-                        <code>&lt;input&gt;</code>, <code>&lt;textarea&gt;</code>, <code>&lt;select&gt;</code>, and
-                        buttons.
-                    </p>
+        <div class="lesson-section" data-topic="form">
+          <h2>&lt;form&gt; — HTML Forms</h2>
+          <p>
+            Forms are used to collect user input. They can contain various elements like
+            <code>&lt;input&gt;</code>, <code>&lt;textarea&gt;</code>, <code>&lt;select&gt;</code>, and
+            buttons.
+          </p>
 
-                    <p><strong>Key attributes:</strong></p>
-                    <ul>
-                        <li><code>action</code> — Where to send the form data (URL).</li>
-                        <li><code>method</code> — HTTP method to use (GET or POST).</li>
-                        <li><code>name</code> — Identifier for the form (useful in scripts).</li>
-                    </ul>
+          <p><strong>Key attributes:</strong></p>
+          <ul>
+            <li><code>action</code> — Where to send the form data (URL).</li>
+            <li><code>method</code> — HTTP method to use (GET or POST).</li>
+            <li><code>name</code> — Identifier for the form (useful in scripts).</li>
+          </ul>
 
-                    <p><strong>Example:</strong></p>
-                    <pre><code>&lt;form action="/submit" method="POST"&gt;
+          <p><strong>Example:</strong></p>
+          <pre><code>&lt;form action="/submit" method="POST"&gt;
   &lt;label for="username"&gt;Username:&lt;/label&gt;
   &lt;input type="text" id="username" name="username" /&gt;
 
@@ -452,10 +536,10 @@ function Alert() {
   &lt;button type="submit"&gt;Submit&lt;/button&gt;
 &lt;/form&gt;</code><button class="copy-btn">Copy</button></pre>
 
-                    <p><strong>React Tip:</strong> In React, you handle form data using state and <code>onChange</code>
-                        handlers, rather than relying on form submission like in plain HTML.</p>
+          <p><strong>React Tip:</strong> In React, you handle form data using state and <code>onChange</code>
+            handlers, rather than relying on form submission like in plain HTML.</p>
 
-                    <pre><code>// React-style controlled form
+          <pre><code>// React-style controlled form
 function ContactForm() {
   const [form, setForm] = useState({ username: '', email: '', message: '' });
 
@@ -477,21 +561,21 @@ function ContactForm() {
     &lt;/form&gt;
   );
 }</code><button class="copy-btn">Copy</button></pre>
-                </div>
+        </div>
 
-                <div class="lesson-section">
-                    <h2>&lt;input&gt; Tag</h2>
-                    <p>
-                        The <code>&lt;input&gt;</code> element is used to create interactive controls in a form, such as
-                        text fields, checkboxes, radio buttons, and more.
-                        In HTML, <code>&lt;input&gt;</code> is a self-closing tag and supports various
-                        <strong>types</strong> via the <code>type</code> attribute.
-                    </p>
-                    <p>Common <code>type</code> values include: <code>text</code>, <code>password</code>,
-                        <code>email</code>, <code>number</code>, <code>checkbox</code>, and <code>radio</code>.
-                    </p>
+        <div class="lesson-section" data-topic="input">
+          <h2>&lt;input&gt; Tag</h2>
+          <p>
+            The <code>&lt;input&gt;</code> element is used to create interactive controls in a form, such as
+            text fields, checkboxes, radio buttons, and more.
+            In HTML, <code>&lt;input&gt;</code> is a self-closing tag and supports various
+            <strong>types</strong> via the <code>type</code> attribute.
+          </p>
+          <p>Common <code>type</code> values include: <code>text</code>, <code>password</code>,
+            <code>email</code>, <code>number</code>, <code>checkbox</code>, and <code>radio</code>.
+          </p>
 
-                    <pre><code>&lt;form&gt;
+          <pre><code>&lt;form&gt;
   &lt;label for="username"&gt;Username:&lt;/label&gt;
   &lt;input type="text" id="username" name="username" /&gt;
 
@@ -510,145 +594,145 @@ function ContactForm() {
   &lt;input type="submit" value="Submit" /&gt;
 &lt;/form&gt;</code><button class="copy-btn">Copy</button></pre>
 
-                    <p><strong>React Note:</strong> In React, you'd typically control inputs using state and use
-                        <code>onChange</code> handlers to track values.
-                    </p>
-                </div>
+          <p><strong>React Note:</strong> In React, you'd typically control inputs using state and use
+            <code>onChange</code> handlers to track values.
+          </p>
+        </div>
 
-                <div class="lesson-section">
-                    <h2>&lt;button&gt; Tag</h2>
-                    <p>
-                        The <code>&lt;button&gt;</code> element is used to create a clickable button in HTML. It can
-                        perform actions like submitting a form, triggering JavaScript, or just acting as a UI element.
-                    </p>
-                    <p>
-                        A button can have different <code>type</code> values:
-                        <code>submit</code> (default, submits a form),
-                        <code>reset</code> (resets form fields),
-                        and <code>button</code> (does nothing by default, used for custom logic).
-                    </p>
+        <div class="lesson-section" data-topic="button">
+          <h2>&lt;button&gt; Tag</h2>
+          <p>
+            The <code>&lt;button&gt;</code> element is used to create a clickable button in HTML. It can
+            perform actions like submitting a form, triggering JavaScript, or just acting as a UI element.
+          </p>
+          <p>
+            A button can have different <code>type</code> values:
+            <code>submit</code> (default, submits a form),
+            <code>reset</code> (resets form fields),
+            and <code>button</code> (does nothing by default, used for custom logic).
+          </p>
 
-                    <pre><code>&lt;form onsubmit="alert('Form Submitted!')"&gt;
+          <pre><code>&lt;form onsubmit="alert('Form Submitted!')"&gt;
   &lt;button type="submit"&gt;Submit Form&lt;/button&gt;
   &lt;button type="reset"&gt;Reset Form&lt;/button&gt;
   &lt;button type="button" onclick="alert('Custom Action')"&gt;Click Me&lt;/button&gt;
 &lt;/form&gt;</code><button class="copy-btn">Copy</button></pre>
 
-                    <p><strong>React Note:</strong> In React, use <code>&lt;button&gt;</code> with an
-                        <code>onClick</code> handler. Always specify the <code>type</code> to avoid unintended form
-                        submissions.
-                    </p>
-                </div>
+          <p><strong>React Note:</strong> In React, use <code>&lt;button&gt;</code> with an
+            <code>onClick</code> handler. Always specify the <code>type</code> to avoid unintended form
+            submissions.
+          </p>
+        </div>
 
-                <div class="lesson-section">
-                    <h2>&lt;a&gt; (Anchor/Link) Tag</h2>
-                    <p>
-                        The <code>&lt;a&gt;</code> element defines a hyperlink. It uses the <code>href</code> attribute
-                        to specify the URL or location the link should navigate to.
-                    </p>
-                    <p>
-                        By default, clicking an anchor tag navigates away from the current page. You can also set
-                        <code>target="_blank"</code> to open the link in a new tab.
-                    </p>
+        <div class="lesson-section" data-topic="anchor-link">
+          <h2>&lt;a&gt; (Anchor/Link) Tag</h2>
+          <p>
+            The <code>&lt;a&gt;</code> element defines a hyperlink. It uses the <code>href</code> attribute
+            to specify the URL or location the link should navigate to.
+          </p>
+          <p>
+            By default, clicking an anchor tag navigates away from the current page. You can also set
+            <code>target="_blank"</code> to open the link in a new tab.
+          </p>
 
-                    <pre><code>&lt;a href="https://www.example.com"&gt;Visit Example&lt;/a&gt;
+          <pre><code>&lt;a href="https://www.example.com"&gt;Visit Example&lt;/a&gt;
 &lt;a href="#section2"&gt;Go to Section 2 on this page&lt;/a&gt;
 &lt;a href="docs.pdf" target="_blank"&gt;Open PDF in New Tab&lt;/a&gt;</code><button class="copy-btn">Copy</button></pre>
 
-                    <p><strong>React Note:</strong> In React apps, use <code>&lt;Link&gt;</code> from
-                        <code>react-router-dom</code> for internal routing instead of <code>&lt;a&gt;</code>, to prevent
-                        full page reloads:
-                    </p>
+          <p><strong>React Note:</strong> In React apps, use <code>&lt;Link&gt;</code> from
+            <code>react-router-dom</code> for internal routing instead of <code>&lt;a&gt;</code>, to prevent
+            full page reloads:
+          </p>
 
-                    <pre><code>import { Link } from 'react-router-dom';
+          <pre><code>import { Link } from 'react-router-dom';
 
 &lt;Link to="/about"&gt;Go to About Page&lt;/Link&gt;</code><button class="copy-btn">Copy</button></pre>
-                </div>
+        </div>
 
-                <div class="lesson-section">
-                    <h2>Lists: &lt;ul&gt;, &lt;ol&gt;, &lt;li&gt;</h2>
-                    <p>
-                        HTML provides two main types of lists: unordered (<code>&lt;ul&gt;</code>) and ordered
-                        (<code>&lt;ol&gt;</code>). Both use <code>&lt;li&gt;</code> tags to define list items.
-                    </p>
+        <div class="lesson-section" data-topic="lists">
+          <h2>Lists: &lt;ul&gt;, &lt;ol&gt;, &lt;li&gt;</h2>
+          <p>
+            HTML provides two main types of lists: unordered (<code>&lt;ul&gt;</code>) and ordered
+            (<code>&lt;ol&gt;</code>). Both use <code>&lt;li&gt;</code> tags to define list items.
+          </p>
 
-                    <p><strong>Unordered List (bullets):</strong></p>
-                    <pre><code>&lt;ul&gt;
+          <p><strong>Unordered List (bullets):</strong></p>
+          <pre><code>&lt;ul&gt;
   &lt;li&gt;HTML&lt;/li&gt;
   &lt;li&gt;CSS&lt;/li&gt;
   &lt;li&gt;JavaScript&lt;/li&gt;
 &lt;/ul&gt;</code><button class="copy-btn">Copy</button></pre>
 
-                    <p><strong>Ordered List (numbered):</strong></p>
-                    <pre><code>&lt;ol&gt;
+          <p><strong>Ordered List (numbered):</strong></p>
+          <pre><code>&lt;ol&gt;
   &lt;li&gt;Step 1: Install Node&lt;/li&gt;
   &lt;li&gt;Step 2: Setup Project&lt;/li&gt;
   &lt;li&gt;Step 3: Start Coding&lt;/li&gt;
 &lt;/ol&gt;</code><button class="copy-btn">Copy</button></pre>
 
-                    <p>
-                        Lists are useful for navigation menus, steps, or grouping content. You can nest lists inside
-                        list items too.
-                    </p>
+          <p>
+            Lists are useful for navigation menus, steps, or grouping content. You can nest lists inside
+            list items too.
+          </p>
 
-                    <p><strong>React Note:</strong> In React, you'll often render lists using <code>map()</code>. Always
-                        add a <code>key</code> prop to each list item for performance and tracking:</p>
+          <p><strong>React Note:</strong> In React, you'll often render lists using <code>map()</code>. Always
+            add a <code>key</code> prop to each list item for performance and tracking:</p>
 
-                    <pre><code>{items.map((item, index) =&gt; (
+          <pre><code>{items.map((item, index) =&gt; (
   &lt;li key={index}&gt;{item}&lt;/li&gt;
 ))}</code><button class="copy-btn">Copy</button></pre>
-                </div>
+        </div>
 
-                <div class="lesson-section">
-                    <h2>Images: &lt;img&gt;</h2>
-                    <p>
-                        The <code>&lt;img&gt;</code> tag is used to embed images in a web page. It is a self-closing tag
-                        and requires at least the <code>src</code> (source) and <code>alt</code> (alternative text)
-                        attributes.
-                    </p>
+        <div class="lesson-section" data-topic="images">
+          <h2>Images: &lt;img&gt;</h2>
+          <p>
+            The <code>&lt;img&gt;</code> tag is used to embed images in a web page. It is a self-closing tag
+            and requires at least the <code>src</code> (source) and <code>alt</code> (alternative text)
+            attributes.
+          </p>
 
-                    <pre><code>&lt;img src="https://via.placeholder.com/150" alt="Placeholder Image" /&gt;</code><button class="copy-btn">Copy</button></pre>
+          <pre><code>&lt;img src="https://via.placeholder.com/150" alt="Placeholder Image" /&gt;</code><button class="copy-btn">Copy</button></pre>
 
-                    <ul>
-                        <li><strong>src:</strong> URL or file path of the image.</li>
-                        <li><strong>alt:</strong> Describes the image for screen readers and displays if the image can't
-                            load.</li>
-                    </ul>
+          <ul>
+            <li><strong>src:</strong> URL or file path of the image.</li>
+            <li><strong>alt:</strong> Describes the image for screen readers and displays if the image can't
+              load.</li>
+          </ul>
 
-                    <p><strong>Example:</strong></p>
-                    <pre><code>&lt;img src="./images/bmcitclub-logo.png" alt="BMC IT Club Logo" width="200" height="200" /&gt;</code><button class="copy-btn">Copy</button></pre>
+          <p><strong>Example:</strong></p>
+          <pre><code>&lt;img src="./images/bmcitclub-logo.png" alt="BMC IT Club Logo" width="200" height="200" /&gt;</code><button class="copy-btn">Copy</button></pre>
 
-                    <p>
-                        You can also control the size of the image using <code>width</code> and <code>height</code>
-                        attributes, or CSS.
-                    </p>
+          <p>
+            You can also control the size of the image using <code>width</code> and <code>height</code>
+            attributes, or CSS.
+          </p>
 
-                    <p><strong>React Note:</strong> In React, use the <code>&lt;img /&gt;</code> tag similarly, but
-                        remember to import static assets:</p>
+          <p><strong>React Note:</strong> In React, use the <code>&lt;img /&gt;</code> tag similarly, but
+            remember to import static assets:</p>
 
-                    <pre><code>import logo from './logo.png';
+          <pre><code>import logo from './logo.png';
 
 function App() {
   return &lt;img src={logo} alt="Logo" /&gt;;
 }</code><button class="copy-btn">Copy</button></pre>
-                </div>
+        </div>
 
-                <div class="lesson-section">
-                    <h2>Tables: &lt;table&gt;</h2>
-                    <p>
-                        The <code>&lt;table&gt;</code> element is used to display tabular data in rows and columns. It
-                        is structured using:
-                    </p>
-                    <ul>
-                        <li><code>&lt;thead&gt;</code> – defines the header row</li>
-                        <li><code>&lt;tbody&gt;</code> – wraps the main table content</li>
-                        <li><code>&lt;tr&gt;</code> – table row</li>
-                        <li><code>&lt;th&gt;</code> – header cell (bold and centered by default)</li>
-                        <li><code>&lt;td&gt;</code> – data cell</li>
-                    </ul>
+        <div class="lesson-section" data-topic="tables">
+          <h2>Tables: &lt;table&gt;</h2>
+          <p>
+            The <code>&lt;table&gt;</code> element is used to display tabular data in rows and columns. It
+            is structured using:
+          </p>
+          <ul>
+            <li><code>&lt;thead&gt;</code> – defines the header row</li>
+            <li><code>&lt;tbody&gt;</code> – wraps the main table content</li>
+            <li><code>&lt;tr&gt;</code> – table row</li>
+            <li><code>&lt;th&gt;</code> – header cell (bold and centered by default)</li>
+            <li><code>&lt;td&gt;</code> – data cell</li>
+          </ul>
 
-                    <p><strong>Example:</strong></p>
-                    <pre><code>&lt;table border="1"&gt;
+          <p><strong>Example:</strong></p>
+          <pre><code>&lt;table border="1"&gt;
   &lt;thead&gt;
     &lt;tr&gt;
       &lt;th&gt;Name&lt;/th&gt;
@@ -667,15 +751,15 @@ function App() {
   &lt;/tbody&gt;
 &lt;/table&gt;</code><button class="copy-btn">Copy</button></pre>
 
-                    <p>
-                        Tables can be styled using CSS for spacing, borders, alignment, and even responsiveness.
-                    </p>
+          <p>
+            Tables can be styled using CSS for spacing, borders, alignment, and even responsiveness.
+          </p>
 
-                    <p><strong>React Note:</strong> In React, use JSX syntax and camelCase props like
-                        <code>className</code>:
-                    </p>
+          <p><strong>React Note:</strong> In React, use JSX syntax and camelCase props like
+            <code>className</code>:
+          </p>
 
-                    <pre><code>function TableExample() {
+          <pre><code>function TableExample() {
   return (
     &lt;table border="1"&gt;
       &lt;thead&gt;
@@ -688,29 +772,29 @@ function App() {
     &lt;/table&gt;
   );
 }</code><button class="copy-btn">Copy</button></pre>
-                </div>
+        </div>
 
-                <div class="lesson-section">
-                    <h2>Semantic Tags</h2>
-                    <p>
-                        Semantic tags clearly describe the meaning of the content inside them. They make your HTML more
-                        readable and accessible, which also improves SEO and helps screen readers.
-                    </p>
+        <div class="lesson-section" data-topic="semantic-tags">
+          <h2>Semantic Tags</h2>
+          <p>
+            Semantic tags clearly describe the meaning of the content inside them. They make your HTML more
+            readable and accessible, which also improves SEO and helps screen readers.
+          </p>
 
-                    <p><strong>Common Semantic Tags:</strong></p>
-                    <ul>
-                        <li><code>&lt;header&gt;</code> – Top of the page or section (typically contains navigation or
-                            logo)</li>
-                        <li><code>&lt;nav&gt;</code> – Navigation menus</li>
-                        <li><code>&lt;main&gt;</code> – Main content of the page</li>
-                        <li><code>&lt;section&gt;</code> – Group of related content</li>
-                        <li><code>&lt;article&gt;</code> – Self-contained content (e.g., blog post)</li>
-                        <li><code>&lt;aside&gt;</code> – Side content (e.g., ads, links, sidebars)</li>
-                        <li><code>&lt;footer&gt;</code> – Bottom of the page or section</li>
-                    </ul>
+          <p><strong>Common Semantic Tags:</strong></p>
+          <ul>
+            <li><code>&lt;header&gt;</code> – Top of the page or section (typically contains navigation or
+              logo)</li>
+            <li><code>&lt;nav&gt;</code> – Navigation menus</li>
+            <li><code>&lt;main&gt;</code> – Main content of the page</li>
+            <li><code>&lt;section&gt;</code> – Group of related content</li>
+            <li><code>&lt;article&gt;</code> – Self-contained content (e.g., blog post)</li>
+            <li><code>&lt;aside&gt;</code> – Side content (e.g., ads, links, sidebars)</li>
+            <li><code>&lt;footer&gt;</code> – Bottom of the page or section</li>
+          </ul>
 
-                    <p><strong>Example:</strong></p>
-                    <pre><code>&lt;header&gt;
+          <p><strong>Example:</strong></p>
+          <pre><code>&lt;header&gt;
   &lt;h1&gt;My Blog&lt;/h1&gt;
 &lt;/header&gt;
 
@@ -725,11 +809,11 @@ function App() {
   &lt;p&gt;&copy; 2025 My Blog&lt;/p&gt;
 &lt;/footer&gt;</code><button class="copy-btn">Copy</button></pre>
 
-                    <p><strong>React Note:</strong> Semantic tags work the same in React—just ensure you use
-                        <code>className</code> instead of <code>class</code> when styling:
-                    </p>
+          <p><strong>React Note:</strong> Semantic tags work the same in React—just ensure you use
+            <code>className</code> instead of <code>class</code> when styling:
+          </p>
 
-                    <pre><code>function BlogLayout() {
+          <pre><code>function BlogLayout() {
   return (
     &lt;&gt;
       &lt;header&gt;&lt;h1&gt;React Blog&lt;/h1&gt;&lt;/header&gt;
@@ -743,28 +827,28 @@ function App() {
     &lt;/&gt;
   );
 }</code><button class="copy-btn">Copy</button></pre>
-                </div>
+        </div>
 
-                <div class="lesson-section">
-                    <h2>&lt;meta&gt; Tags</h2>
-                    <p>
-                        <code>&lt;meta&gt;</code> tags provide metadata about the HTML document—information like
-                        character encoding, page description, viewport settings, and SEO-related data. They are always
-                        placed inside the <code>&lt;head&gt;</code> element and do not display any content on the page.
-                    </p>
+        <div class="lesson-section" data-topic="meta-tags">
+          <h2>&lt;meta&gt; Tags</h2>
+          <p>
+            <code>&lt;meta&gt;</code> tags provide metadata about the HTML document—information like
+            character encoding, page description, viewport settings, and SEO-related data. They are always
+            placed inside the <code>&lt;head&gt;</code> element and do not display any content on the page.
+          </p>
 
-                    <p><strong>Common Uses:</strong></p>
-                    <ul>
-                        <li><code>charset</code> – Defines the character encoding (usually UTF-8)</li>
-                        <li><code>name="viewport"</code> – Controls how the site appears on mobile devices</li>
-                        <li><code>name="description"</code> – Provides a description used by search engines</li>
-                        <li><code>name="keywords"</code> – Lists relevant search terms (less used today)</li>
-                        <li><code>name="author"</code> – Specifies the author of the page</li>
-                        <li><code>http-equiv</code> – Used for things like setting cache or content type headers</li>
-                    </ul>
+          <p><strong>Common Uses:</strong></p>
+          <ul>
+            <li><code>charset</code> – Defines the character encoding (usually UTF-8)</li>
+            <li><code>name="viewport"</code> – Controls how the site appears on mobile devices</li>
+            <li><code>name="description"</code> – Provides a description used by search engines</li>
+            <li><code>name="keywords"</code> – Lists relevant search terms (less used today)</li>
+            <li><code>name="author"</code> – Specifies the author of the page</li>
+            <li><code>http-equiv</code> – Used for things like setting cache or content type headers</li>
+          </ul>
 
-                    <p><strong>Example:</strong></p>
-                    <pre><code>&lt;!DOCTYPE html&gt;
+          <p><strong>Example:</strong></p>
+          <pre><code>&lt;!DOCTYPE html&gt;
 &lt;html&gt;
   &lt;head&gt;
     &lt;meta charset="UTF-8" /&gt;
@@ -778,12 +862,12 @@ function App() {
   &lt;/body&gt;
 &lt;/html&gt;</code><button class="copy-btn">Copy</button></pre>
 
-                    <p><strong>React Note:</strong> Meta tags are placed inside the HTML template—not directly in your
-                        React components. To manage them dynamically, you can use libraries like <a
-                            href="https://github.com/nfl/react-helmet" target="_blank" rel="noopener">react-helmet</a>.
-                    </p>
+          <p><strong>React Note:</strong> Meta tags are placed inside the HTML template—not directly in your
+            React components. To manage them dynamically, you can use libraries like <a
+              href="https://github.com/nfl/react-helmet" target="_blank" rel="noopener">react-helmet</a>.
+          </p>
 
-                    <pre><code>import { Helmet } from 'react-helmet';
+          <pre><code>import { Helmet } from 'react-helmet';
 
 function PageHead() {
   return (
@@ -794,18 +878,17 @@ function PageHead() {
     &lt;/Helmet&gt;
   );
 }</code><button class="copy-btn">Copy</button></pre>
-                </div>
+        </div>
 
+        <!-- Additional sections -->
+      </section>
+    </aside>
 
-                <!-- Additional sections can follow in the same format for divs, spans, forms, inputs, etc. -->
-            </section>
-        </aside>
+    <!-- Code Editor and Runner -->
+    <section class="editor">
+      <h2>Try it Yourself</h2>
 
-        <!-- Code Editor and Runner -->
-        <section class="editor">
-            <h2>Try it Yourself</h2>
-
-            <textarea id="htmlCode" placeholder="Write your HTML here...">
+      <textarea id="htmlCode" placeholder="Write your HTML here...">
                 <!DOCTYPE html>
 <html>
   <head>
@@ -817,50 +900,116 @@ function PageHead() {
   </body>
 </html>
             </textarea>
-            <button id="runBtn">Run</button>
-            <h2>Live Preview</h2>
-            <iframe id="preview" sandbox="allow-scripts"></iframe>
-        </section>
-    </div>
+      <button id="runBtn">Run</button>
+      <h2>Live Preview</h2>
+      <iframe id="preview" sandbox="allow-scripts"></iframe>
+    </section>
+  </div>
 
-    <script>
-        document.getElementById('toggleTheme').addEventListener('click', () => {
-            document.body.classList.toggle('dark');
-        });
+  <script>
+    const dropdownToggle = document.getElementById('dropdownToggle');
+    const dropdown = document.getElementById('filterDropdown');
+    const dropdownMenu = document.getElementById('dropdownMenu');
+    const topicCheckboxes = document.querySelectorAll('#topicCheckboxes input[type="checkbox"]');
+    const selectAllBtn = document.getElementById('selectAllBtn');
+    const clearAllBtn = document.getElementById('clearAllBtn');
 
-        document.querySelectorAll('.copy-btn').forEach(button => {
-            button.addEventListener('click', () => {
-                const code = button.parentElement.querySelector('code').innerText;
-                navigator.clipboard.writeText(code);
-                button.innerText = "Copied!";
-                setTimeout(() => button.innerText = "Copy", 2000);
-            });
-        });
+    function updateTopicVisibility() {
+      const selectedTopics = Array.from(topicCheckboxes)
+        .filter(cb => cb.checked)
+        .map(cb => cb.value);
 
-        const runCode = () => {
-            const code = document.getElementById('htmlCode').value;
-            document.getElementById('preview').srcdoc = code;
-        }
+      document.querySelectorAll('.lesson-section').forEach(section => {
+        const topic = section.dataset.topic;
+        section.style.display = selectedTopics.includes(topic) ? 'block' : 'none';
+      });
 
-        document.getElementById('runBtn').addEventListener('click', runCode);
+      updateDropdownLabel();
+    }
 
-        document.getElementById('htmlCode').addEventListener('keydown', (e) => {
-            if (e.ctrlKey && e.key === 's') {
-                e.preventDefault();
-                runCode();
-            }
-        });
 
-        // Drawer toggle for mobile
-        const drawer = document.getElementById('drawer');
-        const hamburgerBtn = document.getElementById('hamburgerBtn');
+    // Toggle dropdown
+    dropdownToggle.addEventListener('click', () => {
+      dropdown.classList.toggle('open');
+    });
 
-        hamburgerBtn.addEventListener('click', () => {
-            drawer.classList.toggle('open');
-            document.body.style.overflow = drawer.classList.contains('open') ? 'hidden' : 'auto';
-            hamburgerBtn.innerHTML = drawer.classList.contains('open') ? '&times;' : '&#9776;';
-        });
-    </script>
+    // Outside click to close dropdown
+    document.addEventListener('click', (e) => {
+      if (!dropdown.contains(e.target)) {
+        dropdown.classList.remove('open');
+      }
+    });
+
+    topicCheckboxes.forEach(cb => {
+      cb.addEventListener('change', updateTopicVisibility);
+    });
+
+    selectAllBtn.addEventListener('click', () => {
+      topicCheckboxes.forEach(cb => cb.checked = true);
+      updateTopicVisibility(); // this now also updates label
+    });
+
+    clearAllBtn.addEventListener('click', () => {
+      topicCheckboxes.forEach(cb => cb.checked = false);
+      updateTopicVisibility();
+    });
+
+
+    // Initial setup
+    updateTopicVisibility();
+
+    function updateDropdownLabel() {
+      const checkedCount = Array.from(topicCheckboxes).filter(cb => cb.checked).length;
+      const totalCount = topicCheckboxes.length;
+
+      if (checkedCount === totalCount) {
+        dropdownToggle.textContent = 'Filter Topics (All selected)';
+      } else {
+        dropdownToggle.textContent = `Filter Topics (${checkedCount} selected)`;
+      }
+    }
+
+
+  </script>
+
+  <script>
+    document.getElementById('toggleTheme').addEventListener('click', () => {
+      document.body.classList.toggle('dark');
+    });
+
+    document.querySelectorAll('.copy-btn').forEach(button => {
+      button.addEventListener('click', () => {
+        const code = button.parentElement.querySelector('code').innerText;
+        navigator.clipboard.writeText(code);
+        button.innerText = "Copied!";
+        setTimeout(() => button.innerText = "Copy", 2000);
+      });
+    });
+
+    const runCode = () => {
+      const code = document.getElementById('htmlCode').value;
+      document.getElementById('preview').srcdoc = code;
+    }
+
+    document.getElementById('runBtn').addEventListener('click', runCode);
+
+    document.getElementById('htmlCode').addEventListener('keydown', (e) => {
+      if (e.ctrlKey && e.key === 's') {
+        e.preventDefault();
+        runCode();
+      }
+    });
+
+    // Drawer toggle for mobile
+    const drawer = document.getElementById('drawer');
+    const hamburgerBtn = document.getElementById('hamburgerBtn');
+
+    hamburgerBtn.addEventListener('click', () => {
+      drawer.classList.toggle('open');
+      document.body.style.overflow = drawer.classList.contains('open') ? 'hidden' : 'auto';
+      hamburgerBtn.innerHTML = drawer.classList.contains('open') ? '&times;' : '&#9776;';
+    });
+  </script>
 </body>
 
 </html>
