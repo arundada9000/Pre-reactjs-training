@@ -4,6 +4,8 @@ Welcome to the **BMC IT Club's Pre-React Training Platform** — a lightweight, 
 
 > No setup needed — just open in browser and start coding.
 
+**Page:** [Website](https://easyvanilla.vercel.app)
+
 ---
 
 ## Features
@@ -22,6 +24,7 @@ Welcome to the **BMC IT Club's Pre-React Training Platform** — a lightweight, 
 
 ## Project Structure
 
+```
 ├── index.html # Landing page / Home
 ├── pages # External links, tools, docs
 | ├── practice-html.html # HTML lessons + editor
@@ -29,11 +32,14 @@ Welcome to the **BMC IT Club's Pre-React Training Platform** — a lightweight, 
 | ├── practice-js.html # JavaScript lessons + editor
 | ├── reference.html # Docs, videos and editor references
 | ├── styles.css # styling for practice-html,css and js pages
+| ├── script.js # scripts for practice-html,css and js pages
+| ├── quiz.html # some question related to all the topics we covered
 ├── /images # BMC IT Club logo and assets
 └── /styles.css # index page styles and animations
 └── /script.js # index page logic
 └── /test.html # To test new features (guinea pig )
 └── /README.md # readme file
+```
 
 ---
 
@@ -45,6 +51,7 @@ Welcome to the **BMC IT Club's Pre-React Training Platform** — a lightweight, 
 - Semantic elements
 - Forms & input types
 - Lists, tables, links, images
+  **Page:** [pages/practice-html.html](https://easyvanilla.vercel.app/pages/practice-html.html)
 
 ### CSS
 
@@ -54,6 +61,7 @@ Welcome to the **BMC IT Club's Pre-React Training Platform** — a lightweight, 
 - Borders, Shadows, Overflow
 - Pseudo-elements & pseudo-classes
 - Responsive Design (media queries)
+  **Page:** [pages/practice-css.html](https://easyvanilla.vercel.app/pages/practice-css.html)
 
 ### JavaScript
 
@@ -69,12 +77,23 @@ Welcome to the **BMC IT Club's Pre-React Training Platform** — a lightweight, 
 - Fetch API
 - Event Loop
 - Modules: `import` / `export`
+  **Page:** [pages/practice-js.html](https://easyvanilla.vercel.app/pages/practice-js.html)
 
 ---
 
+## Quiz
+
+Test your understanding of the foundational concepts with topic-wise quizzes. Each quiz includes 20 multiple-choice questions for HTML, CSS, and JavaScript. This is designed to help reinforce knowledge and prepare for ReactJS development.
+
+**Page:** [pages/quiz.html](https://easyvanilla.vercel.app/pages/quiz.html)
+
+- 20 questions each for HTML, CSS, and JavaScript
+- Multiple choice format with instant feedback
+- Tracks score and review answers
+
 ## Reference Page
 
-Explore the dedicated [📖 Reference Page](reference.html) for deeper learning, including:
+Explore the dedicated [Reference Page](https://easyvanilla.vercel.app/pages/reference.html) for deeper learning, including:
 
 ### HTML Resources
 

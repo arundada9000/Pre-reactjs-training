@@ -4,11 +4,793 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Quiz Your HTML, CSS & JS Knowledge | Pre-ReactJS - BMC IT Club</title>
+    <meta name="description"
+        content="Test your foundational HTML, CSS, and JavaScript knowledge with our Pre-ReactJS quizzes. Designed for learners by Arun Neupane.">
+    <meta name="keywords"
+        content="ReactJS Quiz, HTML Quiz, CSS Quiz, JavaScript Quiz, Pre React Training, BMC IT Club, Arun Neupane,arundada9000, Practice Web Dev">
+    <meta name="author" content="Arun Neupane">
+    <meta property="og:title" content="Frontend Quiz - Prepare for ReactJS">
+    <meta property="og:description"
+        content="Interactive quiz to test your frontend fundamentals before moving into React.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="/images/bmc-it-club-circle-logo.png">
+    <link rel="icon" href="../images/favicon.ico" type="image/x-icon">
+    <style>
+        :root {
+            --primary: #0049af;
+            --light-bg: #f9f9f9;
+            --dark-bg: #1b1b1b;
+            --card-bg: #ffffff;
+            --text-color: #222222;
+            --accent: #003b8e;
+        }
+
+        body.dark {
+            --light-bg: #1b1b1b;
+            --card-bg: #2a2a2a;
+            --text-color: #e0e0e0;
+            --accent: #4577c0;
+        }
+
+        body {
+            background: var(--light-bg);
+            color: var(--text-color);
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            transition: all 0.3s;
+        }
+
+        header {
+            padding: 1rem;
+            text-align: center;
+            background: var(--primary);
+            color: white;
+            position: relative;
+        }
+
+        .header-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .theme-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+
+        .logo {
+            height: 50px;
+            width: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .logo:hover {
+            transform: scale(1.1);
+        }
+
+        .logo.logo-animate {
+            animation: floatSpin 8s ease-in-out infinite;
+            transform-origin: center;
+            will-change: transform, opacity;
+        }
+
+        /* nav */
+        .nav-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .nav-button {
+            background: none;
+            border: 1px solid white;
+            border-radius: 4px;
+
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: #e5e5e5;
+            padding: 10px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .arrow {
+            font-size: 0.8rem;
+        }
+
+        .nav-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: var(--accent);
+            border-radius: 6px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            margin-top: 6px;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            min-width: 160px;
+        }
+
+        .nav-menu a {
+            color: #f5f5f5;
+            padding: 10px 16px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            border-bottom: 1px solid #3a3a3a;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .nav-menu a:hover {
+            background-color: var(--primary);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: 1px solid white;
+            border-radius: 4px;
+            padding: 0.4rem 0.8rem;
+            color: white;
+            cursor: pointer;
+        }
+
+        .quiz-container {
+            max-width: 800px;
+            margin: auto;
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .quiz-card {
+            border: 2px solid var(--accent);
+            border-radius: 10px;
+            padding: 1rem;
+            display: inline-block;
+            text-align: left;
+            margin: 0 auto;
+        }
+
+        .section-buttons {
+            border: #003b8e 2px solid;
+            padding: 1rem 0.5rem;
+        }
+
+        .section-buttons button {
+            margin: 0.5rem;
+            padding: 0.8rem 1.2rem;
+            background: var(--primary);
+            border: none;
+            color: white;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .question {
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        #question-number {
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+            color: var(--accent);
+        }
+
+        .options button {
+            display: block;
+            margin: 0.5rem auto;
+            width: 100%;
+            max-width: 600px;
+            padding: 0.7rem;
+            border: 1px solid var(--accent);
+            border-radius: 6px;
+            background: transparent;
+            cursor: pointer;
+            color: var(--text-color);
+            transition: background 0.3s;
+        }
+
+        .options button.correct {
+            background-color: #c8e6c9;
+        }
+
+        .options button.wrong {
+            background-color: #ffcdd2;
+        }
+
+        .options button.selected {
+            background-color: var(--accent);
+            color: white;
+        }
+
+        .result {
+            margin-top: 2rem;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        footer {
+            margin-top: auto;
+            padding: 1rem;
+            background: var(--primary);
+            color: white;
+            text-align: center;
+        }
+
+        #section-title {
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        #restart-btn,
+        #next-btn,
+        #submit-btn,
+        #try-another-btn {
+            margin-top: 1rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 0.6rem 1.2rem;
+            cursor: pointer;
+        }
+
+        @keyframes floatSpin {
+            0% {
+                transform: rotate(0deg) scale(1);
+                opacity: 1;
+            }
+
+            50% {
+                transform: rotate(180deg) scale(1.05);
+                opacity: 0.9;
+            }
+
+            100% {
+                transform: rotate(360deg) scale(1);
+                opacity: 1;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .quiz-container {
+                margin: 1rem;
+                padding: 1rem;
+            }
+        }
+    </style>
 </head>
 
 <body>
-    Quiz
+    <header>
+        <div class="header-wrapper">
+            <img src="../images/bmc-it-club-circle-logo.png" alt="Logo" class="logo logo-animate"
+                onclick="window.location.href = '../index.html'" />
+            <h1>Quiz - Pre-ReactJS Training</h1>
+        </div>
+        <div class="theme-wrapper">
+            <div class="nav-dropdown">
+                <button id="navToggle" class="nav-button">
+                    <span class="nav-icon">🧠</span>
+                    <span class="nav-label">Quiz</span>
+                    <span class="arrow">▼</span>
+                </button>
+                <div id="navMenu" class="nav-menu hidden">
+                    <a href="../index.html">🏠 Home</a>
+                    <a href="./practice-html.html">📄 HTML</a>
+                    <a href="./practice-css.html">🎨 CSS</a>
+                    <a href="./practice-js.html">⚙️ JavaScript</a>
+                    <a href="./reference.html">⭐ Resources</a>
+                </div>
+            </div>
+            <button class="theme-toggle" onclick="document.body.classList.toggle('dark')">Toggle Theme</button>
+        </div>
+    </header>
+
+    <div class="quiz-container">
+        <div id="start-screen" class="section-buttons">
+            <h2>Select a Section</h2>
+            <button onclick="startQuiz('html')">HTML</button>
+            <button onclick="startQuiz('css')">CSS</button>
+            <button onclick="startQuiz('js')">JavaScript</button>
+        </div>
+
+        <div id="quiz-screen" style="display:none;">
+            <div id="section-title"></div>
+            <div class="quiz-card">
+                <div id="question-number"></div>
+
+                <div class="question" id="question-text"></div>
+                <div class="options" id="options-container"></div>
+                <button id="submit-btn" onclick="submitAnswer()" disabled>Submit</button>
+            </div>
+        </div>
+
+        <div id="result-screen" style="display:none;">
+            <div class="result" id="result-text"></div>
+            <div id="answer-review"></div>
+            <button id="restart-btn" onclick="location.reload()">Restart Quiz</button>
+            <button id="try-another-btn" onclick="showStartScreen()">Try Another Section</button>
+        </div>
+    </div>
+
+    <footer>
+        BMC IT Club – Build Strong Foundations Before ReactJS
+    </footer>
+
+    <script>
+        // window.matchMedia("(prefers-color-scheme: dark)").matches &&
+        // document.body.classList.add("dark");
+        const toggleBtn = document.getElementById("navToggle");
+        const navMenu = document.getElementById("navMenu");
+
+        toggleBtn.addEventListener("click", () => {
+            navMenu.classList.toggle("hidden");
+        });
+        document.addEventListener("click", (event) => {
+            if (!toggleBtn.contains(event.target) && !navMenu.contains(event.target)) {
+                navMenu.classList.add("hidden");
+            }
+        });
+        let currentSection = '';
+        let currentQuestionIndex = 0;
+        let selectedOption = null;
+        let score = 0;
+        let userAnswers = [];
+
+        const questions = {
+            html: [
+                {
+                    question: "What does HTML stand for?",
+                    options: [
+                        "Hyper Text Markup Language",
+                        "Hyper Tool Markup Language",
+                        "Home Text Markup Language",
+                        "Hyperlinks and Text Mark Language"
+                    ],
+                    answer: 0
+                },
+                {
+                    question: "Which tag is used to insert a line break in HTML?",
+                    options: ["<br>", "<lb>", "<break>", "<newline>"],
+                    answer: 0
+                },
+                {
+                    question: "Which attribute is used to provide an image description?",
+                    options: ["desc", "title", "alt", "src"],
+                    answer: 2
+                },
+                {
+                    question: "Which tag defines a hyperlink?",
+                    options: ["<link>", "<a>", "<href>", "<hyper>"],
+                    answer: 1
+                },
+                {
+                    question: "How do you create an ordered list?",
+                    options: ["<ol>", "<ul>", "<li>", "<list>"],
+                    answer: 0
+                },
+                {
+                    question: "What is the correct HTML element for inserting a line break?",
+                    options: ["<break>", "<br>", "<lb>", "<newline>"],
+                    answer: 1
+                },
+                {
+                    question: "Which HTML element is used for the largest heading?",
+                    options: ["<head>", "<h6>", "<h1>", "<header>"],
+                    answer: 2
+                },
+                {
+                    question: "What does the <title> tag do?",
+                    options: ["Sets main heading", "Adds tooltip", "Sets page title in browser tab", "Displays footer text"],
+                    answer: 2
+                },
+                {
+                    question: "Which tag is used to define a table row?",
+                    options: ["<tr>", "<td>", "<table>", "<th>"],
+                    answer: 0
+                },
+                {
+                    question: "What does the <form> tag do?",
+                    options: ["Creates tables", "Accepts user input", "Adds images", "Displays code"],
+                    answer: 1
+                },
+                {
+                    question: "Which HTML attribute is used to define inline styles?",
+                    options: ["style", "class", "css", "font"],
+                    answer: 0
+                },
+                {
+                    question: "What tag is used to display a numbered list?",
+                    options: ["<ul>", "<list>", "<ol>", "<dl>"],
+                    answer: 2
+                },
+                {
+                    question: "What tag is used to add items to a list?",
+                    options: ["<item>", "<li>", "<ul>", "<add>"],
+                    answer: 1
+                },
+                {
+                    question: "Which element defines emphasized text?",
+                    options: ["<i>", "<strong>", "<em>", "<italic>"],
+                    answer: 2
+                },
+                {
+                    question: "Which tag makes text bold?",
+                    options: ["<bold>", "<b>", "<strong>", "<em>"],
+                    answer: 1
+                },
+                {
+                    question: "What is the correct HTML for inserting an image?",
+                    options: [
+                        "<img href='image.jpg'>",
+                        "<image src='image.jpg'>",
+                        "<img src='image.jpg' alt='desc'>",
+                        "<src img='image.jpg'>"
+                    ],
+                    answer: 2
+                },
+                {
+                    question: "How can you open a link in a new tab?",
+                    options: ["target='_tab'", "target='_self'", "target='_blank'", "new-tab='true'"],
+                    answer: 2
+                },
+                {
+                    question: "Which HTML element is used to specify a footer?",
+                    options: ["<footer>", "<bottom>", "<foot>", "<end>"],
+                    answer: 0
+                },
+                {
+                    question: "How do you create a checkbox in HTML?",
+                    options: ["<check>", "<checkbox>", "<input type='checkbox'>", "<input checkbox='true'>"],
+                    answer: 2
+                },
+                {
+                    question: "Which tag is used for creating dropdowns?",
+                    options: ["<dropdown>", "<input type='dropdown'>", "<select>", "<list>"],
+                    answer: 2
+                }
+            ],
+
+            css: [
+                {
+                    question: "Which property changes the text color?",
+                    options: ["font", "color", "text-color", "background-color"],
+                    answer: 1
+                },
+                {
+                    question: "What does CSS stand for?",
+                    options: [
+                        "Creative Style Sheets",
+                        "Cascading Style Sheets",
+                        "Colorful Style Syntax",
+                        "Computer Style Sheets"
+                    ],
+                    answer: 1
+                },
+                {
+                    question: "Which property sets the background color?",
+                    options: ["background", "bg-color", "background-color", "bg"],
+                    answer: 2
+                },
+                {
+                    question: "What is the default position of background-image?",
+                    options: ["center", "top-left", "repeat", "static"],
+                    answer: 1
+                },
+                {
+                    question: "Which selector selects all p elements inside a div?",
+                    options: ["div p", "div > p", "div + p", "p div"],
+                    answer: 0
+                },
+                {
+                    question: "How do you select an element with id 'header'?",
+                    options: ["#header", ".header", "header", "*header"],
+                    answer: 0
+                },
+                {
+                    question: "Which unit is relative to the root element?",
+                    options: ["px", "em", "rem", "%"],
+                    answer: 2
+                },
+                {
+                    question: "What property controls the size of text?",
+                    options: ["font-size", "text-size", "font-style", "size"],
+                    answer: 0
+                },
+                {
+                    question: "Which CSS property makes a box shadow?",
+                    options: ["shadow", "box-shadow", "drop-shadow", "outline-shadow"],
+                    answer: 1
+                },
+                {
+                    question: "What does 'z-index' control?",
+                    options: ["Zoom level", "Stacking order", "Opacity", "Size"],
+                    answer: 1
+                },
+                {
+                    question: "Which property is used to make elements flexible?",
+                    options: ["display", "flex", "flexbox", "display: flex"],
+                    answer: 3
+                },
+                {
+                    question: "How do you make text italic in CSS?",
+                    options: ["font-style: italic;", "text-style: italic;", "style: italic;", "font: italic;"],
+                    answer: 0
+                },
+                {
+                    question: "Which property hides overflow content?",
+                    options: ["hide", "display: none", "overflow: hidden", "visibility: hidden"],
+                    answer: 2
+                },
+                {
+                    question: "Which CSS property is used to align text center?",
+                    options: ["align", "text-align", "text-position", "center"],
+                    answer: 1
+                },
+                {
+                    question: "How do you apply style to all elements?",
+                    options: ["*", "all", "body", "#all"],
+                    answer: 0
+                },
+                {
+                    question: "Which pseudo-class styles a hovered element?",
+                    options: [":hover", ":focus", ":visited", ":link"],
+                    answer: 0
+                },
+                {
+                    question: "What is the default display value of div?",
+                    options: ["block", "inline", "flex", "grid"],
+                    answer: 0
+                },
+                {
+                    question: "Which property is used for spacing between elements?",
+                    options: ["spacing", "gap", "padding", "margin"],
+                    answer: 3
+                },
+                {
+                    question: "Which shorthand property sets margin and padding?",
+                    options: ["box", "space", "layout", "box-model"],
+                    answer: 3
+                },
+                {
+                    question: "Which property rounds corners?",
+                    options: ["corner", "border", "border-radius", "radius"],
+                    answer: 2
+                }
+            ]
+            ,
+            js: [
+                {
+                    question: "Which company developed JavaScript?",
+                    options: ["Netscape", "Mozilla", "Google", "Microsoft"],
+                    answer: 0
+                },
+                {
+                    question: "Which keyword declares a variable?",
+                    options: ["let", "var", "const", "All of the above"],
+                    answer: 3
+                },
+                {
+                    question: "How do you write a comment in JavaScript?",
+                    options: ["// comment", "# comment", "<!-- comment -->", "** comment **"],
+                    answer: 0
+                },
+                {
+                    question: "How do you create a function in JavaScript?",
+                    options: ["function = myFunc()", "create function myFunc()", "function myFunc()", "new function myFunc()"],
+                    answer: 2
+                },
+                {
+                    question: "How do you call a function named 'myFunc'?",
+                    options: ["call myFunc()", "myFunc()", "call function myFunc()", "execute myFunc"],
+                    answer: 1
+                },
+                {
+                    question: "What does === mean?",
+                    options: ["Assign", "Compare values", "Strict equality", "Loose equality"],
+                    answer: 2
+                },
+                {
+                    question: "Which is not a data type?",
+                    options: ["string", "number", "boolean", "function"],
+                    answer: 3
+                },
+                {
+                    question: "Which symbol is used for arrays?",
+                    options: ["{}", "[]", "()", "<>"],
+                    answer: 1
+                },
+                {
+                    question: "How to declare an array?",
+                    options: ["var arr = [];", "array = new Array();", "let arr = [];", "All are valid"],
+                    answer: 3
+                },
+                {
+                    question: "How do you write an if statement?",
+                    options: ["if i = 5 then", "if (i == 5)", "if i == 5", "if i = 5"],
+                    answer: 1
+                },
+                {
+                    question: "What is the result of 2 + '2'?",
+                    options: ["4", "22", "NaN", "Error"],
+                    answer: 1
+                },
+                {
+                    question: "Which loop will always run at least once?",
+                    options: ["for", "while", "do...while", "foreach"],
+                    answer: 2
+                },
+                {
+                    question: "Which method converts a string to a number?",
+                    options: ["parseInt()", "Number()", "parseFloat()", "All of these"],
+                    answer: 3
+                },
+                {
+                    question: "What is typeof NaN?",
+                    options: ["undefined", "number", "NaN", "null"],
+                    answer: 1
+                },
+                {
+                    question: "Which method joins array elements?",
+                    options: ["append()", "merge()", "concat()", "join()"],
+                    answer: 3
+                },
+                {
+                    question: "How do you prevent default form submission?",
+                    options: ["return false", "event.stop()", "event.preventDefault()", "form.prevent()"],
+                    answer: 2
+                },
+                {
+                    question: "Which one triggers when user clicks an element?",
+                    options: ["onchange", "onclick", "onhover", "onpress"],
+                    answer: 1
+                },
+                {
+                    question: "What does DOM stand for?",
+                    options: ["Document Object Model", "Data Object Model", "Digital Object Mapping", "Document Order Map"],
+                    answer: 0
+                },
+                {
+                    question: "How do you write a strict comparison?",
+                    options: ["a == b", "a === b", "a = b", "a ! b"],
+                    answer: 1
+                },
+                {
+                    question: "How do you get the length of a string?",
+                    options: ["str.size()", "str.length", "length(str)", "str.count()"],
+                    answer: 1
+                }
+            ]
+
+        };
+
+        function startQuiz(section) {
+            currentSection = section;
+            currentQuestionIndex = 0;
+            score = 0;
+            userAnswers = [];
+            document.getElementById('start-screen').style.display = 'none';
+            document.getElementById('quiz-screen').style.display = 'block';
+            document.getElementById('section-title').textContent = `Section: ${section.toUpperCase()}`;
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            document.getElementById('question-number').textContent =
+                `Question ${currentQuestionIndex + 1} of ${questions[currentSection].length}`;
+            const questionData = questions[currentSection][currentQuestionIndex];
+            document.getElementById('question-text').textContent = questionData.question;
+
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+            selectedOption = null;
+            document.getElementById('submit-btn').disabled = true;
+
+            questionData.options.forEach((option, index) => {
+                const btn = document.createElement('button');
+                btn.textContent = option;
+                btn.onclick = () => {
+                    selectedOption = index;
+                    document.querySelectorAll('.options button').forEach(b => b.classList.remove('selected'));
+                    btn.classList.add('selected');
+                    document.getElementById('submit-btn').disabled = false;
+                };
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        function submitAnswer() {
+            if (selectedOption === null) return; // prevent submit if nothing is selected
+
+            const questionData = questions[currentSection][currentQuestionIndex];
+            const options = document.querySelectorAll('#options-container button');
+
+            if (selectedOption === questionData.answer) {
+                options[selectedOption].classList.add('correct');
+                score++;
+                userAnswers.push({ correct: true, selected: selectedOption });
+                currentQuestionIndex++;
+                if (currentQuestionIndex < questions[currentSection].length) {
+                    setTimeout(loadQuestion, 300);
+                } else {
+                    showResults();
+                }
+            } else {
+                options[selectedOption].classList.add('wrong');
+                options[questionData.answer].classList.add('correct');
+                userAnswers.push({ correct: false, selected: selectedOption, correctAnswer: questionData.answer });
+                currentQuestionIndex++;
+                if (currentQuestionIndex < questions[currentSection].length) {
+                    setTimeout(loadQuestion, 1200);
+                } else {
+                    setTimeout(showResults, 1200);
+                }
+            }
+
+            document.getElementById('submit-btn').disabled = true;
+        }
+
+        function showResults() {
+            document.getElementById('quiz-screen').style.display = 'none';
+            document.getElementById('result-screen').style.display = 'block';
+
+            document.getElementById('result-text').textContent = `You scored ${score} out of ${questions[currentSection].length}`;
+
+            const review = document.getElementById('answer-review');
+            review.innerHTML = '';
+            questions[currentSection].forEach((q, i) => {
+                const div = document.createElement('div');
+                div.innerHTML = `<strong>Q:</strong> ${q.question}<br>
+                         <strong>Your Answer:</strong> ${q.options[userAnswers[i].selected] || 'None'}<br>
+                         <strong>Correct Answer:</strong> ${q.options[q.answer]}`;
+                div.style.marginBottom = '1rem';
+                div.style.background = userAnswers[i].correct ? '#e0f7e9' : '#ffebee';
+                div.style.padding = '0.5rem';
+                div.style.borderRadius = '5px';
+                review.appendChild(div);
+            });
+        }
+
+        function showStartScreen() {
+            document.getElementById('result-screen').style.display = 'none';
+            document.getElementById('start-screen').style.display = 'block';
+        }
+    </script>
 </body>
 
 </html>
