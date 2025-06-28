@@ -4,16 +4,27 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Reference & Resources</title>
+    <title>Resources</title>
     <link rel="icon" href="../images/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="./styles.css">
     <style>
         :root {
-            --primary: #4caf50;
+            --primary: #0063f7;
             --bg: #f4f4f4;
             --card-bg: #fff;
             --text: #333;
-            --accent: #388e3c;
+            --accent: #0056d6;
+        }
+
+        body.dark {
+            --bg: #121212;
+            --card-bg: #1e1e1e;
+            --text: #e0e0e0;
+            --accent: #7aaefc;
+        }
+
+        body.dark .card {
+            box-shadow: 0 2px 6px rgba(255, 255, 255, 0.1);
         }
 
         body {
@@ -22,16 +33,15 @@
             font-family: 'Segoe UI', sans-serif;
             background: var(--bg);
             color: var(--text);
+            transition: background 0.3s, color 0.3s;
         }
 
         header {
             background: #2b2b2b;
             color: white;
-            padding: 1.25rem 1rem;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 0.5rem;
             text-align: center;
             position: relative;
         }
@@ -50,23 +60,77 @@
             cursor: pointer;
         }
 
-        @keyframes pulse {
-
-            0%,
-            100% {
-                transform: scale(1);
-                opacity: 1;
-            }
-
-            50% {
-                transform: scale(1.08);
-                opacity: 0.9;
-            }
+        .top-controls {
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            gap: 0.5rem;
+            align-items: center;
+            justify-content: space-between;
         }
 
-        h1 {
-            margin: 0;
-            font-size: 2rem;
+        .dark-toggle {
+            background: none;
+            color: white;
+            border: 1px solid white;
+            border-radius: 20px;
+            padding: 0.3rem 0.75rem;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .nav-dropdown {
+            position: relative;
+        }
+
+        .nav-button {
+            display: flex;
+            align-items: center;
+            background: transparent;
+            border: 1px solid white;
+            color: white;
+            padding: 0.4rem 0.75rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .nav-icon {
+            margin-right: 0.5rem;
+        }
+
+        .arrow {
+            margin-left: 0.5rem;
+        }
+
+        .nav-menu {
+            display: flex;
+            flex-direction: column;
+            background: var(--card-bg);
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            padding: 0.5rem;
+            position: absolute;
+            right: 0;
+            z-index: 1000;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: var(--text);
+            padding: 0.4rem 0.6rem;
+            border-radius: 4px;
+        }
+
+        .nav-menu a:hover {
+            background: var(--accent);
+            color: white;
+        }
+
+        .hidden {
+            display: none;
         }
 
         .section {
@@ -91,6 +155,7 @@
             border-radius: 8px;
             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
             padding: 1rem;
+            transition: background 0.3s;
         }
 
         .card h3 {
@@ -117,6 +182,26 @@
             margin-top: 0.5rem;
         }
 
+        .notes {
+            background: var(--card-bg);
+            border-left: 6px solid var(--accent);
+            padding: 1rem 1.25rem;
+            margin: 2rem 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+            transition: background 0.3s, color 0.3s;
+        }
+
+        .notes h2 {
+            margin-top: 0;
+            color: var(--accent);
+        }
+
+        .notes p {
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
         footer {
             background: var(--primary);
             color: white;
@@ -125,14 +210,30 @@
             font-size: 0.95rem;
         }
 
-        @media (max-width: 600px) {
-            header {
-                padding: 1rem;
+        footer p {
+            color: white;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+                opacity: 1;
             }
 
-            .logo-link {
-                top: 0.75rem;
-                left: 0.75rem;
+            50% {
+                transform: scale(1.08);
+                opacity: 0.9;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .top-controls {
+                align-items: flex-end;
+                gap: 0.25rem;
+                top: 0.5rem;
+                right: 0.5rem;
             }
 
             header h1 {
@@ -148,12 +249,31 @@
         <a href="../index.html" class="logo-link">
             <img src="../images/bmc-it-club-circle-logo.png" alt="Logo">
         </a>
+
         <h1>Learning Resources & References</h1>
         <p>Deepen your knowledge with curated materials and live tools</p>
+        <div class="top-controls">
+            <div class="nav-dropdown">
+                <button id="navToggle" class="nav-button">
+                    <span class="nav-icon">⭐</span>
+                    <span class="nav-label">Resources</span>
+                    <span class="arrow">▼</span>
+                </button>
+                <div id="navMenu" class="nav-menu hidden">
+                    <a href="../index.html">🏠 Home</a>
+                    <a href="./practice-html.html">📄 HTML</a>
+                    <a href="./practice-css.html">🎨 CSS</a>
+                    <a href="./practice-js.html">⚙️ JavaScript</a>
+                    <a href="./quiz.html">🧠 Quiz</a>
+                </div>
+            </div>
+            <button class="dark-toggle" onclick="document.body.classList.toggle('dark')">🌗</button>
+
+        </div>
     </header>
 
     <main class="section">
-        <h2>📘 HTML</h2>
+        <h2>HTML</h2>
         <div class="grid">
             <div class="card">
                 <h3>Documentation</h3>
@@ -173,7 +293,7 @@
             </div>
         </div>
 
-        <h2>🎨 CSS</h2>
+        <h2>CSS</h2>
         <div class="grid">
             <div class="card">
                 <h3>Documentation</h3>
@@ -192,7 +312,7 @@
             </div>
         </div>
 
-        <h2>📜 JavaScript</h2>
+        <h2>JavaScript</h2>
         <div class="grid">
             <div class="card">
                 <h3>Documentation</h3>
@@ -211,7 +331,7 @@
             </div>
         </div>
 
-        <h2>🧠 Bonus Tools</h2>
+        <h2>Bonus Tools</h2>
         <div class="grid">
             <div class="card">
                 <h3>CodePen</h3>
@@ -229,10 +349,39 @@
                 <a href="https://www.frontendmentor.io/challenges" target="_blank">Explore Challenges</a>
             </div>
         </div>
+
     </main>
+    <section class="notes">
+        <h2>Personal Note</h2>
+        <p>
+            Despite being able to build and understand these foundational web technologies, I still find React.js quite
+            challenging. That's why I highly recommend making the most of this opportunity to learn React properly. Our
+            mentor is incredibly supportive and knowledgeable—take full advantage of this training to strengthen your
+            skills and gain real confidence in modern web development.
+        </p>
+    </section>
+
+
     <footer>
-        BMC IT Club, Let's Learn React
+        <p>&copy; 2025 BMC IT Club. All rights reserved.</p>
+        <p>Made with ❤️ by BMC IT Club</p>
     </footer>
+
+    <script>
+        window.matchMedia("(prefers-color-scheme: dark)").matches &&
+            document.body.classList.add("dark");
+        document.getElementById("navToggle").addEventListener("click", () => {
+            document.getElementById("navMenu").classList.toggle("hidden");
+        });
+        document.addEventListener("click", (e) => {
+            const toggleBtn = document.getElementById("navToggle");
+            const navMenu = document.getElementById("navMenu");
+
+            if (!toggleBtn.contains(e.target) && !navMenu.contains(e.target)) {
+                navMenu.classList.add("hidden");
+            }
+        });
+    </script>
 </body>
 
 </html>
