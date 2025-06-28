@@ -1,3 +1,5 @@
+const isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+
 window.addEventListener("DOMContentLoaded", () => {
   setTimeout(() => {
     const logo = document.querySelector(".logo-container1");
@@ -201,7 +203,6 @@ import { greet } from './greet.js';`,
 };
 
 document.addEventListener("DOMContentLoaded", startPreview);
-const isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 function startPreview() {
   const topicSpans = document.querySelectorAll(".section-block .topic");
   const previewBox = document.getElementById("preview-box");
@@ -808,13 +809,15 @@ function appendContentWithFade(output, html) {
 function goFullscreen() {
   const elem = document.documentElement; // whole page
 
-  if (elem.requestFullscreen) {
-    elem.requestFullscreen();
-  } else if (elem.webkitRequestFullscreen) {
-    // Safari
-    elem.webkitRequestFullscreen();
-  } else if (elem.msRequestFullscreen) {
-    // IE11
-    elem.msRequestFullscreen();
+  if (!isMobile) {
+    if (elem.requestFullscreen) {
+      elem.requestFullscreen();
+    } else if (elem.webkitRequestFullscreen) {
+      // Safari
+      elem.webkitRequestFullscreen();
+    } else if (elem.msRequestFullscreen) {
+      // IE11
+      elem.msRequestFullscreen();
+    }
   }
 }
