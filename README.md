@@ -87,7 +87,7 @@ Test your understanding of the foundational concepts with topic-wise quizzes. Ea
 
 **Page:** [pages/quiz.html](https://easyvanilla.vercel.app/pages/quiz.html)
 
-- 20 questions each for HTML, CSS, and JavaScript
+- 40 questions each for HTML, CSS, and JavaScript
 - Multiple choice format with instant feedback
 - Tracks score and review answers
 

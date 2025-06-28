@@ -17,6 +17,18 @@
   <meta property="og:image" content="/images/bmc-it-club-circle-logo.png">
   <link rel="icon" href="../images/favicon.ico" type="image/x-icon">
   <link rel="stylesheet" href="./styles.css">
+  <style>
+    #consoleOutput {
+      background: #111;
+      color: #0f0;
+      padding: 1rem;
+      border-radius: 6px;
+      font-family: monospace;
+      font-size: 0.9rem;
+      height: 150px;
+      overflow: auto;
+    }
+  </style>
 </head>
 
 <body>
@@ -772,7 +784,7 @@ unwanted.remove();</code><button class="copy-btn">Copy</button></pre>
 
           <h3>1. <code>let</code> and <code>const</code></h3>
           <ul>
-            <li><code>let</code>: Block-scoped variable (reassignable)</li>
+            <li><code>let</code>: Block-scoped variable (re-assignable)</li>
             <li><code>const</code>: Block-scoped constant (cannot be reassigned)</li>
           </ul>
           <pre><code>let count = 0;
@@ -1169,10 +1181,9 @@ Promise resolved</code><button class="copy-btn">Copy</button></pre>
       <button id="runBtn">Run</button>
 
       <h2>Live Preview</h2>
-      <iframe id="preview" sandbox="allow-scripts"></iframe>
+      <iframe id="preview" sandbox="allow-scripts" title="Code Editor"></iframe>
       <h2>Console Output</h2>
-      <div id="consoleOutput"
-        style="background:#111;color:#0f0;padding:1rem;border-radius:6px;font-family:monospace;font-size:0.9rem;height:150px;overflow:auto;">
+      <div id="consoleOutput">
       </div>
 
     </section>

@@ -171,6 +171,11 @@
             justify-content: center;
         }
 
+        #quiz-screen,
+        #result-screen {
+            display: none;
+        }
+
         .quiz-card {
             border: 2px solid var(--accent);
             border-radius: 10px;
@@ -329,7 +334,7 @@
             <button onclick="startQuiz('js')">JavaScript</button>
         </div>
 
-        <div id="quiz-screen" style="display:none;">
+        <div id="quiz-screen">
             <div id="section-title"></div>
             <div class="quiz-card">
                 <div id="question-number"></div>
@@ -340,7 +345,7 @@
             </div>
         </div>
 
-        <div id="result-screen" style="display:none;">
+        <div id="result-screen">
             <div class="result" id="result-text"></div>
             <div id="answer-review"></div>
             <button id="restart-btn" onclick="location.reload()">Restart Quiz</button>
@@ -483,7 +488,108 @@
                     question: "Which tag is used for creating dropdowns?",
                     options: ["<dropdown>", "<input type='dropdown'>", "<select>", "<list>"],
                     answer: 2
+                },
+                {
+                    question: "Which attribute is used with <input> to specify a default value?",
+                    options: ["placeholder", "value", "default", "data-value"],
+                    answer: 1
+                },
+                {
+                    question: "What does the 'required' attribute do in an HTML form element?",
+                    options: ["Makes the field optional", "Sets a default value", "Prevents form submission if empty", "Marks field as read-only"],
+                    answer: 2
+                },
+                {
+                    question: "Which tag is used for marking up keyboard input?",
+                    options: ["<kbd>", "<code>", "<samp>", "<input>"],
+                    answer: 0
+                },
+                {
+                    question: "Which tag is used to define a table caption?",
+                    options: ["<title>", "<caption>", "<thead>", "<head>"],
+                    answer: 1
+                },
+                {
+                    question: "What is the correct doctype declaration for HTML5?",
+                    options: ["<!DOCTYPE html>", "<!DOCTYPE HTML5>", "<doctype html>", "<!HTML>"],
+                    answer: 0
+                },
+                {
+                    question: "What does the <abbr> tag represent?",
+                    options: ["Abbreviation", "Abstract", "Anchor block", "Article block"],
+                    answer: 0
+                },
+                {
+                    question: "Which tag defines a section in a document?",
+                    options: ["<div>", "<section>", "<main>", "<body>"],
+                    answer: 1
+                },
+                {
+                    question: "Which tag is used for short quotations?",
+                    options: ["<q>", "<quote>", "<shortquote>", "<em>"],
+                    answer: 0
+                },
+                {
+                    question: "What does the 'autofocus' attribute do?",
+                    options: ["Auto-submits form", "Focuses the cursor in the input on page load", "Disables the input field", "Adds an animation"],
+                    answer: 1
+                },
+                {
+                    question: "Which input type is used for selecting a date?",
+                    options: ["text", "date", "calendar", "datetime"],
+                    answer: 1
+                },
+                {
+                    question: "Which HTML tag is used to display preformatted text?",
+                    options: ["<pre>", "<text>", "<p>", "<code>"],
+                    answer: 0
+                },
+                {
+                    question: "What is the <meta> tag used for?",
+                    options: ["Displaying metadata", "Styling content", "Embedding scripts", "Describing content for search engines"],
+                    answer: 3
+                },
+                {
+                    question: "Which tag is used to define the footer for a section or page?",
+                    options: ["<footer>", "<bottom>", "<section-footer>", "<div class='footer'>"],
+                    answer: 0
+                },
+                {
+                    question: "What is the correct tag for inserting a line break?",
+                    options: ["<break>", "<br>", "<lb>", "<line>"],
+                    answer: 1
+                },
+                {
+                    question: "What attribute defines where to open a linked document?",
+                    options: ["ref", "target", "open", "href"],
+                    answer: 1
+                },
+                {
+                    question: "Which tag defines the navigation links section?",
+                    options: ["<nav>", "<menu>", "<section>", "<navigate>"],
+                    answer: 0
+                },
+                {
+                    question: "What is the purpose of the <fieldset> tag?",
+                    options: ["Creating dropdowns", "Grouping related form fields", "Applying CSS styles", "Adding radio buttons"],
+                    answer: 1
+                },
+                {
+                    question: "Which tag is used to embed audio in HTML?",
+                    options: ["<sound>", "<media>", "<audio>", "<music>"],
+                    answer: 2
+                },
+                {
+                    question: "Which tag provides a fallback if a browser doesn’t support video?",
+                    options: ["<caption>", "<source>", "<track>", "Text between <video> tags"],
+                    answer: 3
+                },
+                {
+                    question: "What does the <mark> tag do?",
+                    options: ["Creates a highlight", "Marks the paragraph", "Creates a link", "Inserts a comment"],
+                    answer: 0
                 }
+
             ],
 
             css: [
@@ -591,7 +697,108 @@
                     question: "Which property rounds corners?",
                     options: ["corner", "border", "border-radius", "radius"],
                     answer: 2
+                },
+                {
+                    question: "Which property makes text bold?",
+                    options: ["font-weight", "font-style", "text-style", "bold"],
+                    answer: 0
+                },
+                {
+                    question: "Which unit is relative to the root element’s font size?",
+                    options: ["em", "rem", "%", "vh"],
+                    answer: 1
+                },
+                {
+                    question: "What does z-index control?",
+                    options: ["Background color", "Element stacking order", "Font size", "Scroll speed"],
+                    answer: 1
+                },
+                {
+                    question: "Which CSS pseudo-class targets the first child of a parent?",
+                    options: [":first-child", ":nth-child(1)", ":start-child", ":first"],
+                    answer: 0
+                },
+                {
+                    question: "How do you make an element take the full width of its container?",
+                    options: ["width: auto;", "width: 100%;", "display: inline;", "position: absolute;"],
+                    answer: 1
+                },
+                {
+                    question: "Which value of 'position' allows positioning relative to the nearest ancestor?",
+                    options: ["absolute", "relative", "fixed", "static"],
+                    answer: 0
+                },
+                {
+                    question: "Which property adds shadow around an element’s box?",
+                    options: ["box-shadow", "text-shadow", "shadow", "border-shadow"],
+                    answer: 0
+                },
+                {
+                    question: "Which CSS property is used for transitions?",
+                    options: ["transition", "animate", "effect", "timing"],
+                    answer: 0
+                },
+                {
+                    question: "What is the default value of the 'position' property?",
+                    options: ["relative", "absolute", "static", "fixed"],
+                    answer: 2
+                },
+                {
+                    question: "Which property sets the background image?",
+                    options: ["background", "background-image", "bg-img", "img-bg"],
+                    answer: 1
+                },
+                {
+                    question: "Which CSS unit is based on viewport height?",
+                    options: ["vh", "vw", "em", "%"],
+                    answer: 0
+                },
+                {
+                    question: "Which property handles overflow content?",
+                    options: ["display", "position", "overflow", "clip"],
+                    answer: 2
+                },
+                {
+                    question: "Which value of display shows elements in a row?",
+                    options: ["inline", "block", "inline-block", "flex"],
+                    answer: 3
+                },
+                {
+                    question: "What does the 'inherit' value mean in CSS?",
+                    options: ["Ignore parent value", "Copy value from child", "Use browser default", "Use parent's value"],
+                    answer: 3
+                },
+                {
+                    question: "Which selector targets an element with a specific ID?",
+                    options: ["#", ".", ":", "::"],
+                    answer: 0
+                },
+                {
+                    question: "Which selector targets all <p> elements inside a <div>?",
+                    options: ["div > p", "div p", "p div", ".div p"],
+                    answer: 1
+                },
+                {
+                    question: "How do you set multiple background images?",
+                    options: ["Separate URLs with comma", "Use multiple background-image properties", "Use grid", "It’s not possible"],
+                    answer: 0
+                },
+                {
+                    question: "Which property controls line spacing?",
+                    options: ["line-spacing", "letter-spacing", "line-height", "text-line"],
+                    answer: 2
+                },
+                {
+                    question: "What value of visibility hides the element but keeps the space?",
+                    options: ["display: none", "hidden", "invisible", "visibility: hidden"],
+                    answer: 3
+                },
+                {
+                    question: "Which property is used for 3D transformations?",
+                    options: ["transform3d", "3d-transform", "transform", "perspective"],
+                    answer: 2
                 }
+
             ]
             ,
             js: [
@@ -694,7 +901,108 @@
                     question: "How do you get the length of a string?",
                     options: ["str.size()", "str.length", "length(str)", "str.count()"],
                     answer: 1
+                },
+                {
+                    question: "Which symbol is used for single-line comments in JavaScript?",
+                    options: ["//", "/*", "<!--", "#"],
+                    answer: 0
+                },
+                {
+                    question: "What does NaN stand for?",
+                    options: ["Not a Number", "Name as Number", "Number as Null", "Next available Number"],
+                    answer: 0
+                },
+                {
+                    question: "What will 'typeof null' return?",
+                    options: ["null", "object", "undefined", "string"],
+                    answer: 1
+                },
+                {
+                    question: "Which keyword declares a block-scoped variable?",
+                    options: ["var", "let", "const", "static"],
+                    answer: 1
+                },
+                {
+                    question: "What does the === operator check?",
+                    options: ["Value only", "Type only", "Value and Type", "Memory location"],
+                    answer: 2
+                },
+                {
+                    question: "How do you create an array in JS?",
+                    options: ["let a = (1,2,3);", "let a = [1,2,3];", "let a = {1,2,3};", "let a = <1,2,3>;"],
+                    answer: 1
+                },
+                {
+                    question: "What method adds an element to the end of an array?",
+                    options: ["add()", "push()", "append()", "insert()"],
+                    answer: 1
+                },
+                {
+                    question: "What does JSON stand for?",
+                    options: ["JavaScript Object Notation", "Java Source Object Notation", "Java Syntax Over Network", "JavaScript Only Network"],
+                    answer: 0
+                },
+                {
+                    question: "What keyword is used to exit a loop?",
+                    options: ["stop", "return", "exit", "break"],
+                    answer: 3
+                },
+                {
+                    question: "Which object handles timing functions?",
+                    options: ["Window", "Date", "Timer", "Time"],
+                    answer: 0
+                },
+                {
+                    question: "What does 'const' mean in JavaScript?",
+                    options: ["Constant type", "Immutable reference", "Global scope", "Function scope"],
+                    answer: 1
+                },
+                {
+                    question: "Which method converts a string to uppercase?",
+                    options: ["toUpperCase()", "upperCase()", "toCaps()", "capitalize()"],
+                    answer: 0
+                },
+                {
+                    question: "How do you check if a variable is an array?",
+                    options: ["Array(var)", "typeof var == 'array'", "Array.isArray(var)", "var instanceof array"],
+                    answer: 2
+                },
+                {
+                    question: "What does 'this' keyword refer to in a function?",
+                    options: ["Global object", "Current function", "Calling object", "None"],
+                    answer: 2
+                },
+                {
+                    question: "Which keyword is used to define a function?",
+                    options: ["func", "function", "def", "declare"],
+                    answer: 1
+                },
+                {
+                    question: "What value does a function return if no return is specified?",
+                    options: ["null", "undefined", "false", "0"],
+                    answer: 1
+                },
+                {
+                    question: "Which built-in method sorts an array?",
+                    options: ["sort()", "order()", "arrange()", "sortArray()"],
+                    answer: 0
+                },
+                {
+                    question: "Which operator is used for exponentiation?",
+                    options: ["^", "**", "^^", "exp"],
+                    answer: 1
+                },
+                {
+                    question: "What is a closure in JavaScript?",
+                    options: ["A type of function", "Function with private scope", "Function bound to event", "Class-like object"],
+                    answer: 1
+                },
+                {
+                    question: "How can you convert a string to a number?",
+                    options: ["Number(str)", "parseInt(str)", "parseFloat(str)", "All of the above"],
+                    answer: 3
                 }
+
             ]
 
         };
@@ -776,8 +1084,8 @@
             questions[currentSection].forEach((q, i) => {
                 const div = document.createElement('div');
                 div.innerHTML = `<strong>Q:</strong> ${q.question}<br>
-                         <strong>Your Answer:</strong> ${q.options[userAnswers[i].selected] || 'None'}<br>
-                         <strong>Correct Answer:</strong> ${q.options[q.answer]}`;
+                         <strong>Your Answer:</strong>  ${escapeHTML(q.options[userAnswers[i].selected] || 'None')}<br>
+                         <strong>Correct Answer:</strong> ${escapeHTML(q.options[q.answer])}`;
                 div.style.marginBottom = '1rem';
                 div.style.background = userAnswers[i].correct ? '#e0f7e9' : '#ffebee';
                 div.style.padding = '0.5rem';
@@ -790,6 +1098,19 @@
             document.getElementById('result-screen').style.display = 'none';
             document.getElementById('start-screen').style.display = 'block';
         }
+
+        function escapeHTML(str) {
+            return str.replace(/[&<>"']/g, function (m) {
+                return {
+                    '&': '&amp;',
+                    '<': '&lt;',
+                    '>': '&gt;',
+                    '"': '&quot;',
+                    "'": '&#039;'
+                }[m];
+            });
+        }
+
     </script>
 </body>
 

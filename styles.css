@@ -284,3 +284,29 @@ footer {
     transform: translateY(0);
   }
 }
+.glitch-error {
+  font-size: 12px;
+  animation: glitch 0.15s infinite;
+  white-space: pre-wrap;
+  padding: 1rem;
+}
+
+@keyframes glitch {
+  0% {
+    text-shadow: 1px 0 red, -1px 0 blue;
+  }
+  50% {
+    text-shadow: -1px 0 red, 1px 0 blue;
+  }
+  100% {
+    text-shadow: 1px 0 red, -1px 0 blue;
+  }
+}
+@media (max-width: 600px) {
+  pre.glitch-error {
+    font-size: 10px;
+    white-space: normal;
+    word-break: break-word;
+    overflow-wrap: break-word;
+  }
+}

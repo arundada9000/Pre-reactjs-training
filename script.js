@@ -5,6 +5,26 @@ window.addEventListener("DOMContentLoaded", () => {
       logo.classList.add("logo-container", "show");
     });
   }, 1000);
+
+  document.querySelector("#command").focus();
+});
+document.addEventListener("keydown", (e) => {
+  const input = document.querySelector("#command");
+
+  if (e.ctrlKey || e.altKey || e.metaKey) return;
+
+  if (document.activeElement !== input) {
+    e.preventDefault();
+    input.focus();
+
+    if (e.key.length === 1) {
+      input.value += e.key;
+    } else if (e.key === "Backspace") {
+      input.value = input.value.slice(0, -1);
+    } else if (e.key === "Enter") {
+      input.form?.dispatchEvent(new Event("submit"));
+    }
+  }
 });
 
 const previews = {
@@ -244,11 +264,57 @@ window.onload = () => {
   jsBlockHTML = blocks[3]?.outerHTML || "";
 };
 
+const allCommands = [
+  "help",
+  "clear",
+  "cls",
+  "show react",
+  "show html",
+  "show css",
+  "show js",
+  "about",
+  "motivate",
+  "time",
+  "whoami",
+  "joke",
+  "logo",
+  "ascii",
+  "club",
+  "bmcit",
+];
+let tabSuggestions = [];
+let tabIndex = 0;
+
 let commandHistory = [];
 let historyIndex = -1;
 function handleCommand(e) {
+  goFullscreen();
   const input = e.target;
   const output = document.getElementById("terminal-output");
+  const value = input.value.trim().toLowerCase();
+
+  if (e.key === "Tab") {
+    e.preventDefault();
+
+    // Generate or cycle through suggestions
+    if (!tabSuggestions.length) {
+      tabSuggestions = allCommands.filter((cmd) => cmd.startsWith(value));
+      tabIndex = 0;
+    } else {
+      tabIndex = (tabIndex + 1) % tabSuggestions.length;
+    }
+
+    if (tabSuggestions.length > 0) {
+      input.value = tabSuggestions[tabIndex];
+    }
+
+    return;
+  }
+
+  if (e.key !== "Tab") {
+    tabSuggestions = [];
+    tabIndex = 0;
+  }
 
   if (e.key === "ArrowUp") {
     if (historyIndex > 0) {
@@ -292,8 +358,23 @@ function handleCommand(e) {
                                 <li>show html – show HTML topics</li>
                                 <li>show css – show CSS topics</li>
                                 <li>show js – show JavaScript topics</li>
+                                <li>show quiz – show quiz on these topics</li>
                                 <li>about – learn about this bootcamp</li>
                                 <li>motivate – get a motivational quote</li>
+                                <li>time – shows current time</li>
+                                <li>whoami – tells you who you are</li>
+                                <li>joke – get a programming joke</li>
+                                <li>show logo – show BMCIt Club logo</li>
+                                <li>press tab – runs through all commands</li>
+                                <li>sudo rm -rf / – Deletes everything (not recommended!)</li>
+                              </ul>
+                              <ul>
+                                <li>Navigation : </li>
+                                <li> Open html - Open html practice page</li>
+                                <li> Open css - Open css practice page</li>
+                                <li> Open js - Open js practice page</li>
+                                <li> Open quiz - Open quiz page</li>
+                                <li> Open resources - Open resources page</li>
                               </ul>
                             </div>`
       );
@@ -387,13 +468,39 @@ function handleCommand(e) {
         "Debugging: Being the detective in a crime movie where you are also the murderer.",
         "There are 10 types of people in the world: those who understand binary and those who don’t.",
         "I told my computer I needed a break, and it said: 'Why? You barely function as it is.'",
+        "How many programmers does it take to change a light bulb? None. That’s a hardware problem.",
+        "I changed my password to 'incorrect' so whenever I forget it, the computer says 'Your password is incorrect.'",
+        "Why did the developer go broke? Because he used up all his cache.",
+        "To understand what recursion is, you must first understand recursion.",
+        "I would tell you a joke about UDP, but you might not get it.",
+        "The best thing about a Boolean is even if you are wrong, you are only off by a bit.",
+        "In a world without fences and walls, who needs Gates and Windows?",
+        "Real programmers count from 0.",
+        "Why do Python developers not wear glasses? Because they can clearly see 'self'.",
+        "404 joke not found.",
+        "Why did the programmer quit his job? Because he didn't get arrays.",
+        "My code doesn’t always work, but when it does, I don’t know why.",
+        "A SQL query walks into a bar, walks up to two tables and asks: 'Can I join you?'",
+        "Knock knock. Who's there? *very long pause* Java.",
+        "Why do front-end developers eat lunch alone? Because they don’t know how to join tables.",
       ];
+
       const joke = jokes[Math.floor(Math.random() * jokes.length)];
       output.insertAdjacentHTML(
         "beforeend",
         `<div class='terminal-line'><span class='prompt'>bmcit@prep:~$</span> ${cmd}</div>
                          <div class="fade-in" style='color:#ffcc00; margin-top: 0.5rem;'>😂 ${joke}</div>`
       );
+    } else if (cmd === "open html") {
+      window.location.href = "./pages/practice-html.html";
+    } else if (cmd === "open css") {
+      window.location.href = "./pages/practice-css.html";
+    } else if (cmd === "open js") {
+      window.location.href = "./pages/practice-js.html";
+    } else if (cmd === "open quiz") {
+      window.location.href = "./pages/quiz.html";
+    } else if (cmd === "open resources" || cmd === "open resource") {
+      window.location.href = "./pages/reference.html";
     } else if (cmd === "show html") {
       output.insertAdjacentHTML(
         "beforeend",
@@ -440,6 +547,16 @@ function handleCommand(e) {
         "“You don’t have to be perfect. You just have to start.”",
         "“React won’t learn itself — but you can absolutely learn it.”",
         "“Debugging is like being the detective in a crime movie where you are also the murderer.”",
+        "“Dream in code, build in reality.”",
+        "“One step at a time is still progress.”",
+        "“You are only one bug fix away from greatness.”",
+        "“The journey from beginner to expert is made of tiny, consistent steps.”",
+        "“Failure is just a stepping stone to cleaner code.”",
+        "“Believe in your logic — even when the syntax says otherwise.”",
+        "“Today’s confusion is tomorrow’s clarity.”",
+        "“Push through the errors. Compile your growth.”",
+        "“Your future self is already proud of you for not giving up.”",
+        "“Write code that makes you proud — even if no one else sees it.”",
       ];
 
       const quote = quotes[Math.floor(Math.random() * quotes.length)];
@@ -447,6 +564,225 @@ function handleCommand(e) {
         "beforeend",
         `<div class='terminal-line'><span class='prompt'>bmcit@prep:~$</span> ${cmd}</div><div class="fade-in" style='margin: 1rem 0; color: #66ff99;'>${quote}</div>`
       );
+    } else if (
+      cmd === "quote" ||
+      cmd === "quotes" ||
+      cmd === "programming quotes"
+    ) {
+      const programmingQuotes = [
+        "“Talk is cheap. Show me the code.” – Linus Torvalds",
+        "“Programs must be written for people to read, and only incidentally for machines to execute.” – Harold Abelson",
+        "“Any fool can write code that a computer can understand. Good programmers write code that humans can understand.” – Martin Fowler",
+        "“Simplicity is the soul of efficiency.” – Austin Freeman",
+        "“First, solve the problem. Then, write the code.” – John Johnson",
+        "“Good code is its own best documentation.” – Steve McConnell",
+        "“Walking on water and developing software from a specification are easy if both are frozen.” – Edward V. Berard",
+        "“Software is a great combination of artistry and engineering.” – Bill Gates",
+        "“Programming isn't about what you know; it's about what you can figure out.” – Chris Pine",
+        "“Before software can be reusable it first has to be usable.” – Ralph Johnson",
+        "“Programs are meant to be read by humans and only incidentally for computers to execute.” – Donald Knuth",
+        "“Simplicity is prerequisite for reliability.” – Edsger W. Dijkstra",
+        "“Code never lies, comments sometimes do.” – Ron Jeffries",
+        "“The best way to get a project done faster is to start sooner.” – Jim Highsmith",
+        "“You can’t have great software without a great team.” – Joel Spolsky",
+        "“Debugging is twice as hard as writing the code in the first place.” – Brian Kernighan",
+        "“Computers are good at following instructions, but not at reading your mind.” – Donald Knuth",
+        "“Controlling complexity is the essence of computer programming.” – Brian Kernighan",
+        "“It’s not a bug – it’s an undocumented feature.” – Anonymous",
+        "“The most disastrous thing that you can ever learn is your first programming language.” – Alan Kay",
+      ];
+
+      const programmingQuote =
+        programmingQuotes[Math.floor(Math.random() * programmingQuotes.length)];
+      output.insertAdjacentHTML(
+        "beforeend",
+        `<div class='terminal-line'><span class='prompt'>bmcit@prep:~$</span> ${cmd}</div><div class="fade-in" style='margin: 1rem 0; color: #66ff99;'>${programmingQuote}</div>`
+      );
+    } else if (cmd === "sudo rm -rf /") {
+      goFullscreen();
+      output.insertAdjacentHTML(
+        "beforeend",
+        `<div class='terminal-line'><span class='prompt'>bmcit@prep:~$</span> ${cmd}</div>`
+      );
+
+      const lines = [
+        "[sudo] password for bmcit: ********",
+        "Warning: This operation will remove all files and directories recursively!",
+        "Deleting /bin...",
+        "Deleting /boot...",
+        "Deleting /dev...",
+        "Deleting /etc...",
+        "Deleting /home...",
+        "Deleting /lib...",
+        "Deleting /mnt...",
+        "Deleting /opt...",
+        "Deleting /proc...",
+        "Deleting /root...",
+        "Deleting /sbin...",
+        "Deleting /srv...",
+        "Deleting /sys...",
+        "Deleting /tmp...",
+        "Deleting /usr...",
+        "Deleting /var...",
+        "Deleting /... complete",
+        "",
+        "Segmentation fault (core dumped)",
+        "bash: command not found",
+        "_",
+      ];
+
+      let delay = 0;
+      lines.forEach((line, index) => {
+        setTimeout(() => {
+          const div = document.createElement("div");
+          div.className = "terminal-line fade-in";
+          div.textContent = line;
+          output.appendChild(div);
+          output.scrollTop = output.scrollHeight;
+        }, delay);
+        delay += 300;
+      });
+
+      // Freeze input after the 'crash'
+      setTimeout(() => {
+        const inputField = document.querySelector("#command");
+        inputField.disabled = true;
+        inputField.placeholder = "system failure...";
+        inputField.style.color = "#ff0000";
+      }, delay + 500);
+
+      // After fake deletion ends
+      setTimeout(() => {
+        // Clear terminal
+        output.innerHTML = "";
+
+        // Style terminal
+        output.style.backgroundColor = "black";
+        output.style.color = "#ff4444";
+        output.style.fontFamily = "'Courier New', monospace";
+        output.style.textAlign = "center";
+
+        // Hide other elements
+        document.querySelector(".terminal-line").style.display = "none";
+        document.querySelector(".preview-container").style.display = "none";
+        document.querySelector("footer").style.display = "none";
+
+        // Disable input
+        const inputField = document.querySelector("#command");
+        inputField.disabled = true;
+        inputField.placeholder = "SYSTEM HALTED";
+        inputField.style.color = "#ff4444";
+
+        // Define multiple error messages
+        const errorMessages = [
+          `
+   .... NO! ...                  ... MNO! ...
+   ..... MNO!! ...................... MNNOO! ...
+ ..... MMNO! ......................... MNNOO!! .
+.... MNOONNOO!   MMMMMMMMMMPPPOII!   MNNO!!!! .
+ ... !O! NNO! MMMMMMMMMMMMMPPPOOOII!! NO! ....
+    ...... ! MMMMMMMMMMMMMPPPPOOOOIII! ! ...
+   ........ MMMMMMMMMMMMPPPPPOOOOOOII!! .....
+   ........ MMMMMOOOOOOPPPPPPPPOOOOMII! ...  
+    ....... MMMMM..    OPPMMP    .,OMI! ....
+     ...... MMMM::   o.,OPMP,.o   ::I!! ...
+         .... NNM:::.,,OOPM!P,.::::!! ....
+          .. MMNNNNNOOOOPMO!!IIPPO!!O! .....
+         ... MMMMMNNNNOO:!!:!!IPPPPOO! ....
+           .. MMMMMNNOOMMNNIIIPPPOO!! ......
+          ...... MMMONNMMNNNIIIOO!..........
+       ....... MN MOMMMNNNIIIIIO! OO ..........
+    ......... MNO! IiiiiiiiiiiiI OOOO ...........
+  ...... NNN.MNO! . O!!!!!!!!!O . OONO NO! ........
+   .... MNNNNNO! ...OOOOOOOOOOO .  MMNNON!........
+   ...... MNNNNO! .. PPPPPPPPP .. MMNON!........
+      ...... OO! ................. ON! .......
+         ................................
+
+    CRITICAL SYSTEM FAULT
+    FILESYSTEM CORRUPTED — KERNEL PANIC
+    `,
+          `
+          
+    [!!] ERROR CODE: 0x7EF — MEMORY DUMP INITIATED
+    SYSTEM UNSTABLE. RETRYING... RETRY FAILED.
+    SEGMENTATION FAULT. STACK TRACE LOST.
+    `,
+          `
+    
+System Error
+    *  *    
+     *  ****
+****        
+            
+* *         
+   *        
+     *      
+    *  *    
+          * 
+            
+ *          
+        ** *
+    > Unhandled exception at 0x00007FF9A1B2C3D4
+    > Stack overflow detected
+    > Attempting to recover...
+    > Recovery failed: System halted
+    `,
+          `
+    ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+    █ SYSTEM BREACH DETECTED █
+    > Access violation @ 0x004F29
+    > Dumping volatile memory...
+    > OVERFLOW DETECTED: SHUTTING DOWN
+    ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+    `,
+          `
+    !!! FATAL ERROR !!!
+    /usr/bin/bash: command not found
+    CPU Exception: Divide by zero
+    Kernel module "safe_exit" not responding
+    Recovering... ERROR: Recovery failed
+    `,
+          `
+    SYSTEM FAILURE — CORE DUMPED
+    ███▓▒░░ X_X ░░▒▓███
+    This machine has encountered an unrecoverable problem.
+    Press Ctrl+Alt+Del to cry.
+    `,
+          `
+    
+ __              _   __              _   _______   _______     _______   _______   _______   _______   _______  
+/  / .-.   ____.'_| /  / .-.   _____\ | | ._ _. | |__   _.'   | ._ _. | |_  ___ \ |_  ___ \ /  ____ \ |_  ___ \ 
+| /_/ _ \ |___. '.  | /_/ _ \ \______ | | \ v / |  __>  >_    | \ v / |  /  \_/ |  /  \_/ | | /___/ |  /  \_/ | 
+\___.'/_|      '._| \___.'/_|       /_| |_/   \_| |_______\   |_/   \_| |_/'.__.' |_/'.__.' \_______/ |_/'.__.' 
+                                                                                                                
+                                                                                                                
+
+    `,
+          `
+    ██████╗ ██████╗ ███████╗███████╗██████╗ ███████╗
+    ██╔══██╗██╔══██╗██╔════╝██╔════╝██╔══██╗██╔════╝
+    ██████╔╝██████╔╝█████╗  █████╗
+    ██║  ██║█████╗  ██║██╔══╝  ██╔══██╗██╔══╝
+    ██║  ██║██╔══██╗███████╗███████╗██████╔╝███████╗
+    ╚═╝  ╚═╝╚═╝  ╚═╝  ╚══════╝╚═════╝ ╚══════╝
+    SYSTEM CRASHED  
+    Please contact support at *******@bmcit.edu.np
+    `,
+        ];
+
+        // Add each error message every 2 seconds
+        errorMessages.forEach((msg, i) => {
+          setTimeout(() => {
+            const glitchBlock = document.createElement("pre");
+            glitchBlock.className = "glitch-error";
+            glitchBlock.textContent = msg;
+            output.style.maxHeight = "95vh";
+            output.appendChild(glitchBlock);
+            output.scrollTop = output.scrollHeight;
+          }, i * 2000); // stagger by 2s
+        });
+      }, delay + 1200);
     } else {
       output.insertAdjacentHTML(
         "beforeend",
@@ -468,4 +804,17 @@ function appendContentWithFade(output, html) {
   wrapper.classList.add("fade-in");
   wrapper.innerHTML = html;
   output.appendChild(wrapper);
+}
+function goFullscreen() {
+  const elem = document.documentElement; // whole page
+
+  if (elem.requestFullscreen) {
+    elem.requestFullscreen();
+  } else if (elem.webkitRequestFullscreen) {
+    // Safari
+    elem.webkitRequestFullscreen();
+  } else if (elem.msRequestFullscreen) {
+    // IE11
+    elem.msRequestFullscreen();
+  }
 }
