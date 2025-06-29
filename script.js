@@ -1,4 +1,13 @@
 const isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+const audio = document.getElementById("audio");
+const musics = [
+  "./music/blue.mp3",
+  "./music/Kalank.mp3",
+  "./music/Shayad.mp3",
+  "./music/VE-KAMLEYA.mp3",
+];
+let isPlaying = false;
+let currentMusicIndex = 0;
 
 window.addEventListener("DOMContentLoaded", () => {
   setTimeout(() => {
@@ -273,8 +282,14 @@ const allCommands = [
   "show html",
   "show css",
   "show js",
+  "open quiz",
+  "open resources",
+  "open html",
+  "open css",
+  "open js",
   "about",
   "motivate",
+  "quote",
   "time",
   "whoami",
   "joke",
@@ -282,6 +297,35 @@ const allCommands = [
   "ascii",
   "club",
   "bmcit",
+  "sudo rm -rf /",
+  "facebook",
+  "fb",
+  "instagram",
+  "ig",
+  "arun",
+  "arun neupane",
+  "arundada9000",
+  "developer",
+  "code",
+  "github",
+  "open code",
+  "show bmcit",
+  "show bmcit club",
+  "show logo",
+  "bmcitclub",
+  "show logo",
+  "bmcit",
+  "close",
+  "exit",
+  "quit",
+  "play",
+  "pause",
+  "stop",
+  "next",
+  "prev",
+  "previous",
+  "mail",
+  "contact",
 ];
 let tabSuggestions = [];
 let tabIndex = 0;
@@ -362,6 +406,7 @@ function handleCommand(e) {
                                 <li>show quiz – show quiz on these topics</li>
                                 <li>about – learn about this bootcamp</li>
                                 <li>motivate – get a motivational quote</li>
+                                <li>quote – get a programming quote</li>
                                 <li>time – shows current time</li>
                                 <li>whoami – tells you who you are</li>
                                 <li>joke – get a programming joke</li>
@@ -376,6 +421,23 @@ function handleCommand(e) {
                                 <li> Open js - Open js practice page</li>
                                 <li> Open quiz - Open quiz page</li>
                                 <li> Open resources - Open resources page</li>
+                                <li> exit/quit/close - close the page</li>
+                              </ul>
+                              <ul>
+                                <li>Music Player :</li>
+                                <li> play - Play music</li>
+                                <li> pause/stop - Pause the music</li>
+                                <li> next - Play next music</li>
+                                <li> prev/previous - Play previous music</li>
+                              </ul>
+                              <ul>
+                                <li>Social Links :</li>
+                                <li> facebook - Open BMCIT Club Facebook page </li>
+                                <li> developer - Visit My website</li>
+                                <li> instagram - Open Instagram</li>
+                                <li> code/github - Open GitHub repository for this project</li>
+                                <li>mail - Send us an email</li>
+                                <li> contact - Contact me</li>
                               </ul>
                             </div>`
       );
@@ -448,6 +510,78 @@ function handleCommand(e) {
         "beforeend",
         `<div class='terminal-line'><span class='prompt'>bmcit@prep:~$</span> ${cmd}</div>${asciiLogo}`
       );
+    } else if (cmd === "contact") {
+      window.location.href = "tel:9811420975";
+    } else if (cmd === "mail" || cmd === "email") {
+      window.location.href = "mailto:bmcitclub01@gmail.com";
+    } else if (cmd === "play") {
+      if (!isPlaying) {
+        isPlaying = true;
+        audio.src = musics[currentMusicIndex];
+        audio.play();
+        output.insertAdjacentHTML(
+          "beforeend",
+          `<div class='terminal-line'><span class='prompt'>bmcit@prep:~$</span> ${cmd}</div>
+                           <div class="fade-in" style='margin-top: 0.5rem;'>🎶 Playing music: <strong>${musics[currentMusicIndex]}</strong></div>`
+        );
+      } else {
+        output.insertAdjacentHTML(
+          "beforeend",
+          `<div class='terminal-line'><span class='prompt'>bmcit@prep:~$</span> ${cmd}</div>
+                           <div class="fade-in" style='margin-top: 0.5rem; color: #ff6666;'>⏸️ Music is already playing.</div>`
+        );
+      }
+    } else if (cmd === "pause" || cmd === "stop") {
+      if (isPlaying) {
+        isPlaying = false;
+        audio.pause();
+        output.insertAdjacentHTML(
+          "beforeend",
+          `<div class='terminal-line'><span class='prompt'>bmcit@prep:~$</span> ${cmd}</div>
+                           <div class="fade-in" style='margin-top: 0.5rem;'>⏸️ Music paused.</div>`
+        );
+      } else {
+        output.insertAdjacentHTML(
+          "beforeend",
+          `<div class='terminal-line'><span class='prompt'>bmcit@prep:~$</span> ${cmd}</div>
+                           <div class="fade-in" style='margin-top: 0.5rem; color: #ff6666;'>⏸️ No music is currently playing.</div>`
+        );
+      }
+    } else if (cmd === "next") {
+      if (isPlaying) {
+        currentMusicIndex = (currentMusicIndex + 1) % musics.length;
+        audio.src = musics[currentMusicIndex];
+        audio.play();
+        output.insertAdjacentHTML(
+          "beforeend",
+          `<div class='terminal-line'><span class='prompt'>bmcit@prep:~$</span> ${cmd}</div>
+                           <div class="fade-in" style='margin-top: 0.5rem;'>⏭️ Now playing: <strong>${musics[currentMusicIndex]}</strong></div>`
+        );
+      } else {
+        output.insertAdjacentHTML(
+          "beforeend",
+          `<div class='terminal-line'><span class='prompt'>bmcit@prep:~$</span> ${cmd}</div>
+                           <div class="fade-in" style='margin-top: 0.5rem; color: #ff6666;'>⏭️ No music is currently playing.</div>`
+        );
+      }
+    } else if (cmd === "prev" || cmd === "previous") {
+      if (isPlaying) {
+        currentMusicIndex =
+          (currentMusicIndex - 1 + musics.length) % musics.length;
+        audio.src = musics[currentMusicIndex];
+        audio.play();
+        output.insertAdjacentHTML(
+          "beforeend",
+          `<div class='terminal-line'><span class='prompt'>bmcit@prep:~$</span> ${cmd}</div>
+                           <div class="fade-in" style='margin-top: 0.5rem;'>⏮️ Now playing: <strong>${musics[currentMusicIndex]}</strong></div>`
+        );
+      } else {
+        output.insertAdjacentHTML(
+          "beforeend",
+          `<div class='terminal-line'><span class='prompt'>bmcit@prep:~$</span> ${cmd}</div>
+                           <div class="fade-in" style='margin-top: 0.5rem; color: #ff6666;'>⏮️ No music is currently playing.</div>`
+        );
+      }
     } else if (cmd === "time") {
       const now = new Date();
       const timeString = now.toLocaleTimeString();
@@ -492,6 +626,47 @@ function handleCommand(e) {
         `<div class='terminal-line'><span class='prompt'>bmcit@prep:~$</span> ${cmd}</div>
                          <div class="fade-in" style='color:#ffcc00; margin-top: 0.5rem;'>😂 ${joke}</div>`
       );
+    } else if (cmd === "close" || cmd === "exit" || cmd === "quit") {
+      output.insertAdjacentHTML(
+        "beforeend",
+        `<div class='terminal-line'><span class='prompt'>bmcit@prep:~$</span> ${cmd}</div>
+                         <div class="fade-in" style='color: #ff6666; margin-top: 0.5rem;'>👋 Closing the terminal...</div>`
+      );
+      setTimeout(() => {
+        window.location.href = "https://www.google.com";
+      }, 2000);
+    } else if (
+      cmd === "arun" ||
+      cmd === "arun neupane" ||
+      cmd === "arundada9000" ||
+      cmd === "developer"
+    ) {
+      window.location.href = "https://arunneupane.netlify.app/";
+    } else if (
+      cmd === "insta" ||
+      cmd === "ig" ||
+      cmd === "show instagram" ||
+      cmd === "instagram" ||
+      cmd === "open instagram"
+    ) {
+      window.location.href = "https://instagram.com/arundada9000/";
+    } else if (
+      cmd === "code" ||
+      cmd === "open code" ||
+      cmd === "show editor" ||
+      cmd === "github"
+    ) {
+      window.location.href =
+        "https://github.com/arundada9000/Pre-reactjs-training";
+    } else if (
+      cmd === "fb" ||
+      cmd === "open facebook" ||
+      cmd === "show facebook" ||
+      cmd === "facebook" ||
+      cmd === "facebook page"
+    ) {
+      window.location.href =
+        "https://www.facebook.com/profile.php?id=100094504922018";
     } else if (cmd === "open html") {
       window.location.href = "./pages/practice-html.html";
     } else if (cmd === "open css") {
@@ -599,8 +774,17 @@ function handleCommand(e) {
         "beforeend",
         `<div class='terminal-line'><span class='prompt'>bmcit@prep:~$</span> ${cmd}</div><div class="fade-in" style='margin: 1rem 0; color: #66ff99;'>${programmingQuote}</div>`
       );
-    } else if (cmd === "sudo rm -rf /") {
+    } else if (
+      cmd === "sudo rm -rf /" ||
+      cmd === "sudo rm-rf/" ||
+      cmd === "sudo rm -rf/" ||
+      cmd === "sudo rm-rf /"
+    ) {
       goFullscreen();
+      audio.src = "./music/systemfailure.mp3";
+      setTimeout(() => {
+        audio.play();
+      }, 4000);
       output.insertAdjacentHTML(
         "beforeend",
         `<div class='terminal-line'><span class='prompt'>bmcit@prep:~$</span> ${cmd}</div>`
@@ -809,7 +993,7 @@ function appendContentWithFade(output, html) {
 function goFullscreen() {
   const elem = document.documentElement; // whole page
 
-  if (!isMobile) {
+  if (!isMobile && !document.fullscreenElement) {
     if (elem.requestFullscreen) {
       elem.requestFullscreen();
     } else if (elem.webkitRequestFullscreen) {
