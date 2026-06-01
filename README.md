@@ -1,8 +1,8 @@
-# Pre-React Training Platform
+﻿# Pre-React Training Platform
 
-Welcome to the **BMC IT Club's Pre-React Training Platform** — a lightweight, interactive, and responsive playground to master **HTML**, **CSS**, and **JavaScript** before learning React.
+Welcome to the **BMC IT Club's Pre-React Training Platform** - a lightweight, interactive, and responsive playground to master **HTML**, **CSS**, and **JavaScript** before learning React.
 
-> No setup needed — just open in browser and start coding.
+> No setup needed - just open in browser and start coding.
 
 **Page:** [Website](https://easyvanilla.vercel.app)
 
@@ -131,7 +131,7 @@ Explore the dedicated [Reference Page](https://easyvanilla.vercel.app/pages/refe
 
 ---
 
-## 🔄 Logo Animation
+##  Logo Animation
 
 - Header includes **BMC IT Club** logo
 - Logo has a **subtle pulse animation**
@@ -155,6 +155,11 @@ Explore the dedicated [Reference Page](https://easyvanilla.vercel.app/pages/refe
 
 ### Contributions are always accepted. Feel free to suggest any feature, report bug or fork this website as you like .
 
-# BMC IT Club — Let's Learn React
+# BMC IT Club - Let's Learn React
 
 ### Love from Arun Neupane
+---
+
+## License
+
+This project is for educational and personal learning purposes only. Commercial use, public deployment, or any revenue-generating use requires explicit written permission from the author. See [LICENSE](LICENSE) for details.
